@@ -63,7 +63,7 @@ const Navbar = () => {
   );
 
   return (
-   <div className="bg-mainbg">
+   <div className="bg-primary">
      <nav className="w-full p-4 container mx-auto  flex justify-between items-center">
       {/* Left Side: Logo */}
       <div className="flex items-center space-x-4">

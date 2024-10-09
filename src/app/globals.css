@@ -16,7 +16,7 @@
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background: #060000;
   font-family: var(--font-outfit), sans-serif;
 }
 
@@ -25,3 +25,61 @@ body {
     text-wrap: balance;
   }
 }
+.category-button {
+  padding: 8px 16px;
+  background-color: #EBCA7E;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.category-button:hover {
+  background-color: #EBCA7E;
+  color: white;
+}
+
+.ant-tabs-tab-btn {
+  padding: 0;
+}
+
+/* Remove the default Ant Design border for the Tabs */
+.ant-tabs-nav {
+  border-bottom: none !important;
+}
+.category-button:hover{
+  background-color: transparent;
+  
+}
+.category-button {
+  padding: 10px 20px;
+font-size: 14px;
+  border: none;
+  font-weight: 700;
+  color: white;
+  background: transparent;
+  cursor: pointer;
+}
+
+.active-tab {
+  background-color: #EBCA7E; /* Custom background color for active tab */
+  color: #000000;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+.ant-tabs-tab {
+  margin-right: 16px;
+
+}
+
+:where(.css-dev-only-do-not-override-qnu6hi).ant-collapse .ant-collapse-content>.ant-collapse-content-box {
+
+  background-color: #F2F4F7;
+}
+:where(.css-dev-only-do-not-override-qnu6hi).ant-rate .ant-rate-star:not(:last-child) {
+  margin-inline-end: 0px;
+}
+
