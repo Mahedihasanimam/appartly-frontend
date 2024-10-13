@@ -91,32 +91,28 @@ const Footer = () => {
                   Programs
                 </h3>
                 <div className="   gap-6">
-                  <ul className="space-y-[12px] text-[#000000CC] text-sm">
+                  <ul className="space-y-[12px] text-[#000000CC] font-medium text-sm">
                     <li>
                       <Link rel="noopener noreferrer" href="#">
-                        Art & Design
+                      Book your  Home
                       </Link>
                     </li>
                     <li>
                       <Link rel="noopener noreferrer" href="#">
-                        Development
+                      Estimate  your  Property
                       </Link>
                     </li>
                     <li>
                       <Link rel="noopener noreferrer" href="#">
-                        Communication
+                      Guest  Login
                       </Link>
                     </li>
                     <li>
                       <Link rel="noopener noreferrer" href="#">
-                        Videography
+                      Owner  Login
                       </Link>
                     </li>
-                    <li>
-                      <Link rel="noopener noreferrer" href="#">
-                        Photography
-                      </Link>
-                    </li>
+
                   </ul>
  
                 </div>
@@ -137,11 +133,7 @@ const Footer = () => {
                       Contact Us
                     </Link>
                   </li>
-                  <li>
-                    <Link rel="noopener noreferrer" href="#">
-                      Privacy & Policy
-                    </Link>
-                  </li>
+             
                   <li>
                     <Link rel="noopener noreferrer" href="#">
                       Terms & Conditions
@@ -149,7 +141,7 @@ const Footer = () => {
                   </li>
                   <li>
                     <Link rel="noopener noreferrer" href="#">
-                      Course Enrollment Help
+                    Room booking help
                     </Link>
                   </li>
                 </ul>

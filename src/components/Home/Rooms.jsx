@@ -155,7 +155,7 @@ const Rooms = () => {
         ))}
       </Tabs>
 <br />
-      <Button style={{backgroundColor: "secoundary"}}  className="mt-12 block mx-auto px-8  font-bold text-black bg-secoundary hover:bg-secoundary">Browse more</Button>
+      <Button style={{backgroundColor: "secoundary",height:"48px"}}  className="mt-12 block mx-auto px-8  font-bold text-black bg-secoundary hover:bg-secoundary">Browse more</Button>
     </div>
   );
 };

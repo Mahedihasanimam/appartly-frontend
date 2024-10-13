@@ -83,3 +83,55 @@ font-size: 14px;
   margin-inline-end: 0px;
 }
 
+.flex.items-center.space-x-4 {
+  width: inherit;
+}
+/* styles.css or a global stylesheet */
+input::-webkit-input-placeholder {
+  color: #FFFFFF99; /* Chrome */
+  opacity: 1; /* Ensure the placeholder is fully opaque */
+}
+
+input:-moz-placeholder {
+  color: #FFFFFF99; /* Firefox 18- */
+  opacity: 1; 
+}
+
+input::-moz-placeholder {
+  color: #FFFFFF99; /* Firefox 19+ */
+  opacity: 1; 
+}
+
+input:-ms-input-placeholder {
+  color: #FFFFFF99; /* Internet Explorer 10-11 */
+  opacity: 1; 
+}
+
+/* For Ant Design Input specifically */
+.ant-input::placeholder {
+  color: #FFFFFF99 !important; /* Override placeholder color */
+  opacity: 1; /* Ensure full opacity */
+}
+
+/* styles.css or your global stylesheet */
+.ant-input-password-icon {
+  font-size: large;
+  color: #FFFFFF99 !important; /* Change to your desired color */
+}
+/* styles.css */
+.custom-checkbox .ant-checkbox-inner {
+  background-color: #f0f0f0; /* Default background color */
+  border: 2px solid #ccc; /* Border color */
+}
+
+.custom-checkbox .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #4CAF50; /* Background color when checked */
+  border-color: #4CAF50; /* Border color when checked */
+}
+
+.custom-checkbox .ant-checkbox-checked::after {
+  border: none; /* Remove default check mark border */
+}
+.ant-space-item {
+  width: -webkit-fill-available;
+}

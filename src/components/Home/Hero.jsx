@@ -24,7 +24,7 @@ const Hero = () => {
           <div className="flex items-center bg-[#FFFFFF99] rounded-xl shadow-lg px-6 space-x-4 max-w-4xl mx-auto my-6 ">
             <div className="flex-1 hover:bg-white rounded-lg p-2 transition-all duration-300 ease-in-out my-2">
               <p className="text-[16px] text-[#000000] pl-2 ">Where</p>
-              <Input
+              <Input 
                 placeholder="Add destination"
                 bordered={false}
                 className="text-sm text-gray-700"

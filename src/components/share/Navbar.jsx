@@ -2,27 +2,17 @@
 import { useState } from "react";
 import { Input, Button, Dropdown, Menu, Drawer, Modal, Select } from "antd";
 import {
-  ShoppingCartOutlined,
   MenuOutlined,
-  SearchOutlined,
-  DownOutlined,
-  GlobalOutlined,
 } from "@ant-design/icons";
 import logo from "/public/images/logo.svg";
 import gloval from "/public/icons/gloval.svg";
 import user from "/public/icons/user.svg";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import GuestLoginModal from "../guestLoginModal/GuestLoginModal";
 
 const Navbar = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [languageModalVisible, setLanguageModalVisible] = useState(false);
-  const [guestLoginModalVisible, setGuestLoginModalVisible] = useState(false);
-  const [loginModalVisible, setLoginModalVisible] = useState(false);
-  
-  const router = useRouter();
 
   const showLanguageModal = () => {
     setLanguageModalVisible(true);
@@ -32,46 +22,21 @@ const Navbar = () => {
     setLanguageModalVisible(false);
   };
 
-  const showGuestLoginModal = () => {
-    setGuestLoginModalVisible(true);
-  };
-
-  const handleGuestLoginModalClose = () => {
-    setGuestLoginModalVisible(false);
-  };
-
-  const showLoginModal = () => {
-    setLoginModalVisible(true);
-  };
-
-  const handleLoginModalClose = () => {
-    setLoginModalVisible(false);
-  };
-
-  const handleLogin = (values) => {
-    console.log('Login values:', values);
-    setLoginModalVisible(true);
-  };
-
-  const handleForgotPassword = () => {
-    console.log('Forgot password clicked');
-  };
-
-  const handleFacebookLogin = () => {
-    console.log('Login with Facebook');
-  };
-
-  const handleGoogleLogin = () => {
-    console.log('Login with Google');
-  };
+  
 
   const profileMenu = (
-    <Menu style={{ width: 200, backgroundColor: "#060000", color: "#ffffff !important" }}>
+    <Menu
+      style={{
+        width: 200,
+        backgroundColor: "#060000",
+        color: "#ffffff !important",
+      }}
+    >
       <Menu.Item key="1" style={{ color: "#ffffff" }}>
-        <button onClick={showGuestLoginModal}>Guest Log in</button>
+      <Link href="/auth/GuestLogin">  Guest Log in</Link>
       </Menu.Item>
       <Menu.Item key="2" style={{ color: "#ffffff" }}>
-        <a href="/OwnerLogin">Owner Log in</a>
+        <Link href="/auth/OwnarLogin">Owner Log in</Link>
       </Menu.Item>
       <Menu.Item key="3" style={{ color: "#ffffff" }}>
         <a href="/Bookyourstay">Book your stay</a>
@@ -89,26 +54,37 @@ const Navbar = () => {
     <div className="bg-primary">
       <nav className="w-full p-4 container mx-auto flex justify-between items-center">
         {/* Left Side: Logo */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 ">
           <Link href="/">
             <Image src={logo} alt="Logo" />
           </Link>
         </div>
 
         {/* Middle: Search bar with category button (Hidden on small screens) */}
-        <div className="hidden w-fit lg:flex items-center space-x-2 px-2">
+        <div className="hidden w-full  lg:flex item-center justify-start  space-x-2 px-2">
           <ul className="space-x-2 list-none flex item-center gap-[24px] text-[16px] font-medium text-white py-4">
             <li>
-              <Link href="/" className="text-[16px] hover:text-primary">Home</Link>
+              <Link href="/" className="text-[16px] hover:text-secoundary">
+                Home
+              </Link>
             </li>
             <li>
-              <Link href="/services" className="text-[16px] hover:text-primary">Services</Link>
+              <Link
+                href="/services"
+                className="text-[16px] hover:text-secoundary"
+              >
+                Services
+              </Link>
             </li>
             <li>
-              <Link href="/blogs" className="text-[16px] hover:text-primary">Blogs</Link>
+              <Link href="/blogs" className="text-[16px] hover:text-secoundary">
+                Blogs
+              </Link>
             </li>
             <li>
-              <Link href="/about" className="text-[16px] hover:text-primary">About</Link>
+              <Link href="/about" className="text-[16px] hover:text-secoundary">
+                About
+              </Link>
             </li>
           </ul>
         </div>
@@ -120,33 +96,63 @@ const Navbar = () => {
             className="bg-[#EBCA7E] text-[#000000] font-bold text-[16px] p-5"
             type="primary"
           >
-            <Link href="/estimateMyProperty" className="text-[16px]">Estimate my property</Link>
+            <Link href="/estimateMyProperty" className="text-[16px]">
+              Estimate my property
+            </Link>
           </Button>
 
-          <Button style={{ backgroundColor: "transparent", border: "1px solid black" }} onClick={showLanguageModal} size="large">
-            <Image src={gloval} alt="gloval" width={24} height={24} />
-          </Button>
-
-          <Dropdown className="text-white" overlay={profileMenu} trigger={['hover']}>
-            <Button
-              style={{ backgroundColor: "#EBCA7E", border: "1px solid black" }}
-              className={"rounded-2xl w-[60px] py-6"}
-              onClick={(e) => e.preventDefault()} // Prevents page from refreshing when clicking on the button
-              size="large"
-            >
-              <Image src={user} alt="user" width={24} height={24} />
-            </Button>
-          </Dropdown>
+          <div className="w-full flex gap-6 items-center justify-center">
+            <div className="w-full">
+              <Button
+                style={{
+                  backgroundColor: "transparent",
+                  border: "1px solid black",
+                }}
+                onClick={showLanguageModal}
+                className="w-[60px] h-[60px] flex items-center justify-center"
+              >
+                <Image src={gloval} alt="gloval" width={44} height={44} />
+              </Button>
+            </div>
+            <div>
+              <Dropdown
+                className="text-white"
+                overlay={profileMenu}
+                trigger={["hover"]}
+              >
+                <Button
+                  style={{
+                    backgroundColor: "#EBCA7E",
+                    border: "1px solid black",
+                  }}
+                  className="rounded-2xl w-[60px] h-[60px]  flex items-center justify-center"
+                  onClick={(e) => e.preventDefault()}
+                >
+                  <Image src={user} alt="user" width={44} height={44} />
+                </Button>
+              </Dropdown>
+            </div>
+          </div>
         </div>
 
         {/* Mobile Menu Button (Visible on small screens) */}
         <div className="lg:hidden">
-          <MenuOutlined className="text-2xl text-white" onClick={() => setDrawerVisible(true)} />
+          <MenuOutlined
+            className="text-2xl text-white"
+            onClick={() => setDrawerVisible(true)}
+          />
         </div>
 
         {/* Modal for language selection */}
-        <Modal visible={languageModalVisible} onCancel={handleLanguageModalCancel} footer={null}>
-          <h2 className="text-lg font-semibold mb-4">Choose Your Preferred Language</h2>
+        <Modal
+       
+          visible={languageModalVisible}
+          onCancel={handleLanguageModalCancel}
+          footer={null}
+        >
+          <h2 className="text-lg font-semibold mb-4">
+            Choose Your Preferred Language
+          </h2>
           <Select
             className="h-[44px]"
             placeholder="Select Language"
@@ -156,31 +162,13 @@ const Navbar = () => {
             <Select.Option value="gr">Greek</Select.Option>
             {/* Add other languages as needed */}
           </Select>
-          <p className="mb-4 text-sm text-gray-500">Note: Changing the language will refresh the page to apply your selection.</p>
+          <p className="mb-4 text-sm text-gray-500">
+            Note: Changing the language will refresh the page to apply your
+            selection.
+          </p>
         </Modal>
 
-        {/* Guest Login Modal */}
-        <GuestLoginModal
-          isVisible={guestLoginModalVisible}
-          onClose={handleGuestLoginModalClose}
-          onLogin={handleLogin}
-          onForgotPassword={handleForgotPassword}
-          onFacebookLogin={handleFacebookLogin}
-          onGoogleLogin={handleGoogleLogin}
-          title="Log in as Guest"
-          description="Enter your email & password which you used to create an Appartali account"
-          logoSrc="/path-to-your-logo.png"
-        />
-
-        {/* Login Modal */}
-        <Modal
-          visible={loginModalVisible}
-          onCancel={handleLoginModalClose}
-          footer={null}
-          title="Login"
-        >
-          {/* Your login form goes here */}
-        </Modal>
+ 
 
         {/* Drawer for mobile menu */}
         <Drawer
@@ -191,22 +179,34 @@ const Navbar = () => {
         >
           <ul className="space-y-2 py-4">
             <li>
-              <Link href="/" className="text-[16px] hover:text-primary">Home</Link>
+              <Link href="/" className="text-[16px] hover:text-primary">
+                Home
+              </Link>
             </li>
             <li>
-              <Link href="/services" className="text-[16px] hover:text-primary">Services</Link>
+              <Link href="/services" className="text-[16px] hover:text-primary">
+                Services
+              </Link>
             </li>
             <li>
-              <Link href="/blogs" className="text-[16px] hover:text-primary">Blogs</Link>
+              <Link href="/blogs" className="text-[16px] hover:text-primary">
+                Blogs
+              </Link>
             </li>
             <li>
-              <Link href="/about" className="text-[16px] hover:text-primary">About</Link>
+              <Link href="/about" className="text-[16px] hover:text-primary">
+                About
+              </Link>
             </li>
           </ul>
           <div className="flex flex-col space-y-4">
-            <Link href={"/auth/login"} className="text-[16px] font-semibold text-[#475467]">LogIn</Link>
             <Link href={"/auth/signup"}>
-              <Button className="text-[#FFFFFF] font-semibold text-[16px] p-5" type="primary">Sign Up</Button>
+              <Button
+                className="text-[#FFFFFF] font-semibold text-[16px] p-5"
+                type="primary"
+              >
+                Sign Up
+              </Button>
             </Link>
           </div>
         </Drawer>
