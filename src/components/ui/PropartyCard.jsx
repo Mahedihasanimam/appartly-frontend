@@ -5,8 +5,10 @@ import Image from "next/image";
 import guest from "/public/icons/guest.svg";
 import revinue from "/public/icons/revinue.svg";
 import userimg from "/public/images/user.png";
+import Link from "next/link";
 const PropartyCard = ({ item }) => {
   return (
+    <Link href={`/property/${item.id}`}>
     <Card
       key={item.id}
       hoverable
@@ -72,6 +74,7 @@ const PropartyCard = ({ item }) => {
         </div>
       </div>
     </Card>
+    </Link>
   );
 };
 

@@ -2,10 +2,13 @@ import { Card, Rate } from "antd";
 import { React, useState } from "react";
 import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 import Image from "next/image";
+import Link from "next/link";
 const RoomsCard = ({ data }) => {
   const [liked, setLiked] = useState(false);
   return (
     <div>
+      <Link href={`/rooms/${data.id}`}>
+
       <Card
         hoverable
         className="rounded-lg bg-gray-800  overflow-hidden shadow-lg border-none"
@@ -53,6 +56,7 @@ const RoomsCard = ({ data }) => {
           )}
         </button>
       </Card>
+      </Link>
     </div>
   );
 };

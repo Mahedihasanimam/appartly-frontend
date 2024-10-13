@@ -135,3 +135,69 @@ input:-ms-input-placeholder {
 .ant-space-item {
   width: -webkit-fill-available;
 }
+
+/* Custom styles for Ant Design components */
+.ant-picker-input,
+.ant-picker-input input {
+    color: white !important;  /* Text color for RangePicker */
+}
+
+.ant-picker-input::placeholder,
+.ant-picker-input input::placeholder {
+    color: white !important;  /* Placeholder color for RangePicker */
+}
+
+  
+
+.ant-input::placeholder {
+    color: white !important;  /* Placeholder color for InputNumber */
+}
+
+.ant-input-number-handler-wrap {
+    color: white !important;  /* Color for InputNumber icons */
+}
+:where(.css-dev-only-do-not-override-ccdg5a).ant-picker .ant-picker-suffix {
+  display: flex;
+  flex: none;
+  align-self: center;
+  margin-inline-start: 4px;
+  color: white;
+  line-height: 1;
+  pointer-events: none;
+  transition: opacity 0.2s, color 0.2s;
+}
+
+:where(.css-dev-only-do-not-override-ccdg5a).ant-picker .ant-picker-separator {
+  position: relative;
+  display: inline-block;
+  width: 1em;
+  height: 16px;
+  color: white;
+  font-size: 16px;
+  vertical-align: top;
+  cursor: default;
+}
+
+
+.custom-input {
+  height: 44px;
+  background-color: #4B4B4B;
+  border: none;
+  color: white !important; /* Set input text color */
+}
+
+.custom-input::placeholder {
+  color: white !important; /* Set placeholder color */
+}
+
+/* For InputNumber arrow handlers */
+.ant-input-number-handler-wrap {
+  color: white !important; /* Set color for the input number handlers */
+}
+.custom-rate .ant-rate-star {
+  color: white; /* Default star color */
+}
+
+.custom-rate .ant-rate-star.ant-rate-star-full {
+  color: red; /* Selected star color */
+}

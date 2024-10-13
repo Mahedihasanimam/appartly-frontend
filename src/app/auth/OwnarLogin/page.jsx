@@ -97,13 +97,13 @@ const OwnarLogin = ({
             />
           </Form.Item>
           <div className="flex justify-end items-center">
-            <a
-              href="#"
+          <Link 
+              href="/auth/verifyEmail"
               className="text-secoundary border-b border-secoundary hover:text-[#EBCA7E] "
               onClick={onForgotPassword}
             >
               Forgot password
-            </a>
+            </Link>
           </div>
           <Button
             style={{
