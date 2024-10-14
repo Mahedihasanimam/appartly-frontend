@@ -7,7 +7,7 @@ const RoomsCard = ({ data }) => {
   const [liked, setLiked] = useState(false);
   return (
     <div>
-      <Link href={`/rooms/${data.id}`}>
+      <Link href={`/${data.id}`}>
 
       <Card
         hoverable

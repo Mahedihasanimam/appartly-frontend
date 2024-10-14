@@ -804,7 +804,7 @@ const Page = ({ params }) => {
           >
             <div className="lg:flex md:flex flex-row gap-8 ">
               {/* Left Section: Host Info */}
-              <div className="bg-[#242424] rounded-lg p-6 w-full max-w-md ">
+              <div className="bg-[#242424] h-fit rounded-lg p-6 w-full max-w-md ">
                 <div className="flex items-center pb-4">
                   {/* Avatar and Name */}
                   <Avatar size={80} className="bg-gray-400">
