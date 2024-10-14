@@ -30,7 +30,7 @@ const page = () => {
 
 
 
-      <div className="container mx-auto">
+      <div className="container mx-auto p-4">
           {/* first card ------------ */}
         <div>
           {/* title -------------- */}
@@ -40,7 +40,7 @@ const page = () => {
             </h1>
             <Image src={titleimg} className="mx-auto mt-4" alt="signimage" />
           </div>
-          <div className="flex items-center justify-around py-12">
+          <div className="lg:flex md:flex flex-row items-center justify-around py-12">
             <div className="text-white max-w-xl ">
               <h1 className="text-[36px] font-semibold leading-[45px] border-b-2 border-[#FFFFFF] w-fit pb-4">
                 Developing Confident and <br />
@@ -68,7 +68,7 @@ const page = () => {
             </h1>
             <Image src={titleimg} className="mx-auto mt-4" alt="signimage" />
           </div>
-          <div className="flex items-center justify-around py-12">
+          <div className="lg:flex md:flex flex-row items-center justify-around py-12">
             <div className="text-white max-w-xl ">
               <h1 className="text-[36px] font-semibold leading-[45px] border-b-2 border-[#FFFFFF] w-fit pb-4">
                 Developing Confident and <br />
