@@ -45,6 +45,7 @@ import { FaLocationPinLock } from "react-icons/fa6";
 
 import { Card, Avatar, List, Divider, Progress, Tooltip } from "antd"; // Import from Ant Design
 import profileimg from "/public/images/about.png";
+import { useRouter } from "next/navigation";
 
 const Page = ({ params }) => {
   console.log(params);
@@ -148,32 +149,7 @@ const Page = ({ params }) => {
       shortReview: "I enjoyed my stay here, especially the pool area...",
       imageUrl: profileimg,
     },
-    {
-      id: 9,
-      name: "Liam Wilson",
-      years: 4,
-      stayType: "Hostel",
-      date: "August 2024",
-      rating: 3,
-      review:
-        "It was a decent hostel experience. The facilities were basic, but it was clean and affordable.",
-      shortReview:
-        "It was a decent hostel experience. The facilities were basic...",
-      imageUrl: profileimg,
-    },
-    {
-      id: 10,
-      name: "Isabella Martinez",
-      years: 3,
-      stayType: "Apartotel",
-      date: "June 2024",
-      rating: 5,
-      review:
-        "This place exceeded my expectations! The attention to detail was remarkable, and I loved every moment of my stay.",
-      shortReview:
-        "This place exceeded my expectations! The attention to detail was remarkable...",
-      imageUrl: profileimg,
-    },
+   
   ];
 
   const [activeSlide, setActiveSlide] = useState(0);
@@ -184,6 +160,7 @@ const Page = ({ params }) => {
   const [isRated, setIsRated] = useState(false);
   const [visibleReviews, setVisibleReviews] = useState(8); // Initially display 4 reviews
   const [expandedReviewIds, setExpandedReviewIds] = useState([]);
+  const router=useRouter()
   const perNightRate = 560;
   const cleaningFee = 80;
   const serviceFee = 80;
@@ -257,7 +234,8 @@ const Page = ({ params }) => {
 
   // Show all reviews
   const handleShowAll = () => {
-    setVisibleReviews(reviews.length);
+    router.push('/showAllReview')
+
   };
   return (
     <div className="bg-[]">
@@ -778,7 +756,7 @@ const Page = ({ params }) => {
               </Card>
             ))}
           </div>
-          {visibleReviews < reviews.length && (
+     
             <div className="mt-4 text-center w-full flex items-center justify-end">
               <Button
                style={{backgroundColor: "#EBCA7E",width: "240px", height: "44px", color: "#000000"}}
@@ -790,7 +768,7 @@ const Page = ({ params }) => {
                 Show all
               </Button>
             </div>
-          )}
+     
         </div>
       </div>
 
