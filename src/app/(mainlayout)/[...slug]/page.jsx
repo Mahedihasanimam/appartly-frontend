@@ -5,7 +5,14 @@ import { Carousel, DatePicker, InputNumber, Button, Rate } from "antd";
 import Image from "next/image";
 import slideimage from "/public/images/Rectangle 67.png";
 import slideimage2 from "/public/images/Rectangle 68.png";
-import { CheckCircleFilled, FileOutlined, HeartOutlined, HomeFilled, LeftOutlined, ShopOutlined } from "@ant-design/icons";
+import {
+  CheckCircleFilled,
+  FileOutlined,
+  HeartOutlined,
+  HomeFilled,
+  LeftOutlined,
+  ShopOutlined,
+} from "@ant-design/icons";
 import Link from "next/link";
 import favimg from "/public/icons/fevorite.png";
 const { RangePicker } = DatePicker;
@@ -15,15 +22,20 @@ import {
   LockOutlined,
   CoffeeOutlined,
   HomeOutlined,
-
 } from "@ant-design/icons";
-import { TvOutlined } from '@ant-design/icons';
+
+import { MdLiveTv, MdLuggage } from "react-icons/md";
+import { LuRefrigerator } from "react-icons/lu";
+import { BsPersonWorkspace } from "react-icons/bs";
+import { BiSolidWasher } from "react-icons/bi";
+import { PiHairDryerLight } from "react-icons/pi";
+import { TbIroning1 } from "react-icons/tb";
 
 import { Card, Avatar, List, Divider, Progress, Tooltip } from "antd"; // Import from Ant Design
 import profileimg from "/public/images/about.png";
 
 const Page = ({ params }) => {
-console.log(params)
+  console.log(params);
 
   const [activeSlide, setActiveSlide] = useState(0);
   const [dates, setDates] = useState(null);
@@ -91,15 +103,6 @@ console.log(params)
       setIsRated(true);
     }
   };
-
-  const data = [
-    { icon: <LockOutlined />, text: "Lock on bedroom door" },
-    { icon: <WifiOutlined />, text: "Wifi" },
-    { icon: <TvOutlined />, text: "TV" },
-    { icon: <CoffeeOutlined />, text: "Kitchen" },
-    { icon: <HomeOutlined />, text: "Dedicated workspace" },
-    // Add other amenities here
-  ];
 
   return (
     <div className="bg-[]">
@@ -309,7 +312,17 @@ console.log(params)
           {/* Profile Section */}
           <Card className="w-full bg-transparent text-white" bordered={false}>
             <div className="flex items-center">
-              <Avatar size="large" icon={<Image height={96} width={96} src={profileimg} alt="Profile" />} />
+              <Avatar
+                size="large"
+                icon={
+                  <Image
+                    height={96}
+                    width={96}
+                    src={profileimg}
+                    alt="Profile"
+                  />
+                }
+              />
               <div className="ml-4">
                 <h2 className="text-xl  font-bold">Stay with David</h2>
                 <p className="text-sm text-[#FFFFFFCC]">
@@ -317,9 +330,15 @@ console.log(params)
                 </p>
               </div>
             </div>
-           <br />
+            <br />
             <h2 className="text-xl  font-bold py-4">About this place</h2>
-            <p className="text-[#FFFFFFCC] text-[16px] font-normal leading-6 max-w-lg">I rent a small room in my house, it is new and cosy. House is quite light, modern and guest can cook. Bathroom will be shared. House is 6 minutes from lines 14 and 13, RER and tram. it takes 20 minutes to go to City center. many restaurants, bars, supermarkets around my house.</p>
+            <p className="text-[#FFFFFFCC] text-[16px] font-normal leading-6 max-w-lg">
+              I rent a small room in my house, it is new and cosy. House is
+              quite light, modern and guest can cook. Bathroom will be shared.
+              House is 6 minutes from lines 14 and 13, RER and tram. it takes 20
+              minutes to go to City center. many restaurants, bars, supermarkets
+              around my house.
+            </p>
           </Card>
 
           {/* About Room Section */}
@@ -327,25 +346,133 @@ console.log(params)
             className="w-full bg-transparent text-white mt-4"
             bordered={false}
           >
-        <h2 className="text-xl  font-bold py-4">About room</h2>
+            <h2 className="text-xl  font-bold py-4">About room</h2>
             <ul className="space-y-4">
-              <li className="flex items-center space-x-4"><HomeOutlined className="text-xl"/> <div>
-              <h3 className="text-lg  font-bold text-[#FFFFFF]">Room in a town house</h3> <p className="text-sm text-[#FFFFFFCC] font-normal">Your own room in a home, plus access to shared spaces.</p> </div>
-               </li>
+              <li className="flex items-center space-x-4">
+                <HomeOutlined className="text-xl" />{" "}
+                <div>
+                  <h3 className="text-lg  font-bold text-[#FFFFFF]">
+                    Room in a town house
+                  </h3>{" "}
+                  <p className="text-sm text-[#FFFFFFCC] font-normal">
+                    Your own room in a home, plus access to shared spaces.
+                  </p>{" "}
+                </div>
+              </li>
 
-              <li className="flex items-center space-x-4"><HomeFilled className="text-xl"/> <div>
-              <h3 className="text-lg  font-bold text-[#FFFFFF]">Shared common spaces</h3> <p className="text-sm text-[#FFFFFFCC] font-normal">You'll share parts of the home with the Host.</p> </div>
-               </li>
+              <li className="flex items-center space-x-4">
+                <HomeFilled className="text-xl" />{" "}
+                <div>
+                  <h3 className="text-lg  font-bold text-[#FFFFFF]">
+                    Shared common spaces
+                  </h3>{" "}
+                  <p className="text-sm text-[#FFFFFFCC] font-normal">
+                    You'll share parts of the home with the Host.
+                  </p>{" "}
+                </div>
+              </li>
 
-
-              <li className="flex items-center space-x-4"><ShopOutlined className="text-xl"/> <div>
-              <h3 className="text-lg  font-bold text-[#FFFFFF]">Shared bathroom</h3> <p className="text-sm text-[#FFFFFFCC] font-normal">You’ll share the bathroom with others.</p> </div>
-               </li>
-              <li className="flex items-center space-x-4"><CheckCircleFilled className="text-xl"/> <div>
-              <h3 className="text-lg  font-bold text-[#FFFFFF]">David is a superhost</h3> <p className="text-sm text-[#FFFFFFCC] font-normal">Superhosts are experienced, highly rated Hosts.</p> </div>
-               </li>
+              <li className="flex items-center space-x-4">
+                <ShopOutlined className="text-xl" />{" "}
+                <div>
+                  <h3 className="text-lg  font-bold text-[#FFFFFF]">
+                    Shared bathroom
+                  </h3>{" "}
+                  <p className="text-sm text-[#FFFFFFCC] font-normal">
+                    You’ll share the bathroom with others.
+                  </p>{" "}
+                </div>
+              </li>
+              <li className="flex items-center space-x-4">
+                <CheckCircleFilled className="text-xl" />{" "}
+                <div>
+                  <h3 className="text-lg  font-bold text-[#FFFFFF]">
+                    David is a superhost
+                  </h3>{" "}
+                  <p className="text-sm text-[#FFFFFFCC] font-normal">
+                    Superhosts are experienced, highly rated Hosts.
+                  </p>{" "}
+                </div>
+              </li>
             </ul>
           </Card>
+        </div>
+      </div>
+
+      <div className=" container mx-auto  border-b-2 border-[#424242]  my-6">
+        <h2 className="text-xl text-white  font-bold">
+          What this places offers
+        </h2>
+        <div className="lg:flex md:flex flex-row items-center justify-between p-4 my-8 lg:max-w-4xl w-full">
+          <div>
+            <ul className="space-y-4">
+              <li className="flex items-center space-x-4 text-[#FFFFFFCC]  font-normal">
+                <LockOutlined className="text-xl text-white" />{" "}
+                <p className="text-sm text-[#FFFFFFCC] font-normal text-[16px]">
+                  Lock on bedroom door
+                </p>
+              </li>
+              <li className="flex items-center space-x-4 text-[#FFFFFFCC] font-normal">
+                <WifiOutlined className="text-xl text-white" />{" "}
+                <p className="text-sm text-[#FFFFFFCC] font-normal    text-[16px]">
+                  Free Wi-Fi
+                </p>
+              </li>
+              <li className="flex items-center space-x-4 text-[#FFFFFFCC] font-normal">
+                <MdLiveTv className="text-xl text-white" />{" "}
+                <p className="text-sm text-[#FFFFFFCC] font-normal    text-[16px]">
+                  Tv
+                </p>
+              </li>
+              <li className="flex items-center space-x-4 text-[#FFFFFFCC] font-normal">
+                <MdLuggage className="text-xl text-white" />{" "}
+                <p className="text-sm text-[#FFFFFFCC] font-normal    text-[16px]">
+                  Luggage dropoff allowed
+                </p>
+              </li>
+              <li className="flex items-center space-x-4 text-[#FFFFFFCC] font-normal">
+                <LuRefrigerator className="text-xl text-white" />{" "}
+                <p className="text-sm text-[#FFFFFFCC] font-normal    text-[16px]">
+                  Refrigerator
+                </p>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <ul className="space-y-4">
+              <li className="flex items-center space-x-4 text-[#FFFFFFCC] font-normal">
+                <CoffeeOutlined className="text-xl text-white" />{" "}
+                <p className="text-sm text-[#FFFFFFCC] font-normal  text-[16px]">
+                  Kitchen
+                </p>
+              </li>
+              <li className="flex items-center space-x-4 text-[#FFFFFFCC] font-normal">
+                <BsPersonWorkspace className="text-xl text-white" />{" "}
+                <p className="text-sm text-[#FFFFFFCC] font-normal  text-[16px]">
+                Dedicated workspace
+                </p>
+              </li>
+              <li className="flex items-center space-x-4 text-[#FFFFFFCC] font-normal">
+                <BiSolidWasher className="text-xl text-white" />{" "}
+                <p className="text-sm text-[#FFFFFFCC] font-normal  text-[16px]">
+                Washer
+                </p>
+              </li>
+              <li className="flex items-center space-x-4 text-[#FFFFFFCC] font-normal">
+                <PiHairDryerLight className="text-xl text-white" />{" "}
+                <p className="text-sm text-[#FFFFFFCC] font-normal  text-[16px]">
+                Hair dryer
+                </p>
+              </li>
+              <li className="flex items-center space-x-4 text-[#FFFFFFCC] font-normal">
+                <TbIroning1 className="text-xl text-white" />{" "}
+                <p className="text-sm text-[#FFFFFFCC] font-normal  text-[16px]">
+                Iron machine
+                </p>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
