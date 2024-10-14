@@ -5,20 +5,32 @@ import { Carousel, DatePicker, InputNumber, Button, Rate } from "antd";
 import Image from "next/image";
 import slideimage from "/public/images/Rectangle 67.png";
 import slideimage2 from "/public/images/Rectangle 68.png";
-import { HeartOutlined, LeftOutlined } from "@ant-design/icons";
+import { CheckCircleFilled, FileOutlined, HeartOutlined, HomeFilled, LeftOutlined, ShopOutlined } from "@ant-design/icons";
 import Link from "next/link";
-
+import favimg from "/public/icons/fevorite.png";
 const { RangePicker } = DatePicker;
 
+import {
+  WifiOutlined,
+  LockOutlined,
+  CoffeeOutlined,
+  HomeOutlined,
+
+} from "@ant-design/icons";
+import { TvOutlined } from '@ant-design/icons';
+
+import { Card, Avatar, List, Divider, Progress, Tooltip } from "antd"; // Import from Ant Design
+import profileimg from "/public/images/about.png";
+
 const Page = ({ params }) => {
-  const { slug } = params;
+console.log(params)
 
   const [activeSlide, setActiveSlide] = useState(0);
   const [dates, setDates] = useState(null);
   const [guests, setGuests] = useState(2);
   const [total, setTotal] = useState(0);
-  const [value, setValue] = useState(0); 
-  const [isRated, setIsRated] = useState(false); 
+  const [value, setValue] = useState(0);
+  const [isRated, setIsRated] = useState(false);
 
   const perNightRate = 560;
   const cleaningFee = 80;
@@ -70,36 +82,47 @@ const Page = ({ params }) => {
     console.log("Total Amount:", total);
   };
 
-
-
   const handleRateChange = (newValue) => {
-      if (isRated && newValue === value) {
-          setValue(0);
-          setIsRated(false);
-      } else {
-          setValue(newValue);
-          setIsRated(true);
-      }
+    if (isRated && newValue === value) {
+      setValue(0);
+      setIsRated(false);
+    } else {
+      setValue(newValue);
+      setIsRated(true);
+    }
   };
 
-  return (
-    <div>
+  const data = [
+    { icon: <LockOutlined />, text: "Lock on bedroom door" },
+    { icon: <WifiOutlined />, text: "Wifi" },
+    { icon: <TvOutlined />, text: "TV" },
+    { icon: <CoffeeOutlined />, text: "Kitchen" },
+    { icon: <HomeOutlined />, text: "Dedicated workspace" },
+    // Add other amenities here
+  ];
 
-        <div className="container mx-auto mt-8 text-white flex items-center justify-between p-4  ">
-            <Link className="text-lg font-medium" href="/"> <LeftOutlined /> Stylish ensuite double bedroom in trendy Dalston</Link>
-           <div className="text-[16px] font-medium">
-           <Rate
+  return (
+    <div className="bg-[]">
+      <div className="container mx-auto mt-8 text-white flex items-center justify-between p-4  ">
+        <Link className="text-lg font-medium" href="/">
+          {" "}
+          <LeftOutlined /> Stylish ensuite double bedroom in trendy Dalston
+        </Link>
+        <div className="text-[16px] font-medium">
+          <Rate
             value={value}
             count={1}
             onChange={handleRateChange}
-            character={<HeartOutlined style={{ color: isRated ? 'red' : 'white' }} />}
-            style={{ color: isRated ? 'red' : 'white' }} // Change the color based on state
+            character={
+              <HeartOutlined style={{ color: isRated ? "red" : "white" }} />
+            }
+            style={{ color: isRated ? "red" : "white" }} // Change the color based on state
             className="custom-rate"
-        />
-         <span className="pl-2 ">Save</span>
-           </div>
+          />
+          <span className="pl-2 ">Save</span>
         </div>
-      <div className="flex flex-col lg:flex-row bg-black text-white lg:p-2 md:p-2 p-8 lg:p-16 container mx-auto">
+      </div>
+      <div className="flex flex-col lg:flex-row text-white lg:p-2 md:p-2 p-8 lg:p-16 container mx-auto">
         {/* Image Carousel */}
         <div className="lg:w-2/3">
           <Carousel
@@ -142,7 +165,9 @@ const Page = ({ params }) => {
               </div>
             ))}
           </div>
-          <p className="mt-4 text-[24px] font-bold text-[#FFFFFF]">Room in Clichy, France</p>
+          <p className="mt-4 text-[24px] font-bold text-[#FFFFFF]">
+            Room in Clichy, France
+          </p>
           <p className="text-sm">Room id: 569845</p>
         </div>
 
@@ -191,7 +216,9 @@ const Page = ({ params }) => {
           >
             Reserve
           </Button>
-          <p className="mt-4 text-sm text-[#FFFFFFB2] font-medium text-center py-8">You won’t be charged yetz</p>
+          <p className="mt-4 text-sm text-[#FFFFFFB2] font-medium text-center py-8">
+            You won’t be charged yetz
+          </p>
           {/* Pricing Breakdown */}
           <div className="mt-8 text-[16px] font-medium text-[#FFFFFFCC] ">
             {dates ? (
@@ -238,6 +265,87 @@ const Page = ({ params }) => {
               </div>
             )}
           </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto bg-[#1B1B1B]  lg:flex flex-wrap space-y-6 text-center items-center justify-between p-4 my-8 rounded-lg">
+        <div className="text-[#FFFFFF] font-bold text-[28px] flex items-center justify-arround p-4 w-fit gap-4 lg:mx-0  mx-auto">
+          <Image
+            src={favimg}
+            alt="Favourite"
+            width={30}
+            height={30}
+            className="mr-2"
+          />
+          <span className="text-white font-medium">
+            Guest <br /> favorite
+          </span>
+          <Image
+            src={favimg}
+            alt="Favourite"
+            width={30}
+            height={30}
+            className="mr-2"
+          />
+        </div>
+        <div>
+          <p className="text-[#FFFFFFCC] font-medium text-[16px]  ">
+            One of the most loved homes <br /> on Appartali, according to guest
+          </p>
+        </div>
+
+        <div className="text-[#FFFFFFCC]">
+          <h1 className="text-[24px] font-bold pl-4">4.91</h1>
+          <Rate style={{ color: "white" }} disabled defaultValue={4.9} />
+        </div>
+        <div className="text-[#FFFFFFCC] ">
+          <h1 className="text-[24px] font-bold">110</h1>
+          <p className="underline">Reviews </p>
+        </div>
+      </div>
+
+      <div className="container mx-auto">
+        <div className="lg:flex md:flex flex-row items-center justify-between p-4 my-8 border border-[#424242] rounded-lg">
+          {/* Profile Section */}
+          <Card className="w-full bg-transparent text-white" bordered={false}>
+            <div className="flex items-center">
+              <Avatar size="large" icon={<Image height={96} width={96} src={profileimg} alt="Profile" />} />
+              <div className="ml-4">
+                <h2 className="text-xl  font-bold">Stay with David</h2>
+                <p className="text-sm text-[#FFFFFFCC]">
+                  Superhost • 12 years hosting
+                </p>
+              </div>
+            </div>
+           <br />
+            <h2 className="text-xl  font-bold py-4">About this place</h2>
+            <p className="text-[#FFFFFFCC] text-[16px] font-normal leading-6 max-w-lg">I rent a small room in my house, it is new and cosy. House is quite light, modern and guest can cook. Bathroom will be shared. House is 6 minutes from lines 14 and 13, RER and tram. it takes 20 minutes to go to City center. many restaurants, bars, supermarkets around my house.</p>
+          </Card>
+
+          {/* About Room Section */}
+          <Card
+            className="w-full bg-transparent text-white mt-4"
+            bordered={false}
+          >
+        <h2 className="text-xl  font-bold py-4">About room</h2>
+            <ul className="space-y-4">
+              <li className="flex items-center space-x-4"><HomeOutlined className="text-xl"/> <div>
+              <h3 className="text-lg  font-bold text-[#FFFFFF]">Room in a town house</h3> <p className="text-sm text-[#FFFFFFCC] font-normal">Your own room in a home, plus access to shared spaces.</p> </div>
+               </li>
+
+              <li className="flex items-center space-x-4"><HomeFilled className="text-xl"/> <div>
+              <h3 className="text-lg  font-bold text-[#FFFFFF]">Shared common spaces</h3> <p className="text-sm text-[#FFFFFFCC] font-normal">You'll share parts of the home with the Host.</p> </div>
+               </li>
+
+
+              <li className="flex items-center space-x-4"><ShopOutlined className="text-xl"/> <div>
+              <h3 className="text-lg  font-bold text-[#FFFFFF]">Shared bathroom</h3> <p className="text-sm text-[#FFFFFFCC] font-normal">You’ll share the bathroom with others.</p> </div>
+               </li>
+              <li className="flex items-center space-x-4"><CheckCircleFilled className="text-xl"/> <div>
+              <h3 className="text-lg  font-bold text-[#FFFFFF]">David is a superhost</h3> <p className="text-sm text-[#FFFFFFCC] font-normal">Superhosts are experienced, highly rated Hosts.</p> </div>
+               </li>
+            </ul>
+          </Card>
         </div>
       </div>
     </div>

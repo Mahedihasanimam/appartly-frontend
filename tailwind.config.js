@@ -16,5 +16,8 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    ['import', { libraryName: '@ant-design/icons', libraryDirectory: 'es', style: true }]
+  ]
+  
 };
