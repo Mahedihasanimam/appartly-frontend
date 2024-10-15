@@ -45,7 +45,7 @@ const Navbar = () => {
         <a href="/FAQ">FAQ</a>
       </Menu.Item>
       <Menu.Item key="5" style={{ color: "#ffffff" }}>
-        <a href="/myprofile">My Profile</a>
+        <Link href="/Profile">My Profile</Link>
       </Menu.Item>
     </Menu>
   );

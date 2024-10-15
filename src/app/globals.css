@@ -220,3 +220,41 @@ span.anticon.anticon-swap-right {
 span.anticon.anticon-down.ant-select-suffix {
   color: white;
 }
+
+
+/* Custom class for the table */
+.custom-table .ant-table {
+  background-color: #242424 !important; /* Table background */
+  border: none; /* Remove the table border */
+}
+.custom-table .ant-table-thead > tr > th {
+  color: #ffffff !important; /* Table header text color */
+  font-size: large;
+}
+.custom-table .ant-table-thead > tr > th,
+.custom-table .ant-table-tbody > tr > td {
+  background-color: #242424 !important; /* Ensure rows and headers have the background */
+  border: none !important; /* Remove borders between cells */
+  color: #ffffff; /* Text color */
+}
+
+/* Disable hover effect */
+.custom-table .ant-table-tbody > tr:hover > td {
+  background-color: #242424 !important; /* Keep the same background on hover */
+}
+/* Custom class for the table */
+.custom-table .ant-table-tbody > tr > td:nth-child(2),
+.custom-table .ant-table-tbody > tr > td:nth-child(3),
+.custom-table .ant-table-tbody > tr > td:nth-child(4) {
+  border-left: none !important; /* Remove left border for specific columns */
+}
+
+/* Custom styles for the Ant Design Table */
+.custom-table .ant-table {
+  color: #f56565; /* Tailwind's red-500 color hex value */
+}
+
+/* Custom styles for the Ant Design Table body */
+.custom-table .ant-table-tbody > tr > td {
+  color: #FFFFFFCC; /* Tailwind's red-500 color hex value */
+}
