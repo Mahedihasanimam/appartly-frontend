@@ -209,6 +209,7 @@ const Page = ({ params }) => {
     console.log("Selected Dates:", dates);
     console.log("Number of Guests:", guests);
     console.log("Total Amount:", total);
+    router.push('/payment')
   };
 
   const handleRateChange = (newValue) => {

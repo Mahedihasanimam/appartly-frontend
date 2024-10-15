@@ -193,3 +193,30 @@ input:-ms-input-placeholder {
 span.anticon.anticon-calendar {
   color: aliceblue;
 }
+span.anticon.anticon-swap-right {
+  color: white;
+}
+
+/* Customize the Ant Design Select component */
+.custom-select .ant-select-selector {
+  background-color: #4b4b4b !important; /* Background color of the select input */
+  color: #ffffffcc !important; /* Text color */
+  height: 44px; /* Height */
+  border: none !important; /* Remove border */
+}
+
+.custom-select .ant-select-dropdown {
+  background-color: #4b4b4b !important; /* Background color of the dropdown menu */
+}
+
+.custom-select .ant-select-item {
+  background-color: #4b4b4b !important; /* Background color of each dropdown item */
+  color: #ffffffcc !important; /* Text color of each item */
+}
+
+.custom-select .ant-select-item:hover {
+  background-color: #242424 !important; /* Hover background color */
+}
+span.anticon.anticon-down.ant-select-suffix {
+  color: white;
+}

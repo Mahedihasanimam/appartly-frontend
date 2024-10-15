@@ -253,6 +253,7 @@ const page = () => {
           Meet your host
         </h3>
         <div className=" text-white  flex  items-center">
+        
            <Card
             className="w-full bg-transparent lg:p-8"
             bordered={false}
@@ -389,6 +390,7 @@ const page = () => {
               </div>
             </div>
           </Card>
+
         </div>
       </div>
       <div className="container mx-auto border-t-2 border-[#424242] my-12 p-4">
@@ -425,9 +427,10 @@ const page = () => {
                 </div>
                 <div className="flex items-center space-x-2">
                   <Rate
+                  
                     disabled
                     defaultValue={review.rating}
-                    className="mb-1"
+                    className="mb-1 text-secoundary"
                   />
                   <p className="text-[12px] font-medium text-[#FFFFFF] pb-4">
                     <span className="text-4xl font-bold">. </span>
