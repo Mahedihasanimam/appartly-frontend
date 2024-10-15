@@ -161,6 +161,7 @@ const Profile = () => {
             About Jenifer Lopez
           </h3>
           <Button
+          onClick={() => router.push("/editprofile")}
             style={{ backgroundColor: "transparent", color: "#EBCA7E" }}
             className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-fit px-4 py-2 text-sm font-semibold text-secoundary font-bold  mb-4"
           >
