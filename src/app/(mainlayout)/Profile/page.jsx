@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { FaLanguage } from "react-icons/fa";
 import { FaLocationPinLock } from "react-icons/fa6";
 import { MobileOutlined } from "@ant-design/icons";
+import Link from "next/link";
 
 const Profile = () => {
   const router = useRouter();
@@ -198,6 +199,8 @@ const Profile = () => {
           </div>
         </Card>
       </div>
+
+      {/* graph --------------- */}
       <div className=" p-2 rounded-md">
         {/* Booking List */}
         <div className="flex items-center justify-between mb-2">
@@ -220,6 +223,10 @@ const Profile = () => {
           />
         </div>
       </div>
+
+
+    
+
     </div>
   );
 };

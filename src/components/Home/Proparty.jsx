@@ -3,7 +3,7 @@ import React from "react";
 import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import propartyimage from "/public/images/proparty.png";
-import ownerImage from "../../../public/images/user.png";
+import ownerImage from "/public/images/user.png";
 import PropartyCard from "../ui/PropartyCard";
 
 const Proparty = () => {

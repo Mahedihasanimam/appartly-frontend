@@ -13,7 +13,7 @@ import Link from "next/link";
 const Navbar = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [languageModalVisible, setLanguageModalVisible] = useState(false);
-
+  const [isowner,setisowner]=useState(false)
   const showLanguageModal = () => {
     setLanguageModalVisible(true);
   };
@@ -22,6 +22,10 @@ const Navbar = () => {
     setLanguageModalVisible(false);
   };
 
+  const handleSwitch = () => {
+    setisowner(!isowner)
+    console.log('the owner is',isowner)
+  }
   
 
   const profileMenu = (
@@ -45,7 +49,9 @@ const Navbar = () => {
         <a href="/FAQ">FAQ</a>
       </Menu.Item>
       <Menu.Item key="5" style={{ color: "#ffffff" }}>
-        <Link href="/Profile">My Profile</Link>
+       {
+        isowner ? <Link href="/Profile">My Profile</Link> : <Link href="/ownerProfile">Owner profile</Link>
+       }
       </Menu.Item>
     </Menu>
   );
@@ -91,15 +97,27 @@ const Navbar = () => {
 
         {/* Right Side: Links (Hidden on small screens) */}
         <div className="hidden lg:flex items-center space-x-6">
-          <Button
-            style={{ backgroundColor: "#EBCA7E" }}
+        {
+          isowner?  <Button
+
+          onClick={handleSwitch}
+            style={{ backgroundColor: "#EBCA7E",color: "#000000" }}
             className="bg-[#EBCA7E] text-[#000000] font-bold text-[16px] p-5"
             type="primary"
           >
-            <Link href="/estimateMyProperty" className="text-[16px]">
               Estimate my property
-            </Link>
-          </Button>
+ 
+          </Button> :  <Button
+
+onClick={handleSwitch}
+  style={{ backgroundColor: "#EBCA7E",color: "#000000" }}
+  className="bg-[#EBCA7E] text-[#000000] font-bold text-[16px] p-5"
+  type="primary"
+>
+Switch to Guest profile 
+
+</Button> 
+        }
 
           <div className="w-full flex gap-6 items-center justify-center">
             <div className="w-full">
