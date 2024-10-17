@@ -1,3 +1,4 @@
+'use client'
 import { Button, Card, Rate } from "antd";
 import React from "react";
 import { HeartFilled, HeartOutlined } from "@ant-design/icons";
@@ -5,9 +6,11 @@ import Image from "next/image";
 import propartyimage from "/public/images/proparty.png";
 import ownerImage from "/public/images/user.png";
 import PropartyCard from "../ui/PropartyCard";
+import { useRouter } from "next/navigation";
 
 const Proparty = () => {
   // Sample property data
+  const router=useRouter()
   const proparty = [
     {
       id: "1",
@@ -101,7 +104,7 @@ const Proparty = () => {
   return (
     <div className="container mx-auto py-12 ">
       <div>
-        <h1 className="xl:text-[36px] lg:text-[36px] font-black leading-none text-2xl text-white font-Merriweather text-center pb-12 leading-10">
+        <h1 className="xl:text-[36px] lg:text-[36px] font-black  text-2xl text-white font-Merriweather text-center pb-12 leading-10">
           Transform your property into a lucrative <br /> experience for
           travelers
         </h1>
@@ -113,7 +116,7 @@ const Proparty = () => {
         ))}
       </div>
 
-      <Button style={{backgroundColor: "secoundary",height:"48px"}}  className="mt-12 block mx-auto px-8  font-bold text-black bg-secoundary hover:bg-secoundary">Estimate my property</Button>
+      <Button onClick={()=>router.push('/addpropartytrailer')} style={{backgroundColor: "#EBCA7E",color:'black',height:"48px",width:'200px'}}  className="mt-12 block mx-auto px-8  font-bold text-black bg-secoundary hover:bg-secoundary">Add a property</Button>
     </div>
   );
 };
