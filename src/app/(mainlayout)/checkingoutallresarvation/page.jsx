@@ -18,89 +18,131 @@ const Page = () => {
   };
 
   // Dummy data
-  const users = [
-    {
-      id: 1,
-      name: "Md. Riyazul Hasan",
-      email: "riyazu012@gmail.com",
-      contact: "+880-2154522525",
-      location: "Melbourne, Australia",
-      image: imageone,
-    },
-    {
-      id: 2,
-      name: "Jane Doe",
-      email: "jane.doe@example.com",
-      contact: "+1-555-123456",
-      location: "New York, USA",
-      image: imagetow,
-    },
-    {
-      id: 3,
-      name: "John Smith",
-      email: "john.smith@example.com",
-      contact: "+44-207-1234567",
-      location: "London, UK",
-      image: imageone,
-    },
-    {
-      id: 4,
-      name: "Maria Garcia",
-      email: "maria.garcia@example.com",
-      contact: "+34-911-223344",
-      location: "Madrid, Spain",
-      image: imagetow,
-    },
-    {
-      id: 5,
-      name: "Liu Wei",
-      email: "liu.wei@example.com",
-      contact: "+86-10-12345678",
-      location: "Beijing, China",
-      image: imageone,
-    },
-    {
-      id: 6,
-      name: "Amina Khan",
-      email: "amina.khan@example.com",
-      contact: "+91-9876543210",
-      location: "Delhi, India",
-      image: imagetow,
-    },
-    {
-      id: 7,
-      name: "Michael Brown",
-      email: "michael.brown@example.com",
-      contact: "+1-650-9876543",
-      location: "San Francisco, USA",
-      image: imageone,
-    },
-    {
-      id: 8,
-      name: "Fatima Ali",
-      email: "fatima.ali@example.com",
-      contact: "+971-4-1234567",
-      location: "Dubai, UAE",
-      image: imageone,
-    },
-    {
-      id: 9,
-      name: "Hans Muller",
-      email: "hans.muller@example.com",
-      contact: "+49-30-1234567",
-      location: "Berlin, Germany",
-      image: imagetow,
-    },
-    {
-      id: 10,
-      name: "Isabelle Dupont",
-      email: "isabelle.dupont@example.com",
-      contact: "+33-1-23456789",
-      location: "Paris, France",
-      image: imageone,
-    },
-  ];
 
+   const users= [
+      {
+        "id": 1,
+        "name": "Md. Riyazul Hasan",
+        "email": "riyazu012@gmail.com",
+        "contact": "+880-2154522525",
+        "location": "Melbourne, Australia",
+        "image": imageone,
+        "date": "2024-10-20",
+        "stayFor": "3 nights",
+        "guest": "2 adults",
+        "pay": "$300"
+      },
+      {
+        "id": 2,
+        "name": "Jane Doe",
+        "email": "jane.doe@example.com",
+        "contact": "+1-555-123456",
+        "location": "New York, USA",
+        "image": imagetow,
+        "date": "2024-10-22",
+        "stayFor": "2 nights",
+        "guest": "1 adult",
+        "pay": "$150"
+      },
+      {
+        "id": 3,
+        "name": "John Smith",
+        "email": "john.smith@example.com",
+        "contact": "+44-207-1234567",
+        "location": "London, UK",
+        "image": imageone,
+        "date": "2024-10-25",
+        "stayFor": "5 nights",
+        "guest": "2 adults",
+        "pay": "$500"
+      },
+      {
+        "id": 4,
+        "name": "Maria Garcia",
+        "email": "maria.garcia@example.com",
+        "contact": "+34-911-223344",
+        "location": "Madrid, Spain",
+        "image": imagetow,
+        "date": "2024-10-15",
+        "stayFor": "4 nights",
+        "guest": "2 adults",
+        "pay": "$400"
+      },
+      {
+        "id": 5,
+        "name": "Liu Wei",
+        "email": "liu.wei@example.com",
+        "contact": "+86-10-12345678",
+        "location": "Beijing, China",
+        "image": imageone,
+        "date": "2024-10-18",
+        "stayFor": "2 nights",
+        "guest": "1 adult",
+        "pay": "$200"
+      },
+      {
+        "id": 6,
+        "name": "Amina Khan",
+        "email": "amina.khan@example.com",
+        "contact": "+91-9876543210",
+        "location": "Delhi, India",
+        "image": imagetow,
+        "date": "2024-10-12",
+        "stayFor": "1 night",
+        "guest": "2 adults",
+        "pay": "$100"
+      },
+      {
+        "id": 7,
+        "name": "Michael Brown",
+        "email": "michael.brown@example.com",
+        "contact": "+1-650-9876543",
+        "location": "San Francisco, USA",
+        "image": imageone,
+        "date": "2024-10-30",
+        "stayFor": "3 nights",
+        "guest": "2 adults",
+        "pay": "$300"
+      },
+      {
+        "id": 8,
+        "name": "Fatima Ali",
+        "email": "fatima.ali@example.com",
+        "contact": "+971-4-1234567",
+        "location": "Dubai, UAE",
+        "image": imageone,
+        "date": "2024-10-27",
+        "stayFor": "4 nights",
+        "guest": "1 adult",
+        "pay": "$400"
+      },
+      {
+        "id": 9,
+        "name": "Hans Muller",
+        "email": "hans.muller@example.com",
+        "contact": "+49-30-1234567",
+        "location": "Berlin, Germany",
+        "image": imagetow,
+        "date": "2024-10-22",
+        "stayFor": "3 nights",
+        "guest": "2 adults",
+        "pay": "$350"
+      },
+      {
+        "id": 10,
+        "name": "Isabelle Dupont",
+        "email": "isabelle.dupont@example.com",
+        "contact": "+33-1-23456789",
+        "location": "Paris, France",
+        "image": imageone,
+        "date": "2024-10-15",
+        "stayFor": "2 nights",
+        "guest": "1 adult",
+        "pay": "$250"
+      }
+    ]
+
+  
   const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );

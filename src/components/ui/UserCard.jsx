@@ -25,7 +25,7 @@ const UserCard = ({ user }) => {
     <div>
       <Card
         onClick={showModal}
-        className="bg-[#242424] border-none text-white w-full rounded-lg shadow-lg  my-6 w-full text-white"
+        className="bg-[#242424] border-none text-white w-full rounded-lg shadow-lg  my-6"
       >
         <div className="lg:flex flex-row lg:space-y-0 space-y-6 items-center">
           <Image
@@ -49,16 +49,16 @@ const UserCard = ({ user }) => {
           </div>
           <div className="ml-6 flex justify-around  w-full items-center text-white">
             <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-              <p>Name:</p>
-              <p>Email:</p>
-              <p>Contact:</p>
-              <p>Location: </p>
+              <p>Check in date: </p>
+              <p>Stay for:</p>
+              <p>Guest:</p>
+              <p>Pay:  </p>
             </div>
             <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-              <p> Md. Riyazul Hasan</p>
-              <p>riyazu012@gmail.com</p>
-              <p> +880-2154522525</p>
-              <p> Melbourne, Australia</p>
+              <p> {user.date}</p>
+              <p>{user.stayFor}</p>
+              <p>{user.guest}</p>
+              <p>{user.pay}</p>
             </div>
           </div>
         </div>

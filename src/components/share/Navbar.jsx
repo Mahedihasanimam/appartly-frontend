@@ -1,19 +1,19 @@
 "use client";
 import { useState } from "react";
 import { Input, Button, Dropdown, Menu, Drawer, Modal, Select } from "antd";
-import {
-  MenuOutlined,
-} from "@ant-design/icons";
+import { MenuOutlined, NotificationFilled } from "@ant-design/icons";
 import logo from "/public/images/logo.svg";
 import gloval from "/public/icons/gloval.svg";
 import user from "/public/icons/user.svg";
 import Image from "next/image";
 import Link from "next/link";
 
+import imageone from '/public/images/user.png'
 const Navbar = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [languageModalVisible, setLanguageModalVisible] = useState(false);
-  const [isowner,setisowner]=useState(false)
+  const [isowner, setisowner] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const showLanguageModal = () => {
     setLanguageModalVisible(true);
   };
@@ -23,10 +23,10 @@ const Navbar = () => {
   };
 
   const handleSwitch = () => {
-    setisowner(!isowner)
-    console.log('the owner is',isowner)
-  }
-  
+    setisowner(!isowner);
+    console.log("the owner is", isowner);
+  };
+
 
   const profileMenu = (
     <Menu
@@ -37,7 +37,7 @@ const Navbar = () => {
       }}
     >
       <Menu.Item key="1" style={{ color: "#ffffff" }}>
-      <Link href="/auth/GuestLogin">  Guest Log in</Link>
+        <Link href="/auth/GuestLogin"> Guest Log in</Link>
       </Menu.Item>
       <Menu.Item key="2" style={{ color: "#ffffff" }}>
         <Link href="/auth/OwnarLogin">Owner Log in</Link>
@@ -49,9 +49,11 @@ const Navbar = () => {
         <a href="/FAQ">FAQ</a>
       </Menu.Item>
       <Menu.Item key="5" style={{ color: "#ffffff" }}>
-       {
-        isowner ? <Link href="/Profile">My Profile</Link> : <Link href="/ownerProfile">Owner profile</Link>
-       }
+        {isowner ? (
+          <Link href="/Profile">My Profile</Link>
+        ) : (
+          <Link href="/ownerProfile">Owner profile</Link>
+        )}
       </Menu.Item>
     </Menu>
   );
@@ -97,27 +99,25 @@ const Navbar = () => {
 
         {/* Right Side: Links (Hidden on small screens) */}
         <div className="hidden lg:flex items-center space-x-6">
-        {
-          isowner?  <Button
-
-          onClick={handleSwitch}
-            style={{ backgroundColor: "#EBCA7E",color: "#000000" }}
-            className="bg-[#EBCA7E] text-[#000000] font-bold text-[16px] p-5"
-            type="primary"
-          >
+          {isowner ? (
+            <Button
+              onClick={handleSwitch}
+              style={{ backgroundColor: "#EBCA7E", color: "#000000" }}
+              className="bg-[#EBCA7E] text-[#000000] font-bold text-[16px] p-5"
+              type="primary"
+            >
               Estimate my property
- 
-          </Button> :  <Button
-
-onClick={handleSwitch}
-  style={{ backgroundColor: "#EBCA7E",color: "#000000" }}
-  className="bg-[#EBCA7E] text-[#000000] font-bold text-[16px] p-5"
-  type="primary"
->
-Switch to Guest profile 
-
-</Button> 
-        }
+            </Button>
+          ) : (
+            <Button
+              onClick={handleSwitch}
+              style={{ backgroundColor: "#EBCA7E", color: "#000000" }}
+              className="bg-[#EBCA7E] text-[#000000] font-bold text-[16px] p-5"
+              type="primary"
+            >
+              Switch to Guest profile
+            </Button>
+          )}
 
           <div className="w-full flex gap-6 items-center justify-center">
             <div className="w-full">
@@ -131,6 +131,26 @@ Switch to Guest profile
               >
                 <Image src={gloval} alt="gloval" width={44} height={44} />
               </Button>
+            </div>
+            <div>
+              {/* notification ---------------- */}
+              <Link href={'/allnotifications'}><div className="cursor-pointer " >
+                <svg
+                  width="20"
+                  height="22"
+                  viewBox="0 0 20 22"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M20 18.0371H0V16.0371H1V9.06811C1 4.08011 5.03 0.0371094 10 0.0371094C14.97 0.0371094 19 4.08011 19 9.06811V16.0371H20V18.0371ZM7.5 19.0371H12.5C12.5 19.7001 12.2366 20.336 11.7678 20.8049C11.2989 21.2737 10.663 21.5371 10 21.5371C9.33696 21.5371 8.70107 21.2737 8.23223 20.8049C7.76339 20.336 7.5 19.7001 7.5 19.0371Z"
+                    fill="#EDEDED"
+                  />
+                </svg>
+              </div></Link>
+             <div>
+          
+             </div>
             </div>
             <div>
               <Dropdown
@@ -163,7 +183,6 @@ Switch to Guest profile
 
         {/* Modal for language selection */}
         <Modal
-       
           visible={languageModalVisible}
           onCancel={handleLanguageModalCancel}
           footer={null}
@@ -185,8 +204,6 @@ Switch to Guest profile
             selection.
           </p>
         </Modal>
-
- 
 
         {/* Drawer for mobile menu */}
         <Drawer

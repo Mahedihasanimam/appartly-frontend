@@ -298,3 +298,34 @@ span.anticon.anticon-down.ant-select-suffix {
 .custom-modal .ant-modal-close {
   color: white; /* Change close icon color */
 }
+.notification-modal {
+  position: absolute;
+  top: 90px; /* Adjust based on where you want it to appear */
+  left: 0;
+  right: 0;
+  background: black;
+  padding: 16px;
+  z-index: 1000; /* Ensure it appears above other elements */
+  display: flex;
+  flex-direction: column;
+}
+
+.close-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: white;
+  margin-bottom: 10px; /* Space between button and notifications */
+}
+
+.timestamp {
+  font-size: 12px;
+  color: gray;
+}
+
+.notification-modal ul {
+  list-style-type: none; /* Remove bullet points */
+  padding: 0; /* Remove padding */
+  margin: 0; /* Remove margin */
+}
