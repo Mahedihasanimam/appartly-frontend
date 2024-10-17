@@ -15,6 +15,7 @@ import UserCard from "@/components/ui/UserCard";
 
 import imageone from "/public/images/about.png";
 import imagetow from "/public/images/user.png";
+import Link from "next/link";
 
 const { TabPane } = Tabs;
 const page = () => {
@@ -301,13 +302,13 @@ const page = () => {
 
 
       {/* resarvation list----------------- */}
-       <div className="flex items-center justify-between mb-2 text-white mb-8">
+       <div className="flex items-center justify-between  text-white mb-8" >
       
       <h1 className="text-2xl font-bold ">Your Reservation</h1>
-      <Button style={{backgroundColor: "transparent", border: "none" ,color: "#EBCA7E"} } className=" text-sm font-semibold  font-bold  underline ">Allreservation</Button>
+     <Link href={'/allreservation'}> <Button  style={{backgroundColor: "transparent", border: "none" ,color: "#EBCA7E"} } className=" text-sm   font-bold  underline ">Allreservation</Button></Link>
        </div>
         <div>
-        <Card className="bg-[#242424] border-none text-white w-full rounded-lg shadow-lg  my-6 w-full text-white">
+        <Card className="bg-[#242424] border-none text-white w-full rounded-lg shadow-lg  my-6">
       <Tabs defaultActiveKey="1" centered>
         <TabPane
           tab={<span className="text-yellow-500">Checking out (10)</span>}
@@ -353,14 +354,14 @@ const page = () => {
           <Button
           onClick={() => router.push("/checkingoutallresarvation")}
             style={{ backgroundColor: "transparent", color: "#EBCA7E" }}
-            className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-[149px] h-[36px]t px-4 py-4 text-sm font-semibold text-secoundary font-bold  "
+            className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-[149px] h-[36px]t px-4 py-4 text-sm font-semibold text-secoundary  "
           >
             Sea all
           </Button>
           <Button
         //   onClick={() => router.push("/editprofile")}
             style={{ backgroundColor: "#EBCA7E", color: "black" }}
-            className="bg-secoundary border-[1px] font-bold w-[149px] h-[36px] border-secoundary rounded-[4px]  px-4 py-2 text-sm font-bold text-secoundary font-bold  "
+            className="bg-secoundary border-[1px] font-bold w-[149px] h-[36px] border-secoundary rounded-[4px]  px-4 py-2 text-sm  text-secoundary  "
           >
            Complete
           </Button>
@@ -411,14 +412,14 @@ const page = () => {
           <Button
           onClick={() => router.push("/checkingoutallresarvation")}
             style={{ backgroundColor: "transparent", color: "#EBCA7E" }}
-            className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-[149px] h-[36px]t px-4 py-4 text-sm font-semibold text-secoundary font-bold  "
+            className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-[149px] h-[36px]t px-4 py-4 text-sm  text-secoundary font-bold  "
           >
             Sea all
           </Button>
           <Button
         //   onClick={() => router.push("/editprofile")}
             style={{ backgroundColor: "#EBCA7E", color: "black" }}
-            className="bg-secoundary border-[1px] font-bold w-[149px] h-[36px] border-secoundary rounded-[4px]  px-4 py-2 text-sm font-semibold text-secoundary font-bold  "
+            className="bg-secoundary border-[1px] font-bold w-[149px] h-[36px] border-secoundary rounded-[4px]  px-4 py-2 text-sm  text-secoundary   "
           >
             Arrived in
           </Button>
@@ -435,7 +436,7 @@ const page = () => {
         
        <h1 className="text-2xl font-bold text-white mb-4">Your Property List</h1>
 
-       <Button style={{backgroundColor: "transparent", border: "none" ,color: "#EBCA7E"} } className=" text-sm font-semibold  font-bold  underline ">Sea  all</Button>
+       <Button style={{backgroundColor: "transparent", border: "none" ,color: "#EBCA7E"} } className=" text-sm  font-bold  underline ">Sea  all</Button>
        </div>
         {
              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 gap-8">

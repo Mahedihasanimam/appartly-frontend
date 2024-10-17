@@ -43,7 +43,7 @@ const Notification = () => {
   if (!isOpen) return null;
 
   return (
-    <div className="notification-modal absolute left-0 right-0 text-white bg-black p-4 z-50">
+    <div className=" min-h-screen text-white bg-black p-4 z-50">
       <div className="modal-content w-full container mx-auto">
         <div className="flex items-center justify-between">
           <h2 className="text-xl flex text-white space-x-2 items-center font-semibold mb-6">
