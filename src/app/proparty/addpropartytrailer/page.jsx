@@ -84,7 +84,7 @@ const page = () => {
           </div>
         </div>
         <div>
-        <Button style={{backgroundColor: "#EBCA7E",color:'black',height:"48px",width:'200px'}}  className="mt-12 block float-end px-8  font-bold text-black ">Get started</Button>
+        <Button onClick={()=>router.push('/proparty/addpropartyform')} style={{backgroundColor: "#EBCA7E",color:'black',height:"48px",width:'200px'}}  className="mt-12 block float-end px-8  font-bold text-black ">Get started</Button>
         </div>
       </div>
       </div>

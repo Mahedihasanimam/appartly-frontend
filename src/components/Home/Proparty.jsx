@@ -116,7 +116,7 @@ const Proparty = () => {
         ))}
       </div>
 
-      <Button onClick={()=>router.push('/addpropartytrailer')} style={{backgroundColor: "#EBCA7E",color:'black',height:"48px",width:'200px'}}  className="mt-12 block mx-auto px-8  font-bold text-black bg-secoundary hover:bg-secoundary">Add a property</Button>
+      <Button onClick={()=>router.push('/proparty/addpropartytrailer')} style={{backgroundColor: "#EBCA7E",color:'black',height:"48px",width:'200px'}}  className="mt-12 block mx-auto px-8  font-bold text-black bg-secoundary hover:bg-secoundary">Add a property</Button>
     </div>
   );
 };
