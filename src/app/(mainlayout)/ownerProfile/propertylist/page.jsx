@@ -2,13 +2,19 @@
 import React, { useState } from "react";
 import Myproperty from "@/components/ui/Myproperty";
 import { MdOutlineChevronLeft, MdOutlineWorkOutline } from "react-icons/md";
-import { Button,DatePicker } from 'antd';
+import { Button,DatePicker, Pagination } from 'antd';
 import { useRouter } from 'next/navigation';
 import dayjs from "dayjs";
 import roomimage from "/public/images/myproperty.png";
 const Page = () => {
   const [selectedDate, setSelectedDate] = useState(dayjs());
   const [showDatePicker, setShowDatePicker] = useState(false); 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(8);
+  
+    const handleTabChange = (key) => {
+    setCurrentPage(1);
+  };
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
@@ -106,9 +112,43 @@ const Page = () => {
             "date": "Jul 20 - Jul 25",
             "category": "Cottage",
             "image": roomimage
+        },
+        {
+            "id": "9",
+            "location": "Bordeaux, France",
+            "host": "Stay with Anne",
+            "price": "$550.00",
+            "rating": 4.76,
+            "roomId": "890123",
+            "date": "Jul 20 - Jul 25",
+            "category": "Cottage",
+            "image": roomimage
+        },
+        {
+            "id": "10",
+            "location": "Marseille, France",
+            "host": "Stay with Chloe",
+            "price": "$600.00",
+            "rating": 4.80,
+            "roomId": "234567",
+            "date": "Jun 10 - Jun 15",
+            "category": "Apartment",
+            "image": roomimage
+        },
+        {
+            "id": "11",
+            "location": "Bordeaux, France",
+            "host": "Stay with Anne",
+            "price": "$550.00",
+            "rating": 4.76,
+            "roomId": "890123",
+            "date": "Jul 20 - Jul 25",
+            "category": "Cottage",
+            "image": roomimage
         }
     ];
-
+  // Calculate paginated data
+  const paginatedData = roomsData.slice((currentPage - 1) * pageSize, currentPage * pageSize);
     return (
         <div className="container mx-auto my-12">
             <div className="flex items-center justify-between mb-4">
@@ -136,10 +176,41 @@ const Page = () => {
         </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 gap-8">
-                {roomsData.map(item => (
+                {paginatedData.map(item => (
                     <Myproperty key={item.id} data={item} />
                 ))}
             </div>
+
+
+
+
+
+        
+      <div className="flex justify-center items-center gap-4 mt-8 border-t-2 border-[#424242] p-6 w-full">
+        <div className="flex justify-between items-center gap-4 w-full">
+          <div className="text-center text-white mt-2">
+            Page {currentPage} of {Math.ceil(roomsData.length / pageSize)}
+          </div>
+          <Pagination
+            current={currentPage}
+            total={roomsData.length}
+            pageSize={pageSize}
+            onChange={handlePageChange}
+            showSizeChanger={false}
+            className="text-center"
+          />
+        </div>
+        <div className="flex justify-end items-center gap-4 w-full">
+          <Button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}>
+            Previous
+          </Button>
+          <Button onClick={() => setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(roomsData.length / pageSize)))}>
+            Next
+          </Button>
+        </div>
+      </div>
+
+
         </div>
     );
 };

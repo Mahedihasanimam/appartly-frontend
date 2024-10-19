@@ -9,6 +9,7 @@ import { FaLocationPinLock } from "react-icons/fa6";
 import { MdOutlineWorkOutline } from "react-icons/md";
 import userimg from "/public/images/user.png";
 import profileimg from "/public/images/about.png";
+import Link from "next/link";
 
 const Page = () => {
   const [expandedReviewIds, setExpandedReviewIds] = useState([]);
@@ -346,19 +347,15 @@ const Page = () => {
                       Response within one hour
                     </p>
                   </div>
-                  {/* Message Button */}
-                  <Button
-                    style={{
-                      backgroundColor: "#EBCA7E",
-                      width: "240px",
-                      height: "44px",
-                      color: "#000000",
-                    }}
-                    type="primary"
-                    className=" border-none text-black font-bold"
-                  >
-                    Message
-                  </Button>
+                         {/* Message Button */}
+             <Link href={"/message"}	> 
+             <Button
+              style={{backgroundColor: "#EBCA7E",width: "240px",height: "44px", color: "#000000"}}
+                type="primary"
+                className=" border-none text-black font-bold"
+              >
+                Message
+              </Button></Link>
                 </div>
               </div>
             </div>

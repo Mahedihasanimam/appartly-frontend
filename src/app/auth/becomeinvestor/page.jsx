@@ -6,6 +6,7 @@ import Image from "next/image";
 import fbimage from "/public/icons/fb.svg";
 import googleimg from "/public/icons/google.svg";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 const Becomeinvestor = ({
   title = "Become an Investor",
   description = "Please fill the valid information to create appartali investor account",
@@ -17,7 +18,10 @@ const Becomeinvestor = ({
 }) => {
   const [form] = Form.useForm();
 
+
+  const router=useRouter()
   const handleFinish = (values) => {
+    router.push('/')
     if (onLogin) {
       onLogin(values);
     }
@@ -130,6 +134,7 @@ const Becomeinvestor = ({
 
 
 
+          <Link href={'/'}>
           <Button
             style={{
               height: "44px",
@@ -142,7 +147,7 @@ const Becomeinvestor = ({
             className="w-full mt-12 bg-[#EBCA7E] font-bold"
           >
            Submit
-          </Button>
+          </Button></Link>
         </Form>
     
       </div>

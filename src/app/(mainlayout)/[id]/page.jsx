@@ -869,13 +869,14 @@ const Page = ({ params }) => {
                     </p>
                   </div>
                      {/* Message Button */}
-              <Button
+             <Link href={"/message"}	> 
+             <Button
               style={{backgroundColor: "#EBCA7E",width: "240px",height: "44px", color: "#000000"}}
                 type="primary"
                 className=" border-none text-black font-bold"
               >
                 Message
-              </Button>
+              </Button></Link>
                 </div>
               </div>
             </div>

@@ -12,7 +12,7 @@ import imageone from '/public/images/user.png'
 const Navbar = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [languageModalVisible, setLanguageModalVisible] = useState(false);
-  const [isowner, setisowner] = useState(false);
+  const [isowner, setisowner] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const showLanguageModal = () => {
     setLanguageModalVisible(true);
@@ -100,18 +100,18 @@ const Navbar = () => {
         {/* Right Side: Links (Hidden on small screens) */}
         <div className="hidden lg:flex items-center space-x-6">
           {isowner ? (
-            <Button
-              onClick={handleSwitch}
-              style={{ backgroundColor: "#EBCA7E", color: "#000000" }}
-              className="bg-[#EBCA7E] text-[#000000] font-bold text-[16px] p-5"
-              type="primary"
-            >
-              Estimate my property
-            </Button>
+          <Link href={'#'}>  <Button
+          onClick={handleSwitch}
+          style={{ backgroundColor: "#EBCA7E", color: "#000000" }}
+          className="bg-[#EBCA7E] text-[#000000] font-bold text-[16px] p-5"
+          type="primary"
+        >
+          Estimate my property
+        </Button></Link>
           ) : (
             <Button
               onClick={handleSwitch}
-              style={{ backgroundColor: "#EBCA7E", color: "#000000" }}
+              style={{ backgroundColor: "#EBCA7E", color: "#000000" }} 
               className="bg-[#EBCA7E] text-[#000000] font-bold text-[16px] p-5"
               type="primary"
             >
