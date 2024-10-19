@@ -10,7 +10,7 @@ import { MdOutlineWorkOutline } from "react-icons/md";
 import userimg from "/public/images/user.png";
 import profileimg from "/public/images/about.png";
 
-const page = () => {
+const Page = () => {
   const [expandedReviewIds, setExpandedReviewIds] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 8;
@@ -495,4 +495,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

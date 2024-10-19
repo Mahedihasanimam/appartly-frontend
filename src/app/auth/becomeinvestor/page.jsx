@@ -6,7 +6,7 @@ import Image from "next/image";
 import fbimage from "/public/icons/fb.svg";
 import googleimg from "/public/icons/google.svg";
 import Link from "next/link";
-const becomeinvestor = ({
+const Becomeinvestor = ({
   title = "Become an Investor",
   description = "Please fill the valid information to create appartali investor account",
   onLogin,
@@ -150,4 +150,4 @@ const becomeinvestor = ({
   );
 };
 
-export default becomeinvestor;
+export default Becomeinvestor;

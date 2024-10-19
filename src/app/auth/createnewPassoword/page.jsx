@@ -4,7 +4,7 @@ import { Input, Form, Button, Space } from "antd";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "/public/images/logo.svg";
-const verifyEmail = ({
+const VerifyEmail = ({
   title = "Create new password",
   description = "You have to create a new password",
   onLogin,
@@ -92,4 +92,4 @@ const verifyEmail = ({
   );
 };
 
-export default verifyEmail;
+export default VerifyEmail;

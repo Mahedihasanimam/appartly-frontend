@@ -259,7 +259,7 @@ const Page = ({ params }) => {
           <span className="pl-2 ">Save</span>
         </div>
       </div>
-      <div className="flex flex-col lg:flex-row text-white lg:p-2 md:p-2 p-8 lg:p-16 container mx-auto">
+      <div className="flex flex-col lg:flex-row text-white lg:p-2 md:p-2 p-8  container mx-auto">
         {/* Image Carousel */}
         <div className="lg:w-2/3">
           <Carousel
@@ -348,7 +348,7 @@ const Page = ({ params }) => {
               color: "#0F0F0F",
             }}
             type="primary"
-            className="mt-4 w-full text-[16px] font-bold bg-yellow-500 font-bold text-black"
+            className="mt-4 w-full text-[16px] font-bold bg-yellow-500  text-black"
             onClick={handleReserveClick} // Attach the click handler here
           >
             Reserve
@@ -502,7 +502,7 @@ const Page = ({ params }) => {
                     Shared common spaces
                   </h3>{" "}
                   <p className="text-sm text-[#FFFFFFCC] font-normal">
-                    You'll share parts of the home with the Host.
+                    You {'`'}ll share parts of the home with the Host.
                   </p>{" "}
                 </div>
               </li>
@@ -514,7 +514,7 @@ const Page = ({ params }) => {
                     Shared bathroom
                   </h3>{" "}
                   <p className="text-sm text-[#FFFFFFCC] font-normal">
-                    You’ll share the bathroom with others.
+                    You`ll share the bathroom with others.
                   </p>{" "}
                 </div>
               </li>
@@ -619,7 +619,7 @@ const Page = ({ params }) => {
             <h1 className="text-[24px] font-bold pl-4">4.91</h1>
             <Rate style={{ color: "white" }} disabled defaultValue={4.9} />
           </div>
-          <h1 className="text-2xl text-white  font-bold text-white text-center">
+          <h1 className="text-2xl text-white  font-bold  text-center">
             Guest favorite
           </h1>
           <p className="text-[16px] text-[#FFFFFFCC] font-normal max-w-md mx-auto text-center">

@@ -120,7 +120,7 @@ const OwnarLogin = ({
           </Button>
         </Form>
         <p className="mt-2 text-center text-sm  text-white">
-          Don't have an account?{" "}
+          Don`t have an account?{" "}
           <Link href="/auth/signup" className="text-[#EBCA7E]">SignUp</Link>
         </p>
       </div>

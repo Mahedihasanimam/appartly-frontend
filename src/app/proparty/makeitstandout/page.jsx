@@ -37,7 +37,7 @@ const Page = () => {
       message.error("Please select files to upload.");
       return;
     }
-    
+
     setUploading(true);
     const totalFiles = files.length;
     let totalUploaded = 0;
@@ -73,15 +73,6 @@ const Page = () => {
 
         totalUploaded++;
         message.success(`Upload successful for ${file.name}!`);
-
-
-
-
-
-
-
-
-
       } catch (error) {
         message.error(`Upload failed for ${file.name}.`);
       }
@@ -90,10 +81,9 @@ const Page = () => {
     setFiles([]);
     setProgress(0);
     setUploading(false);
-    
 
     if (totalUploaded === totalFiles) {
-      router.push('/proparty/finishandpublish');
+      router.push("/proparty/finishandpublish");
     }
   };
 

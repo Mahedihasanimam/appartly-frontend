@@ -18,7 +18,7 @@ import imagetow from "/public/images/user.png";
 import Link from "next/link";
 
 const { TabPane } = Tabs;
-const page = () => {
+const Page = () => {
   const router = useRouter();
 
 
@@ -436,7 +436,7 @@ const page = () => {
         
        <h1 className="text-2xl font-bold text-white mb-4">Your Property List</h1>
 
-       <Button style={{backgroundColor: "transparent", border: "none" ,color: "#EBCA7E"} } className=" text-sm  font-bold  underline ">Sea  all</Button>
+       <Button onClick={()=>router.push('/ownerProfile/propertylist')} style={{backgroundColor: "transparent", border: "none" ,color: "#EBCA7E"} } className=" text-sm  font-bold  underline ">Sea  all</Button>
        </div>
         {
              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 gap-8">
@@ -451,4 +451,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

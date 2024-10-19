@@ -53,7 +53,7 @@ const Payment = () => {
               </div>
             </div>
             <p className="text-[#FFFFFF] text-[16px]  font-medium mt-8 opacity-70">
-              By selecting the button below, I agree to the Host's House Rules, Appartali's Rebooking and Refund Policy, and that Appartali can charge my payment method if I'm responsible for damage.
+              By selecting the button below, I agree to the Host{'`'}s House Rules, Appartali{'`'}s Rebooking and Refund Policy, and that Appartali can charge my payment method if Im responsible for damage.
             </p>
             {/* Confirm Button */}
         <Button style={{backgroundColor: '#EBCA7E',color: 'black'}} type="primary" size="large" className="bg-yellow-500 text-black font-bold w-fit mx-auto px-8 mt-12 block">
@@ -62,7 +62,7 @@ const Payment = () => {
           </div>
 
           {/* Summary calculate */}
-          <div className="w-80 p-4 py-8 lg:mt-0 md:mt-0 mt-12 lg:w-auto md:w-auto w-full bg-[#1B1B1B] h-fit rounded-lg space-y-4">
+          <div className="w-80 p-4 py-8 lg:mt-0 md:mt-0 mt-12 lg:w-auto md:w-auto  bg-[#1B1B1B] h-fit rounded-lg space-y-4">
             <div className="text-[24px]  text-[#FFFFFF] font-bold">$560.00 <span className="text-sm">Per night</span></div>
             <div>
               <RangePicker className="w-full bg-[#4B4B4B] hover:bg-[#4B4B4B] h-[44px] border-none text-[#FFFFFFCC] opacity-70 text-[16px]" />

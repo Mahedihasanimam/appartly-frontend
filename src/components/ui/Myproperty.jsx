@@ -1,16 +1,17 @@
 import { Card, Rate, Dropdown, Menu, Modal } from "antd";
 import { React, useState } from "react";
-import { HeartFilled, HeartOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, HeartFilled, HeartOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import { HiDotsVertical } from "react-icons/hi";
+import { useRouter } from "next/navigation";
 
 const Myproperty = ({ data }) => {
   const [liked, setLiked] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-
+const router=useRouter()
   const handleMenuClick = ({ key }) => {
     if (key === "edit") {
-      // Handle edit action
+      router.push('/proparty/editproperty')
       console.log("Edit clicked");
     } else if (key === "delete") {
       // Show the confirmation modal when delete is clicked
@@ -20,8 +21,8 @@ const Myproperty = ({ data }) => {
 
   const menu = (
     <Menu onClick={handleMenuClick}>
-      <Menu.Item key="edit">Edit</Menu.Item>
-      <Menu.Item key="delete">Delete</Menu.Item>
+      <Menu.Item key="edit"> <EditOutlined className="text-[16px] pr-2"/>  Edit</Menu.Item>
+      <Menu.Item key="delete"> <DeleteOutlined className="text-[16px] pr-2"/> Delete</Menu.Item>
     </Menu>
   );
 

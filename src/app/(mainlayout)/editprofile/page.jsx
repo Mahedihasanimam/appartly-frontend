@@ -13,7 +13,7 @@ import { MdOutlineChevronLeft, MdOutlineWork } from "react-icons/md";
 import { BsTranslate } from "react-icons/bs";
 import { CiGlobe } from "react-icons/ci";
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
   return (
     <div className="container mx-auto bg-transparent text-white py-12 min-h-[700px]">
@@ -106,4 +106,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
