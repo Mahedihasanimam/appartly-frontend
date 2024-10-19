@@ -40,7 +40,7 @@ const Payment = () => {
                 </div>
               </div>
             </div>
-            <div className="mb-4 mt-[64px]">
+            {/* <div className="mb-4 mt-[64px]">
               <h3 className="text-xl font-medium pb-4">Billing address</h3>
               <div className="space-y-4">
                 <Input size="large" placeholder="Street address" className="bg-[#242424] hover:bg-[#242424]  border-none text-[#FFFFFFCC] opacity-70 text-[16px]" />
@@ -51,7 +51,7 @@ const Payment = () => {
                   <Input size="large" placeholder="ZIP code" className="bg-[#242424] hover:bg-[#242424]  border-none text-[#FFFFFFCC] opacity-70 text-[16px]" />
                 </div>
               </div>
-            </div>
+            </div> */}
             <p className="text-[#FFFFFF] text-[16px]  font-medium mt-8 opacity-70">
               By selecting the button below, I agree to the Host{'`'}s House Rules, Appartali{'`'}s Rebooking and Refund Policy, and that Appartali can charge my payment method if Im responsible for damage.
             </p>

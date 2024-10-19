@@ -212,15 +212,7 @@ const Page = ({ params }) => {
     router.push('/payment')
   };
 
-  const handleRateChange = (newValue) => {
-    if (isRated && newValue === value) {
-      setValue(0);
-      setIsRated(false);
-    } else {
-      setValue(newValue);
-      setIsRated(true);
-    }
-  };
+
 
   // Toggle show more for a specific review
   const toggleShowMore = (id) => {
@@ -245,19 +237,7 @@ const Page = ({ params }) => {
           {" "}
           <LeftOutlined /> Stylish ensuite double bedroom in trendy Dalston
         </Link>
-        <div className="text-[16px] font-medium">
-          <Rate
-            value={value}
-            count={1}
-            onChange={handleRateChange}
-            character={
-              <HeartOutlined style={{ color: isRated ? "red" : "white" }} />
-            }
-            style={{ color: isRated ? "red" : "white" }} // Change the color based on state
-            className="custom-rate"
-          />
-          <span className="pl-2 ">Save</span>
-        </div>
+    
       </div>
       <div className="flex flex-col lg:flex-row text-white lg:p-2 md:p-2 p-8  container mx-auto">
         {/* Image Carousel */}

@@ -4,7 +4,7 @@ import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import Link from "next/link";
 const RoomsCard = ({ data }) => {
-  const [liked, setLiked] = useState(false);
+
   return (
     <div>
       <Link href={`/${data.id}`}>
@@ -45,16 +45,7 @@ const RoomsCard = ({ data }) => {
         </div>
       
 
-        <button
-          className="absolute top-2 right-2"
-          onClick={() => setLiked(!liked)}
-        >
-          {liked ? (
-            <HeartFilled className="text-red-500 text-2xl" />
-          ) : (
-            <HeartOutlined className="text-white text-2xl" />
-          )}
-        </button>
+     
       </Card>
       </Link>
     </div>
