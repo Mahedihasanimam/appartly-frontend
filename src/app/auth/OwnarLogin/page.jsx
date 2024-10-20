@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React, { useState } from "react";
 import { Input, Form, Button, Space } from "antd";
 import logo from "/public/images/logo.svg";
@@ -6,8 +6,11 @@ import Image from "next/image";
 import fbimage from "/public/icons/fb.svg";
 import googleimg from "/public/icons/google.svg";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
+import Swal from 'sweetalert2';
+
 const OwnarLogin = ({
-  title = "Log in as Owner",
+  title = "OwnarLogin",
   description = "Enter your email & password which had used to create Appartali account",
   onLogin,
   onForgotPassword,
@@ -16,32 +19,38 @@ const OwnarLogin = ({
   showSocialButtons = true,
 }) => {
   const [form] = Form.useForm();
+  const router = useRouter();
 
   const handleFinish = (values) => {
     if (onLogin) {
       onLogin(values);
     }
+
+    Swal.fire({
+      title: 'Login Successful!',
+      text: 'You have logged in successfully.',
+      icon: 'success',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#EBCA7E',
+    }).then(() => {
+      router.push('/');
+    });
+
     form.resetFields();
   };
 
   return (
-    <div className="flex  justify-center items-center min-h-screen bg-[#FFFFFF1A]">
-      <div className=" bg-[#060000] p-[40px] w-full max-w-xl rounded-lg space-y-4 ">
-        <Image
-          src={logo}
-          alt="Logo"
-          className="mb-4"
-          height={200}
-          width={200}
-        />
+    <div className="flex justify-center items-center min-h-screen bg-[#FFFFFF1A]">
+      <div className="bg-[#060000] p-[40px] w-full max-w-xl rounded-lg space-y-4">
+        <Image src={logo} alt="Logo" className="mb-4" height={200} width={200} />
         <h2 className="text-2xl font-bold text-center text-white pt-12">{title}</h2>
-        <p className="text-[#FFFFFFE5]  text-center max-w-xs mx-auto opacity-70 text-sm ">{description}</p>
+        <p className="text-[#FFFFFFE5] text-center max-w-xs mx-auto opacity-70 text-sm">{description}</p>
 
         {showSocialButtons && (
           <Space className="pb-4">
             <Button
               type="primary"
-              className="w-full  flex items-center justify-center"
+              className="w-full flex items-center justify-center"
               style={{
                 backgroundColor: "#1877f2",
                 borderColor: "#1877f2",
@@ -58,7 +67,7 @@ const OwnarLogin = ({
               className="w-full p-4 flex items-center justify-center"
               onClick={onGoogleLogin}
             >
-              <Image src={googleimg} alt="Facebook" height={30} width={30} />
+              <Image src={googleimg} alt="Google" height={30} width={30} />
               Continue with Google
             </Button>
           </Space>
@@ -97,9 +106,9 @@ const OwnarLogin = ({
             />
           </Form.Item>
           <div className="flex justify-end items-center">
-          <Link 
+            <Link 
               href="/auth/verifyEmail"
-              className="text-secoundary border-b border-secoundary hover:text-[#EBCA7E] "
+              className="text-secoundary border-b border-secoundary hover:text-[#EBCA7E]"
               onClick={onForgotPassword}
             >
               Forgot password
@@ -119,8 +128,8 @@ const OwnarLogin = ({
             Log in
           </Button>
         </Form>
-        <p className="mt-2 text-center text-sm  text-white">
-          Don`t have an account?{" "}
+        <p className="mt-2 text-center text-sm text-white">
+          Don’t have an account?{" "}
           <Link href="/auth/signup" className="text-[#EBCA7E]">SignUp</Link>
         </p>
       </div>

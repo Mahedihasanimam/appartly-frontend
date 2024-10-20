@@ -1,30 +1,70 @@
 "use client";
-import React, { useState } from "react";
-import { Input, Form, Button, Space } from "antd";
+import React from "react";
+import { Input, Form, Button } from "antd";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "/public/images/logo.svg";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
+
 const VerifyEmail = ({
-  title = "Create new password",
+  title = "Create New Password",
   description = "You have to create a new password",
   onLogin,
-  onForgotPassword,
-  onFacebookLogin,
-  onGoogleLogin,
-  showSocialButtons = true,
 }) => {
   const [form] = Form.useForm();
+  const router = useRouter();
 
-  const handleFinish = (values) => {
-    if (onLogin) {
-      onLogin(values);
+  const handleFinish = async (values) => {
+    const { newpassword, confirmpassword } = values;
+console.log(newpassword,confirmpassword)
+    // Check if passwords match
+    if (newpassword !== confirmpassword) {
+      Swal.fire({
+        title: 'Error',
+        text: 'Passwords do not match. Please try again.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#EBCA7E',
+      });
+      return;
     }
-    form.resetFields();
+
+    // Call the password change function (if provided)
+    if (onLogin) {
+      try {
+        // Assuming onLogin handles the password change request
+        await onLogin({ newpassword });
+      
+      } catch (error) {
+        Swal.fire({
+          title: 'Error',
+          text: error.message || 'Something went wrong. Please try again.',
+          icon: 'error',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#EBCA7E',
+        });
+      }
+    }
+    
+    form.resetFields(); // Reset form fields
   };
 
+
+  const handenewpass=()=>{
+    Swal.fire({
+      title: 'Password Changed!',
+      text: 'Your password has been successfully created.',
+      icon: 'success',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#EBCA7E',
+    }).then(() => {
+      router.push('/'); // Redirect to homepage
+    });
+  }
   return (
-    <div className="flex  justify-center items-center min-h-screen bg-[#FFFFFF1A]">
-      <div className=" bg-[#060000] p-[40px] w-full max-w-xl rounded-lg space-y-4 ">
+    <div className="flex justify-center items-center min-h-screen bg-[#FFFFFF1A]">
+      <div className="bg-[#060000] p-[40px] w-full max-w-xl rounded-lg space-y-4">
         <Image
           src={logo}
           alt="Logo"
@@ -33,33 +73,15 @@ const VerifyEmail = ({
           width={200}
         />
         <h2 className="text-2xl font-bold text-center text-white pt-12">{title}</h2>
-        <p className="text-[#FFFFFFE5]  text-center max-w-xs mx-auto opacity-70 text-sm ">{description}</p>
+        <p className="text-[#FFFFFFE5] text-center max-w-xs mx-auto opacity-70 text-sm">{description}</p>
 
         <Form form={form} onFinish={handleFinish} className="mt-4">
-        <Form.Item
-          className="w-full"
+          <Form.Item
+            className="w-full"
             name="newpassword"
-            rules={[{ required: true, message: "Please enter your New password" }]}
+            rules={[{ required: true, message: "Please enter your new password" }]}
           >
-             <p className="text-[#FFFFFF] text-[16px] font-medium">New Password*</p>
-            <Input.Password
-              style={{
-                height: "44px",
-                backgroundColor: "#242424", 
-                border: "none",
-                color: "#FFFFFF99",
-              }}
-              placeholder="Enter your Password"
-              className="rounded-lg ant-input"
-            />
-          </Form.Item>
-
-        <Form.Item
-          className="w-full"
-            name="confirmpassword"
-            rules={[{ required: true, message: "Please enter your Confirm password" }]}
-          >
-             <p className="text-[#FFFFFF] text-[16px] font-medium">Confirm Password*</p>
+            <p className="text-[#FFFFFF] text-[16px] font-medium">New Password*</p>
             <Input.Password
               style={{
                 height: "44px",
@@ -67,12 +89,31 @@ const VerifyEmail = ({
                 border: "none",
                 color: "#FFFFFF99",
               }}
-              placeholder="Enter your Password"
+              placeholder="Enter your new password"
               className="rounded-lg ant-input"
             />
           </Form.Item>
-        <Link href="/">
-        <Button
+
+          <Form.Item
+            className="w-full"
+            name="confirmpassword"
+            rules={[{ required: true, message: "Please confirm your password" }]}
+          >
+            <p className="text-[#FFFFFF] text-[16px] font-medium">Confirm Password*</p>
+            <Input.Password
+              style={{
+                height: "44px",
+                backgroundColor: "#242424",
+                border: "none",
+                color: "#FFFFFF99",
+              }}
+              placeholder="Confirm your password"
+              className="rounded-lg ant-input"
+            />
+          </Form.Item>
+
+          <Button
+          onClick={handenewpass}
             style={{
               height: "44px",
               backgroundColor: "#EBCA7E",
@@ -83,10 +124,9 @@ const VerifyEmail = ({
             htmlType="submit"
             className="w-full mt-12 bg-[#EBCA7E] font-bold"
           >
-           Submit
-          </Button></Link>
+            Submit
+          </Button>
         </Form>
-       
       </div>
     </div>
   );

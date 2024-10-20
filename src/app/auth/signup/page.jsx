@@ -6,6 +6,8 @@ import Image from "next/image";
 import fbimage from "/public/icons/fb.svg";
 import googleimg from "/public/icons/google.svg";
 import Link from "next/link";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 const Signup = ({
   title = "Sign UP",
@@ -17,12 +19,35 @@ const Signup = ({
   showSocialButtons = true,
 }) => {
   const [form] = Form.useForm();
+  const router = useRouter();
 
-  const handleFinish = (values) => {
-    if (onLogin) {
-      onLogin(values);
+  const handleFinish = async (values) => {
+    try {
+      if (onLogin) {
+        await onLogin(values); // Call the signup function (API request)
+        handlesignup(); // Call the handlesignup function after successful signup
+      }
+    } catch (error) {
+      Swal.fire({
+        title: 'SignUp Failed',
+        text: error.message || 'Something went wrong. Please try again.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#EBCA7E',
+      });
     }
-    form.resetFields();
+  };
+
+  const handlesignup = () => {
+    Swal.fire({
+      title: 'SignUp Successful!',
+      text: 'You have signed up successfully.',
+      icon: 'success',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#EBCA7E',
+    }).then(() => {
+      router.push('/'); // Redirect to the homepage after success
+    });
   };
 
   return (
@@ -161,6 +186,7 @@ const Signup = ({
           </div>
 
           <Button
+          onClick={handlesignup}
             style={{
               height: "44px",
               backgroundColor: "#EBCA7E",

@@ -13,10 +13,11 @@ import {
   DownOutlined,
 } from "@ant-design/icons";
 import Image from "next/image";
+import Swal from "sweetalert2";
 
 const Page = () => {
   const router = useRouter();
-  const [form] = Form.useForm(); // Initialize the form instance
+  const [form] = Form.useForm(); 
 
   const handleFinish = (values) => {
     console.log("Form values:", values);
@@ -25,6 +26,18 @@ const Page = () => {
   const handleChange = (value) => {
     console.log(`Selected: ${value}`);
   };
+
+  const handlepublish=()=>{
+    Swal.fire({
+      title: 'Property Added!',
+      text: 'You have added property successfully .',
+      icon: 'success',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#EBCA7E',
+    }).then(() => {
+      router.push('/');
+    });
+  }
   return (
     <div className="container mx-auto text-white">
       <h2 className="text-[28px] flex space-x-2 items-center font-bold mt-12">
@@ -207,7 +220,7 @@ const Page = () => {
           </Select>
 
           <Button
-            onClick={() => router.push("/proparty/makeitstandout")}
+            onClick={handlepublish}
             style={{
               height: "64px",
               backgroundColor: "#EBCA7E",
