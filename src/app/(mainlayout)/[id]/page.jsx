@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 import { Carousel, DatePicker, InputNumber, Button, Rate } from "antd";
 import Image from "next/image";
 import slideimage from "/public/images/Rectangle 67.png";
@@ -152,7 +152,7 @@ const Page = ({ params }) => {
    
   ];
 
-  const [activeSlide, setActiveSlide] = useState(0);
+
   const [dates, setDates] = useState(null);
   const [guests, setGuests] = useState(2);
   const [total, setTotal] = useState(0);
@@ -165,7 +165,14 @@ const Page = ({ params }) => {
   const cleaningFee = 80;
   const serviceFee = 80;
 
-  const images = [slideimage, slideimage2];
+  const [activeSlide, setActiveSlide] = useState(0);
+  const carouselRef = useRef(null);
+  const images = [slideimage, slideimage2,slideimage];
+  const handlePreviewClick = (index) => {
+    setActiveSlide(index);
+    // Use the Ant Design `goTo` method directly from the Carousel ref
+    carouselRef.current?.goTo(index, false); // The second argument `false` disables animation for faster transitions
+  };
 
   const handleDateChange = (dateRange) => {
     setDates(dateRange);
@@ -200,9 +207,7 @@ const Page = ({ params }) => {
     }
   };
 
-  const handlePreviewClick = (index) => {
-    setActiveSlide(index);
-  };
+
 
   const handleReserveClick = () => {
     console.log("Reservation Details:");
@@ -242,51 +247,50 @@ const Page = ({ params }) => {
       <div className="flex flex-col lg:flex-row text-white lg:p-2 md:p-2 p-8  container mx-auto">
         {/* Image Carousel */}
         <div className="lg:w-2/3">
-          <Carousel
-            afterChange={(current) => setActiveSlide(current)}
-            ref={(carousel) => {
-              if (carousel) {
-                carousel.goTo(activeSlide);
-              }
-            }}
-          >
-            {images.map((image, index) => (
-              <div key={index}>
-                <Image
-                  src={image}
-                  alt={`Room Slide ${index + 1}`}
-                  width={800}
-                  height={600}
-                  className="w-full h-auto rounded-md"
-                />
-              </div>
-            ))}
-          </Carousel>
-          {/* Preview Section */}
-          <div className="mt-4 flex space-x-4">
-            {images.map((image, index) => (
-              <div
-                key={index}
-                className={`cursor-pointer ${
-                  activeSlide === index ? "border-2 border-yellow-500" : ""
-                }`}
-                onClick={() => handlePreviewClick(index)}
-              >
-                <Image
-                  src={image}
-                  alt={`Preview ${index + 1}`}
-                  width={150}
-                  height={100}
-                  className="rounded-md"
-                />
-              </div>
-            ))}
+      {/* Image Carousel */}
+      <Carousel
+        ref={carouselRef}
+        beforeChange={(current, next) => setActiveSlide(next)}
+      >
+        {images.map((image, index) => (
+          <div key={index}>
+            <Image
+              src={image}
+              alt={`Room Slide ${index + 1}`}
+              width={800}
+              height={600}
+              className="w-full h-auto rounded-md"
+            />
           </div>
-          <p className="mt-4 text-[24px] font-bold text-[#FFFFFF]">
-            Room in Clichy, France
-          </p>
-          <p className="text-sm">Room id: 569845</p>
-        </div>
+        ))}
+      </Carousel>
+
+      {/* Preview Section */}
+      <div className="mt-4 flex space-x-4">
+        {images.map((image, index) => (
+          <div
+            key={index}
+            className={`cursor-pointer ${
+              activeSlide === index ? "border-2 border-yellow-500" : ""
+            }`}
+            onClick={() => handlePreviewClick(index)}
+          >
+            <Image
+              src={image}
+              alt={`Preview ${index + 1}`}
+              width={150}
+              height={100}
+              className="rounded-md"
+            />
+          </div>
+        ))}
+      </div>
+      
+      <p className="mt-4 text-[24px] font-bold text-[#FFFFFF]">
+        Room in Clichy, France
+      </p>
+      <p className="text-sm">Room id: 569845</p>
+    </div>
 
         {/* Booking Form */}
         <div className="lg:w-1/3 lg:ml-8 mt-8 lg:mt-0 bg-[#1B1B1B] h-fit pb-20 rounded-lg space-y-8 p-6">

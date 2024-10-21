@@ -101,11 +101,11 @@ const Becomeinvestor = ({
           <div className="w-full flex gap-[20px] items-center justify-between"> 
           <Form.Item
           className="w-full"
-            name="password"
+            name="location"
             rules={[{ required: true, message: "Please enter Property/Home" }]}
           >
              <p className="text-[#FFFFFF] text-[16px] font-medium">Property/Home Location*</p>
-            <Input.Password
+            <Input
               style={{
                 height: "44px",
                 backgroundColor: "#242424",
@@ -120,7 +120,7 @@ const Becomeinvestor = ({
 
           <Form.Item
           className="w-full"
-            name="contactnumber"
+            name="roomnumber"
             rules={[{ required: true, message: "Please enter your Number of rooms*" }]}
           >
              <p className="text-[#FFFFFF] text-[16px] font-medium">Number of rooms*</p>
