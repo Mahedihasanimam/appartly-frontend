@@ -7,6 +7,7 @@ import fbimage from "/public/icons/fb.svg";
 import googleimg from "/public/icons/google.svg";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 const Becomeinvestor = ({
   title = "Become an Investor",
   description = "Please fill the valid information to create appartali investor account",
@@ -17,16 +18,23 @@ const Becomeinvestor = ({
   showSocialButtons = true,
 }) => {
   const [form] = Form.useForm();
-
-
   const router=useRouter()
   const handleFinish = (values) => {
-    router.push('/')
+   
     if (onLogin) {
       onLogin(values);
     }
     form.resetFields();
   };
+
+  const handesubmit=()=>{
+    Swal.fire({
+      title: "Submited!",
+      text: "details submitted successfully please wait for approval",
+      icon: "success"
+    });
+    router.push('/')
+  }
 
   return (
     <div className="flex  justify-center items-center min-h-screen bg-[#FFFFFF1A]">
@@ -94,7 +102,7 @@ const Becomeinvestor = ({
           <Form.Item
           className="w-full"
             name="password"
-            rules={[{ required: true, message: "Please enter your password" }]}
+            rules={[{ required: true, message: "Please enter Property/Home" }]}
           >
              <p className="text-[#FFFFFF] text-[16px] font-medium">Property/Home Location*</p>
             <Input.Password
@@ -104,7 +112,7 @@ const Becomeinvestor = ({
                 border: "none",
                 color: "#FFFFFF99",
               }}
-              placeholder="Enter your Password"
+              placeholder="Property/Home"
               className="rounded-lg ant-input"
             />
           </Form.Item>
@@ -123,7 +131,7 @@ const Becomeinvestor = ({
                 border: "none",
                 color: "#FFFFFF99",
               }}
-              placeholder="Enter rooms number"
+              placeholder="Number of rooms"
               className="rounded-lg ant-input"
             />
           </Form.Item>
@@ -134,8 +142,9 @@ const Becomeinvestor = ({
 
 
 
-          <Link href={'/'}>
+
           <Button
+          onClick={handesubmit}
             style={{
               height: "44px",
               backgroundColor: "#EBCA7E",
@@ -147,7 +156,7 @@ const Becomeinvestor = ({
             className="w-full mt-12 bg-[#EBCA7E] font-bold"
           >
            Submit
-          </Button></Link>
+          </Button>
         </Form>
     
       </div>
