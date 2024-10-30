@@ -40,14 +40,14 @@ const GuestLogin = ({
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-[#FFFFFF1A]">
+    <div className="flex justify-center items-center min-h-screen bg-[#FFFFFF1A] ">
       <div className="bg-[#060000] p-[40px] w-full max-w-xl rounded-lg space-y-4">
         <Image src={logo} alt="Logo" className="mb-4" height={200} width={200} />
         <h2 className="text-2xl font-bold text-center text-white pt-12">{title}</h2>
-        <p className="text-[#FFFFFFE5] text-center max-w-xs mx-auto opacity-70 text-sm">{description}</p>
+        <p className="text-[#FFFFFFE5] text-center max-w-2xl mx-auto opacity-70 text-sm">{description}</p>
 
         {showSocialButtons && (
-          <Space className="pb-4">
+          <Space className="pb-4 w-full pt-6">
             <Button
               type="primary"
               className="w-full flex items-center justify-center"

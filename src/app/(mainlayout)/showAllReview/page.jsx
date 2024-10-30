@@ -348,14 +348,14 @@ const Page = () => {
                     </p>
                   </div>
                          {/* Message Button */}
-             <Link href={"/message"}	> 
+             {/* <Link href={"/message"}	> 
              <Button
               style={{backgroundColor: "#EBCA7E",width: "240px",height: "44px", color: "#000000"}}
                 type="primary"
                 className=" border-none text-black font-bold"
               >
                 Message
-              </Button></Link>
+              </Button></Link> */}
                 </div>
               </div>
             </div>
