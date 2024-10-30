@@ -8,43 +8,14 @@ import youtube from "/public/icons/youtube.svg";
 
 
 import Image from "next/image";
-import { Button } from "antd";
 import {
-  GlobalOutlined,
-  YoutubeOutlined,
-  InstagramOutlined,
-  TwitterOutlined,
   PhoneOutlined,
   MailFilled,
 } from "@ant-design/icons";
-import Link from "next/link";
-
-import { Select } from "antd";
-// import { useLocale, useTranslations } from "next-intl";
-// import Cookies from "universal-cookie";
-// import { useEffect, useState } from "react";
-// import { useRouter } from "next/navigation";
+import Link from "next/link"
 
 const Footer = () => {
-  //   const router = useRouter();
 
-  //   const [language, setLanguage] = useState("en");
-  //   const t = useTranslations();
-  //   const localActive = useLocale();
-  //   const cookieMiya = new Cookies();
-
-  //   useEffect(() => {
-  //     const savedLang = cookieMiya.get("NEXT_LOCALE") || "en";
-  //     setLanguage(savedLang);
-  //   }, []);
-
-  //   const handleChange = (lang) => {
-  //     if (lang && lang !== language) {
-  //       setLanguage(lang);
-  //       cookieMiya.set("NEXT_LOCALE", lang, { path: "/" });
-  //       router.refresh(); // Refresh the data and re-render the page content
-  //     }
-  //   };
   return (
     <div>
       <footer className=" px-4 divide-y bg-[#FDFAF2] text-[#000000CC] relative z-50">
@@ -93,22 +64,22 @@ const Footer = () => {
                 <div className="   gap-6">
                   <ul className="space-y-[12px] text-[#000000CC] font-medium text-sm">
                     <li>
-                      <Link rel="noopener noreferrer" href="#">
+                      <Link rel="noopener noreferrer" href="/browsemore">
                       Book your  Home
                       </Link>
                     </li>
                     <li>
-                      <Link rel="noopener noreferrer" href="#">
+                      <Link rel="noopener noreferrer" href="/browsemore">
                       Estimate  your  Property
                       </Link>
                     </li>
                     <li>
-                      <Link rel="noopener noreferrer" href="#">
+                      <Link rel="noopener noreferrer" href="/auth/GuestLogin">
                       Guest  Login
                       </Link>
                     </li>
                     <li>
-                      <Link rel="noopener noreferrer" href="#">
+                      <Link rel="noopener noreferrer" href="/auth/OwnarLogin">
                       Owner  Login
                       </Link>
                     </li>
@@ -124,23 +95,23 @@ const Footer = () => {
                 </h3>
                 <ul className="space-y-[12px] text-[#000000CC] text-sm">
                   <li>
-                    <Link rel="noopener noreferrer" href="#">
+                    <Link rel="noopener noreferrer" href="/FAQ">
                       FAQs
                     </Link>
                   </li>
                   <li>
-                    <Link rel="noopener noreferrer" href="#">
+                    <Link rel="noopener noreferrer" href="/contactus">
                       Contact Us
                     </Link>
                   </li>
              
                   <li>
-                    <Link rel="noopener noreferrer" href="#">
+                    <Link rel="noopener noreferrer" href="/TermsAndConditions ">
                       Terms & Conditions
                     </Link>
                   </li>
                   <li>
-                    <Link rel="noopener noreferrer" href="#">
+                    <Link rel="noopener noreferrer" href="/RoomBookingHelp">
                     Room booking help
                     </Link>
                   </li>

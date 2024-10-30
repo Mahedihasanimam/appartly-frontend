@@ -91,17 +91,22 @@ const Page = () => {
 
   return (
     <div className="container mx-auto text-white">
-      <h2 className="text-[28px] flex space-x-2 items-center font-bold mt-12">
-        <button onClick={() => router.back()} className="focus:outline-none">
-          <MdOutlineChevronLeft className="text-4xl cursor-pointer" />
-        </button>
-        Make it stand out
-      </h2>
-      <div className="flex items-center justify-between py-6">
-        <p className="text-[#FFFFFFCC] pt-4">
-          Add 5 or more photos plus a title and description—we’ll help you out.
-        </p>
-        <Image src={imageone} alt="image" />
+       <div className="flex itemcs-center justify-between py-6 mt-12">
+        <div className="">
+          <h2 className="text-[24px] flex space-x-2 items-center font-bold ">
+            <button onClick={() => router.back()} className="focus:outline-none">
+              <MdOutlineChevronLeft className="text-4xl cursor-pointer" />
+            </button>
+            Make it stand out
+          </h2>
+          <p className="text-[#FFFFFFCC] pl-2 pl-8 pt-2">
+            Share some basic info, like where it is and how many guests can stay.
+          </p>
+        </div>
+
+        <div>
+          <Image className="object-cover" src={imageone} alt="image" />
+        </div>
       </div>
 
       <div>
@@ -179,7 +184,7 @@ const Page = () => {
           <Button
             onClick={handleUpload}
             style={{
-              height: "64px",
+              height: "48px",
               backgroundColor: "#EBCA7E",
               border: "none",
               color: "#0F0F0F",

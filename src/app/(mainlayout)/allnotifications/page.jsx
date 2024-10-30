@@ -50,7 +50,7 @@ const Notification = () => {
            <Link href={'/'}> <button  className="focus:outline-none">
               <MdOutlineChevronLeft className="text-4xl cursor-pointer" />
             </button></Link>
-            My Profile
+            Notification
           </h2>
           <p className="text-secondary border-b border-secondary">Read all</p>
         </div>

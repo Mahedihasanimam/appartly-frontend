@@ -22,44 +22,49 @@ const Page = () => {
     console.log(`Selected: ${value}`);
   };
   return (
-    <div className="container mx-auto text-white">
-      <h2 className="text-[28px] flex space-x-2 items-center font-bold mt-12">
-        <button onClick={() => router.back()} className="focus:outline-none">
-          <MdOutlineChevronLeft className="text-4xl cursor-pointer" />
-        </button>
-        Tell us about your place
-      </h2>
-      <div className="flex itemcs-center justify-between py-6">
-      <p className="text-[#FFFFFFCC] pt-4">
-        Share some basic info, like where it is and how many guests can stay.
-      </p>
-      <Image src={imageone} alt="image"/>
+    <div className="container mx-auto text-white p-4">
+      <div className="flex itemcs-center justify-between py-6 mt-12">
+        <div className="">
+          <h2 className="text-[24px] flex space-x-2 items-center font-bold ">
+            <button onClick={() => router.back()} className="focus:outline-none">
+              <MdOutlineChevronLeft className="text-4xl cursor-pointer" />
+            </button>
+            Tell us about your place
+          </h2>
+          <p className="text-[#FFFFFFCC] pl-2 pt-2">
+            Share some basic info, like where it is and how many guests can stay.
+          </p>
+        </div>
+
+        <div>
+          <Image className="object-cover" src={imageone} alt="image" />
+        </div>
       </div>
 
       <div>
         <Form form={form} onFinish={handleFinish} className="mt-4 w-full">
+          <p className="text-[#FFFFFF] text-[16px] font-medium pb-1">What kind of property you have?</p>
+          <Select
+            showSearch
+            placeholder="Enter property categories"
+            style={{
+              height: "64px",
+              width: "100%",
+              color: "#ffff",
+            }}
+            onChange={handleChange}
+            suffixIcon={<DownOutlined className="text-lg text-white" />}
+            className="custom-select text-white mb-4" // Add a custom class
+          >
+            <Option value="rooms">Rooms</Option>
+            <Option value="countryside">Country side</Option>
+            <Option value="Apartment">Apartment</Option>
+            <Option value="Beachfront">Beachfront</Option>
+          </Select>
 
-        <Select
-      showSearch
-      placeholder="Enter property categories"
-      style={{
-        height: "64px",
-        width: "100%",
-        color:"#ffff",
-      }}
-      onChange={handleChange}
-      suffixIcon={<DownOutlined className="text-lg text-white" />}
-      className="custom-select text-white mb-4" // Add a custom class
-    >
-      <Option value="rooms">Rooms</Option>
-      <Option value="countryside">Country side</Option>
-      <Option value="Apartment">Apartment</Option>
-      <Option value="Beachfront">Beachfront</Option>
-    </Select>
 
 
-
-        <div className="w-full flex gap-[20px] items-center justify-between">
+          <div className="w-full flex gap-[20px] items-center justify-between">
             <Form.Item
               className="w-full"
               name="location"
@@ -78,10 +83,10 @@ const Page = () => {
               />
             </Form.Item>
 
-        
+
           </div>
           <div className="w-full flex gap-[20px] items-center justify-between">
-            
+
             <Form.Item
               className="w-full"
               name="numofrooms"
@@ -138,19 +143,19 @@ const Page = () => {
             />
           </Form.Item>
 
-          
+
 
           <Button
-          onClick={()=>router.push('/proparty/makeitstandout')}
+            onClick={() => router.push('/proparty/makeitstandout')}
             style={{
-              height: "64px",
+              height: "48px",
               backgroundColor: "#EBCA7E",
               border: "none",
               color: "#0F0F0F",
             }}
             type="primary"
             htmlType="submit"
-            className="w-full mt-12 bg-[#EBCA7E] font-bold"
+            className="w-full mt-6 bg-[#EBCA7E] font-bold"
           >
             Submit
           </Button>
