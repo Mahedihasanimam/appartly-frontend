@@ -605,7 +605,14 @@ const Page = () => {
   ];
 
   const upcomingData = [
-    { key: "6", name: 'Diana Prince', email: "diana@example.com", phone: '+8804444444', checkIn: "23 Aug, 2024", checkOut: "24 Aug, 2024", review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={5} /> },
+    { key: "1", name: 'Diana Prince', email: "diana@example.com", phone: '+8804444444', checkIn: "23 Aug, 2024", checkOut: "24 Aug, 2024",guest:'4' , review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={5} /> },
+    { key: "2", name: 'Diana Prince', email: "diana@example.com", phone: '+8804444444', checkIn: "23 Aug, 2024", checkOut: "24 Aug, 2024",guest:'4' , review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={5} /> },
+    { key: "3", name: 'Diana Prince', email: "diana@example.com", phone: '+8804444444', checkIn: "23 Aug, 2024", checkOut: "24 Aug, 2024",guest:'4' , review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={5} /> },
+    { key: "4", name: 'Diana Prince', email: "diana@example.com", phone: '+8804444444', checkIn: "23 Aug, 2024", checkOut: "24 Aug, 2024",guest:'4' , review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={5} /> },
+    { key: "5", name: 'Diana Prince', email: "diana@example.com", phone: '+8804444444', checkIn: "23 Aug, 2024", checkOut: "24 Aug, 2024",guest:'4' , review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={5} /> },
+    { key: "6", name: 'Diana Prince', email: "diana@example.com", phone: '+8804444444', checkIn: "23 Aug, 2024", checkOut: "24 Aug, 2024",guest:'4' , review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={5} /> },
+    { key: "7", name: 'Diana Prince', email: "diana@example.com", phone: '+8804444444', checkIn: "23 Aug, 2024", checkOut: "24 Aug, 2024",guest:'4' , review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={5} /> },
+    { key: "8", name: 'Diana Prince', email: "diana@example.com", phone: '+8804444444', checkIn: "23 Aug, 2024", checkOut: "24 Aug, 2024",guest:'4' , review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={5} /> },
   ];
 
   const handleTabChange = (key) => {
@@ -622,8 +629,10 @@ const Page = () => {
         return canceledData;
       case "upcoming":
         return upcomingData;
-      default:
+      case "all":
         return allData;
+      default:
+        return completedData;
     }
   };
 
@@ -700,12 +709,16 @@ const Page = () => {
           <Image src={imageone} alt="User" width={40} height={40} className="rounded-full" />
           <div>
             <span>{text}</span>
+            <div className="text-sm text-gray-400">{record.phone}</div>
           </div>
         </div>
       ),
     },
+    { title: "Email", dataIndex: "email", key: "email" },
+    { title: "guest", dataIndex: "guest", key: "guest" },
     { title: "Check in", dataIndex: "checkIn", key: "checkIn" },
-    { title: "Expected Check out", dataIndex: "expectedCheckOut", key: "expectedCheckOut" },
+    { title: "Check out", dataIndex: "checkOut", key: "checkOut" },
+  
   ];
   
   const getColumnsByTab = (activeTab) => {
@@ -716,8 +729,10 @@ const Page = () => {
         return canceledColumns;
       case "upcoming":
         return upcomingColumns;
-      default:
+      case "all":
         return allColumns;
+      default:
+        return completedColumns;
     }
   };
   const columns = getColumnsByTab(activeTab);
@@ -758,10 +773,7 @@ const Page = () => {
       }}
       tabBarGutter={20} // Space between tabs
     >
-      <Tabs.TabPane
-        tab={<span style={{ color: activeTab === "all" ? "#EBCA7E" : "#fff" }}>All Reservations</span>}
-        key="all"
-      />
+     
       <Tabs.TabPane
         tab={<span style={{ color: activeTab === "completed" ? "#EBCA7E" : "#fff" }}>Completed</span>}
         key="completed"
@@ -774,7 +786,12 @@ const Page = () => {
         tab={<span style={{ color: activeTab === "upcoming" ? "#EBCA7E" : "#fff" }}>Upcoming</span>}
         key="upcoming"
       />
+      <Tabs.TabPane
+        tab={<span style={{ color: activeTab === "all" ? "#EBCA7E" : "#fff" }}>all</span>}
+        key="all"
+      />
     </Tabs>
+    
 
       <div className="overflow-x-auto">
       <Table

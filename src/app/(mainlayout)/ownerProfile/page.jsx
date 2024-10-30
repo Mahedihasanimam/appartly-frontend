@@ -1,5 +1,5 @@
 "use client";
-import { Avatar, Button, Card, Tooltip,Tabs } from "antd";
+import { Avatar, Button, Card, Tooltip, Tabs } from "antd";
 import Image from "next/image";
 import React from "react";
 import userimg from "/public/images/user.png";
@@ -296,157 +296,219 @@ const Page = () => {
                 fill="white"
               />
             </svg>
-          </div> 
+          </div>
         </div>
       </div>
 
 
       {/* resarvation list----------------- */}
-       <div className="flex items-center justify-between  text-white mb-8" >
-      
-      <h1 className="text-2xl font-bold ">Your Reservation</h1>
-     <Link href={'/allreservation'}> <Button  style={{backgroundColor: "transparent", border: "none" ,color: "#EBCA7E"} } className=" text-sm   font-bold  underline ">Allreservation</Button></Link>
-       </div>
-        <div>
-        <Card className="bg-[#242424] border-none text-white w-full rounded-lg shadow-lg  my-6">
-      <Tabs defaultActiveKey="1" centered>
-        <TabPane
-          tab={<span className="text-yellow-500">Checking out (10)</span>}
-          key="1"
-        >
-          <div className="lg:flex flex-row lg:space-y-0 space-y-6 items-center">
-            <Image
-              src={imageone}
-              alt="User"
-              className="w-[400px]  h-[164px] rounded-lg  object-cover"
-            />
-            <div className="ml-6 flex justify-around  w-full items-center text-white">
-              <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-                <p>Name:</p>
-                <p>Email:</p>
-                <p>Contact:</p>
-                <p>Location: </p>
-              </div>
-              <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-                <p> Md. Riyazul Hasan</p>
-                <p>riyazu012@gmail.com</p>
-                <p> +880-2154522525</p>
-                <p> Melbourne, Australia</p>
-              </div>
-            </div>
-            <div className="ml-6 flex justify-around  w-full items-center text-white">
-              <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-                <p>Name:</p>
-                <p>Email:</p>
-                <p>Contact:</p>
-                <p>Location: </p>
-              </div>
-              <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-                <p> Md. Riyazul Hasan</p>
-                <p>riyazu012@gmail.com</p>
-                <p> +880-2154522525</p>
-                <p> Melbourne, Australia</p>
-              </div>
-            </div>
-           
-          </div>
-          <div className="mt-4 flex justify-center gap-4 text-white ">
-          <Button
-          onClick={() => router.push("/checkingoutallresarvation")}
-            style={{ backgroundColor: "transparent", color: "#EBCA7E" }}
-            className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-[149px] h-[36px]t px-4 py-4 text-sm font-semibold text-secoundary  "
-          >
-            Sea all
-          </Button>
-          <Button
-        //   onClick={() => router.push("/editprofile")}
-            style={{ backgroundColor: "#EBCA7E", color: "black" }}
-            className="bg-secoundary border-[1px] font-bold w-[149px] h-[36px] border-secoundary rounded-[4px]  px-4 py-2 text-sm  text-secoundary  "
-          >
-           Complete
-          </Button>
-          </div>
-        </TabPane>
-        <TabPane
-          tab={<span className="text-white">Checking in (01)</span>}
-          key="2"
-        >
-          {/* Content for Checking in */}
-          <div className="lg:flex flex-row lg:space-y-0 space-y-6 items-center">
-            <Image
-              src={imagetow}
-              alt="User"
-              className="w-[400px]  h-[164px] rounded-lg  object-cover"
-            />
-            <div className="ml-6 flex justify-around  w-full items-center text-white">
-              <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-                <p>Name:</p>
-                <p>Email:</p>
-                <p>Contact:</p>
-                <p>Location: </p>
-              </div>
-              <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-                <p> Md. Riyazul Hasan</p>
-                <p>riyazu012@gmail.com</p>
-                <p> +880-2154522525</p>
-                <p> Melbourne, Australia</p>
-              </div>
-            </div>
-            <div className="ml-6 flex justify-around  w-full items-center text-white">
-              <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-                <p>Name:</p>
-                <p>Email:</p>
-                <p>Contact:</p>
-                <p>Location: </p>
-              </div>
-              <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-                <p> Md. Riyazul Hasan</p>
-                <p>riyazu012@gmail.com</p>
-                <p> +880-2154522525</p>
-                <p> Melbourne, Australia</p>
-              </div>
-            </div>
-           
-          </div>
-          <div className="mt-4 flex justify-center gap-4 text-white ">
-          <Button
-          onClick={() => router.push("/checkingoutallresarvation")}
-            style={{ backgroundColor: "transparent", color: "#EBCA7E" }}
-            className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-[149px] h-[36px]t px-4 py-4 text-sm  text-secoundary font-bold  "
-          >
-            Sea all
-          </Button>
-          <Button
-        //   onClick={() => router.push("/editprofile")}
-            style={{ backgroundColor: "#EBCA7E", color: "black" }}
-            className="bg-secoundary border-[1px] font-bold w-[149px] h-[36px] border-secoundary rounded-[4px]  px-4 py-2 text-sm  text-secoundary   "
-          >
-            Arrived in
-          </Button>
-          </div>
-        </TabPane>
-        <TabPane tab={<span className="text-white">Upcoming (0)</span>} key="3">
-          {/* Content for Upcoming */}
-        </TabPane>
-      </Tabs>
-    </Card>
-        </div>
-       <div className="bg-[#242424] p-4 rounded-lg">
-       <div className="flex items-center justify-between mb-4">
-        
-       <h1 className="text-2xl font-bold text-white mb-4">Your Property List</h1>
+      <div className="flex items-center justify-between  text-white mb-8" >
 
-       <Button onClick={()=>router.push('/ownerProfile/propertylist')} style={{backgroundColor: "transparent", border: "none" ,color: "#EBCA7E"} } className=" text-sm  font-bold  underline ">Sea  all</Button>
-       </div>
+        <h1 className="text-2xl font-bold ">Your Reservation</h1>
+        <Link href={'/allreservation'}> <Button style={{ backgroundColor: "transparent", border: "none", color: "#EBCA7E" }} className=" text-sm   font-bold  underline ">Allreservation</Button></Link>
+      </div>
+      <div>
+        <Card className="bg-[#242424] border-none text-white w-full rounded-lg shadow-lg  my-6">
+          <Tabs defaultActiveKey="1" centered>
+            <TabPane
+              tab={<span className="text-yellow-500">Checking out (10)</span>}
+              key="1"
+            >
+              <div className="lg:flex flex-row lg:space-y-0 space-y-6 items-center">
+                <Image
+                  src={imageone}
+                  alt="User"
+                  className="w-[400px]  h-[164px] rounded-lg  object-cover"
+                />
+                <div className="ml-6 flex justify-around  w-full items-center text-white">
+                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+                    <p>Name:</p>
+                    <p>Email:</p>
+                    <p>Contact:</p>
+                    <p>Location: </p>
+                  </div>
+                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+                    <p> Md. Riyazul Hasan</p>
+                    <p>riyazu012@gmail.com</p>
+                    <p> +880-2154522525</p>
+                    <p> Melbourne, Australia</p>
+                  </div>
+                </div>
+                <div className="ml-6 flex justify-around  w-full items-center text-white">
+                  <div className="text-sm space-y-2 text-[#FFFFFFB2] ">
+                    <strong>Email:</strong>
+
+                    <p>Check-in date:</p>
+                    <p>Stay for:</p>
+                    <p>Guests:</p>
+                    <p>Pay:</p>
+                  </div>
+                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+
+                    <p>20 aug 2024 </p>
+                    <p>4 night</p>
+                    <p>2</p>
+                    <p>$ 12500</p>
+                  </div>
+                </div>
+
+              </div>
+              <div className="mt-4 flex justify-center gap-4 text-white ">
+                <Button
+                  onClick={() => router.push("/checkingoutallresarvation")}
+                  style={{ backgroundColor: "transparent", color: "#EBCA7E" }}
+                  className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-[149px] h-[36px]t px-4 py-4 text-sm font-semibold text-secoundary  "
+                >
+                  Sea all
+                </Button>
+                <Button
+                  //   onClick={() => router.push("/editprofile")}
+                  style={{ backgroundColor: "#EBCA7E", color: "black" }}
+                  className="bg-secoundary border-[1px] font-bold w-[149px] h-[36px] border-secoundary rounded-[4px]  px-4 py-2 text-sm  text-secoundary  "
+                >
+                  Complete
+                </Button>
+              </div>
+            </TabPane>
+            <TabPane
+              tab={<span className="text-white">Checking in (01)</span>}
+              key="2"
+            >
+              {/* Content for Checking in */}
+              <div className="lg:flex flex-row lg:space-y-0 space-y-6 items-center">
+                <Image
+                  src={imagetow}
+                  alt="User"
+                  className="w-[400px]  h-[164px] rounded-lg  object-cover"
+                />
+                <div className="ml-6 flex justify-around  w-full items-center text-white">
+                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+                    <p>Name:</p>
+                    <p>Email:</p>
+                    <p>Contact:</p>
+                    <p>Location: </p>
+                  </div>
+                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+                    <p> Md. Riyazul Hasan</p>
+                    <p>riyazu012@gmail.com</p>
+                    <p> +880-2154522525</p>
+                    <p> Melbourne, Australia</p>
+                  </div>
+                </div>
+                <div className="ml-6 flex justify-around  w-full items-center text-white">
+                  <div className="text-sm space-y-2 text-[#FFFFFFB2] ">
+                    <strong>Email:</strong>
+
+                    <p>Check-in date:</p>
+                    <p>Stay for:</p>
+                    <p>Guests:</p>
+                    <p>Pay:</p>
+                  </div>
+                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+
+                    <p>20 aug 2024 </p>
+                    <p>4 night</p>
+                    <p>2</p>
+                    <p>$ 12500</p>
+                  </div>
+                </div>
+
+              </div>
+              <div className="mt-4 flex justify-center gap-4 text-white ">
+                <Button
+                  onClick={() => router.push("/checkingoutallresarvation")}
+                  style={{ backgroundColor: "transparent", color: "#EBCA7E" }}
+                  className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-[149px] h-[36px]t px-4 py-4 text-sm  text-secoundary font-bold  "
+                >
+                  Sea all
+                </Button>
+                <Button
+                  //   onClick={() => router.push("/editprofile")}
+                  style={{ backgroundColor: "#EBCA7E", color: "black" }}
+                  className="bg-secoundary border-[1px] font-bold w-[149px] h-[36px] border-secoundary rounded-[4px]  px-4 py-2 text-sm  text-secoundary   "
+                >
+                  Arrived in
+                </Button>
+              </div>
+            </TabPane>
+            <TabPane tab={<span className="text-white">Upcoming (1)</span>} key="3">
+              {/* Content for Upcoming */}
+                 {/* Content for Checking in */}
+                 <div className="lg:flex flex-row lg:space-y-0 space-y-6 items-center">
+                <Image
+                  src={imagetow}
+                  alt="User"
+                  className="w-[400px]  h-[164px] rounded-lg  object-cover"
+                />
+                <div className="ml-6 flex justify-around  w-full items-center text-white">
+                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+                    <p>Name:</p>
+                    <p>Email:</p>
+                    <p>Contact:</p>
+                    <p>Location: </p>
+                  </div>
+                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+                    <p> Md. Riyazul Hasan</p>
+                    <p>riyazu012@gmail.com</p>
+                    <p> +880-2154522525</p>
+                    <p> Melbourne, Australia</p>
+                  </div>
+                </div>
+                <div className="ml-6 flex justify-around  w-full items-center text-white">
+                  <div className="text-sm space-y-2 text-[#FFFFFFB2] ">
+                    <strong>Email:</strong>
+
+                    <p>Check-in date:</p>
+                    <p>Stay for:</p>
+                    <p>Guests:</p>
+                    <p>Pay:</p>
+                  </div>
+                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+
+                    <p>20 aug 2024 </p>
+                    <p>4 night</p>
+                    <p>2</p>
+                    <p>$ 12500</p>
+                  </div>
+                </div>
+
+              </div>
+              <div className="mt-4 flex justify-center gap-4 text-white ">
+                <Button
+                  onClick={() => router.push("/checkingoutallresarvation")}
+                  style={{ backgroundColor: "transparent", color: "#EBCA7E" }}
+                  className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-[149px] h-[36px]t px-4 py-4 text-sm  text-secoundary font-bold  "
+                >
+                  Sea all
+                </Button>
+                <Button
+                  //   onClick={() => router.push("/editprofile")}
+                  style={{ backgroundColor: "#EBCA7E", color: "black" }}
+                  className="bg-secoundary border-[1px] font-bold w-[149px] h-[36px] border-secoundary rounded-[4px]  px-4 py-2 text-sm  text-secoundary   "
+                >
+                  Arrived in
+                </Button>
+              </div>
+            </TabPane>
+          </Tabs>
+        </Card>
+      </div>
+      <div className="bg-[#242424] p-4 rounded-lg">
+        <div className="flex items-center justify-between mb-4">
+
+          <h1 className="text-2xl font-bold text-white mb-4">Your Property List</h1>
+
+          <Button onClick={() => router.push('/ownerProfile/propertylist')} style={{ backgroundColor: "transparent", border: "none", color: "#EBCA7E" }} className=" text-sm  font-bold  underline ">Sea  all</Button>
+        </div>
         {
-             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 gap-8">
-             {roomsData.map((item) => (
-               <Myproperty key={item.id} data={item} />
-             ))}
-           </div>
+          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 gap-8">
+            {roomsData.map((item) => (
+              <Myproperty key={item.id} data={item} />
+            ))}
+          </div>
         }
 
-       </div>
+      </div>
     </div>
   );
 };

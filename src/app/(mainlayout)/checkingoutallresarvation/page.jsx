@@ -160,7 +160,7 @@ const Page = () => {
           <button onClick={() => router.back()} className="focus:outline-none">
             <MdOutlineChevronLeft className="text-4xl cursor-pointer" />
           </button>
-          My Profile
+          Your Reservation
         </h2>
         <Button
           style={{
