@@ -52,7 +52,7 @@ const page = () => {
     return (
         <div className='container mx-auto p-4'>
           <h1 className='text-[#FFFFFF] text-[48px] font-normal mb-10'>Here you see blogs part of  Apaartali service...</h1>
-            <div className='  gap-4 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 my-12 '>
+            <div className='  gap-4 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1  my-12 '>
                 {
                     blogsdata.map(blog => <BlogCard key={blog.id} blog={blog} />)
                 }

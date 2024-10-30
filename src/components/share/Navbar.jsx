@@ -91,7 +91,7 @@ const Navbar = () => {
             </li>
             <li>
               <Link href="/about" className="text-[16px] hover:text-secoundary">
-                About
+              About Us
               </Link>
             </li>
           </ul>
@@ -121,32 +121,18 @@ const Navbar = () => {
 
           <div className="w-full flex gap-6 items-center justify-center">
             <div className="w-full">
-              <Button
-                style={{
-                  backgroundColor: "transparent",
-                  border: "1px solid black",
-                }}
-                onClick={showLanguageModal}
-                className="w-[60px] h-[60px] flex items-center justify-center"
-              >
-                <Image src={gloval} alt="gloval" width={44} height={44} />
-              </Button>
+            <svg onClick={showLanguageModal} width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12 0.0361328C5.37258 0.0361328 0 5.40872 0 12.0361C0 18.6635 5.37258 24.0361 12 24.0361C18.6274 24.0361 24 18.6635 24 12.0361C24 5.40872 18.6274 0.0361328 12 0.0361328ZM1.91567 9.48311C1.70951 10.3 1.6 11.1553 1.6 12.0361C1.6 16.9539 5.01328 21.0744 9.6 22.1578V21.1675L8 19.5675V17.1675L6.4 15.5675V13.6361C6.4 13.1943 6.75817 12.8361 7.2 12.8361H13.6C14.9255 12.8361 16 13.9106 16 15.2361V16.055C16.8175 16.172 17.4642 16.8186 17.5811 17.6361H20.7651C21.8 16.0197 22.4 14.098 22.4 12.0361C22.4 7.70984 19.7584 4.00053 16.0001 2.43322V4.03613C16.0001 5.36162 14.9255 6.43613 13.6001 6.43613H12.0001C11.5582 6.43613 11.2001 6.79431 11.2001 7.23613C11.2001 8.56162 10.1255 9.63613 8.80006 9.63613H8.00006V10.7675L7.29712 11.4704C6.35986 12.4077 4.84026 12.4077 3.903 11.4704L1.91567 9.48311Z" fill="white"/>
+</svg>
+
             </div>
             <div>
               {/* notification ---------------- */}
               <Link href={'/allnotifications'}><div className="cursor-pointer " >
-                <svg
-                  width="20"
-                  height="22"
-                  viewBox="0 0 20 22"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M20 18.0371H0V16.0371H1V9.06811C1 4.08011 5.03 0.0371094 10 0.0371094C14.97 0.0371094 19 4.08011 19 9.06811V16.0371H20V18.0371ZM7.5 19.0371H12.5C12.5 19.7001 12.2366 20.336 11.7678 20.8049C11.2989 21.2737 10.663 21.5371 10 21.5371C9.33696 21.5371 8.70107 21.2737 8.23223 20.8049C7.76339 20.336 7.5 19.7001 7.5 19.0371Z"
-                    fill="#EDEDED"
-                  />
-                </svg>
+              <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M22 20.0361H2V18.0361H3V11.0671C3 6.07913 7.03 2.03613 12 2.03613C16.97 2.03613 21 6.07913 21 11.0671V18.0361H22V20.0361ZM9.5 21.0361H14.5C14.5 21.6992 14.2366 22.3351 13.7678 22.8039C13.2989 23.2727 12.663 23.5361 12 23.5361C11.337 23.5361 10.7011 23.2727 10.2322 22.8039C9.76339 22.3351 9.5 21.6992 9.5 21.0361Z" fill="#EDEDED"/>
+</svg>
+
               </div></Link>
              <div>
           
@@ -158,16 +144,18 @@ const Navbar = () => {
                 overlay={profileMenu}
                 trigger={["hover"]}
               >
-                <Button
-                  style={{
-                    backgroundColor: "#EBCA7E",
-                    border: "1px solid black",
-                  }}
-                  className="rounded-2xl w-[60px] h-[60px]  flex items-center justify-center"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <Image src={user} alt="user" width={44} height={44} />
-                </Button>
+                <svg width="40" height="41" viewBox="0 0 40 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect y="0.0361328" width="40" height="40" rx="16" fill="url(#paint0_linear_99_1963)"/>
+<path d="M16 16.8361C16 14.627 17.7909 12.8361 20 12.8361C22.2091 12.8361 24 14.627 24 16.8361C24 19.0453 22.2091 20.8361 20 20.8361C17.7909 20.8361 16 19.0453 16 16.8361Z" fill="black"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M20 8.03613C13.3726 8.03613 8 13.4087 8 20.0361C8 26.6635 13.3726 32.0361 20 32.0361C26.6274 32.0361 32 26.6635 32 20.0361C32 13.4087 26.6274 8.03613 20 8.03613ZM9.6 20.0361C9.6 14.2924 14.2562 9.63613 20 9.63613C25.7438 9.63613 30.4 14.2924 30.4 20.0361C30.4 22.9954 29.164 25.6661 27.1801 27.5599C26.9385 24.6899 24.5324 22.4361 21.6 22.4361H18.4C15.4676 22.4361 13.0615 24.6899 12.8199 27.5599C10.836 25.6661 9.6 22.9954 9.6 20.0361Z" fill="black"/>
+<defs>
+<linearGradient id="paint0_linear_99_1963" x1="0" y1="20.0361" x2="40" y2="20.0361" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EBCA7E"/>
+<stop offset="1" stop-color="#C4B490"/>
+</linearGradient>
+</defs>
+</svg>
+
               </Dropdown>
             </div>
           </div>

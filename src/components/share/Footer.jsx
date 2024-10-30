@@ -47,8 +47,8 @@ const Footer = () => {
   //   };
   return (
     <div>
-      <footer className="px-4 divide-y bg-[#FDFAF2] text-[#000000CC] relative z-50">
-        <div className="px-4 container mx-auto">
+      <footer className=" px-4 divide-y bg-[#FDFAF2] text-[#000000CC] relative z-50">
+        <div className=" container mx-auto">
           <div className=" flex flex-col justify-between py-10 mx-auto space-y-8 lg:flex-row lg:space-y-0">
             {/* left side menu  */}
             <div className="lg:w-1/3  text-sm font-normal space-y-4">
