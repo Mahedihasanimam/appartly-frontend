@@ -3,6 +3,7 @@ import { Button, Tabs } from 'antd';
 import React, { useState } from 'react';
 import RoomsCard from '../ui/RoomsCard';
 import roomimage from '/public/images/roomimage.png';
+import { useRouter } from 'next/navigation';
 
 const Rooms = () => {
   // Sample data for categories
@@ -115,7 +116,7 @@ const Rooms = () => {
     }
     return roomsData.filter((room) => room.category === category);
   };
-
+const router=useRouter()
   return (
     <div className="container mx-auto py-16 px-4">
       <h1 className="xl:text-[56px] lg:text-[56px] font-black leading-none text-2xl text-white font-Merriweather text-center pb-12">
@@ -155,7 +156,7 @@ const Rooms = () => {
         ))}
       </Tabs>
 <br />
-<Button style={{backgroundColor: "#EBCA7E",color:'black',height:"48px",width:'200px'}}  className="mt-12 block mx-auto px-8  font-bold text-black bg-secoundary hover:bg-secoundary">Browse More</Button>
+<Button onClick={()=>router.push('/browsemore')} style={{backgroundColor: "#EBCA7E",color:'black',height:"48px",width:'200px'}}  className="mt-12 block mx-auto px-8  font-bold text-black bg-secoundary hover:bg-secoundary">Browse More</Button>
     </div>
   );
 };
