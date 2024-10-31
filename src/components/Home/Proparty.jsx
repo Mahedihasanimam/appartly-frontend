@@ -104,7 +104,7 @@ const Proparty = () => {
     },
   ];
 
-  const whatsappNumber = '01860650703'; // Replace with your actual number
+  const whatsappNumber = '+8801860650703'; // Replace with your actual number
   const message = 'Hello, I would like to chat!'; // Default message
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
   return (
@@ -125,7 +125,7 @@ const Proparty = () => {
 
       <Button onClick={()=>router.push('/proparty/addpropartytrailer')} style={{backgroundColor: "#EBCA7E",color:'black',height:"48px",width:'200px'}}  className="mt-12 block mx-auto px-8  font-bold text-black bg-secoundary hover:bg-secoundary">Add a property</Button>
       </div>
-      <div  onClick={() => window.open(whatsappLink, '_blank')} className="fixed bottom-[15%] right-[5%] rounded-full cursor-pointer shadow-lg shadow-black z-[9999]">
+      <div  onClick={() => window.open(whatsappLink, '_blank')} className="fixed bottom-[10%] right-[5%] rounded-full cursor-pointer h-[70px] w-[70px] shadow-lg shadow-black z-[9999]">
       <Lottie animationData={animationData} loop={true} />
     </div>
 

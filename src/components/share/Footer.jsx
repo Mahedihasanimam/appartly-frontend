@@ -13,6 +13,7 @@ import {
   MailFilled,
 } from "@ant-design/icons";
 import Link from "next/link"
+import GoogleTranslate from "../GoogleTranslate";
 
 const Footer = () => {
 
@@ -128,6 +129,7 @@ const Footer = () => {
                  <Image height={24} width={24} src={youtube} alt="youtube" />
                   
                 </div>
+                <GoogleTranslate/>
               </div>
             </div>
           </div>

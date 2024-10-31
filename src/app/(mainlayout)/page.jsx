@@ -1,3 +1,4 @@
+import GoogleTranslate from '@/components/GoogleTranslate';
 import Hero from '@/components/Home/Hero';
 import Proparty from '@/components/Home/Proparty';
 import Rooms from '@/components/Home/Rooms';
@@ -8,6 +9,7 @@ const page = () => {
         <div>
           <Hero/>
           <Rooms/>
+       
           <Proparty/>
         </div>
     );

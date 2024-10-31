@@ -6,6 +6,7 @@ import titleimg from "/public/images/sign.png";
 import imageone from "/public/images/Group 11.png";
 import imagetow from "/public/images/Group 11 (1).png";
 import Image from "next/image";
+
 const page = () => {
   return (
     <div>
@@ -19,6 +20,7 @@ const page = () => {
             <h1 className="text-white  text-[48px] leading-tight font-bold text-center ">
               Know Our History...
             </h1>
+        
             <p className="text-white text-[36px] font-medium leading-[45px] mt-4 ">
               At Appartali we believe that every journey begins with a place to
               call home, and we’re dedicated to making your stay unforgettable.
