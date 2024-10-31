@@ -3,7 +3,7 @@ import { Button, DatePicker, Image, Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { Carousel } from 'antd';
 import { useState } from "react";
-import dayjs from 'dayjs'; 
+import dayjs from 'dayjs';
 import heroimg1 from "/public/images/heroimg.png";
 
 
@@ -29,13 +29,13 @@ const Hero = () => {
       {/* Hero section with carousel background */}
       <Carousel autoplay className="absolute top-0 left-0 w-full h-full z-0">
         <div className="w-full">
-          <Image   src={heroimg1.src} alt="HeroImage1" className="w-full min-h-[600px]  h-full object-cover" />
+          <Image src={heroimg1.src} alt="HeroImage1" className="w-full min-h-[600px]  h-full object-cover" />
         </div>
         <div>
-          <Image  src={heroimg1.src} alt="Hero Image 2" className="w-full min-h-[600px]  h-full object-cover" />
+          <Image src={heroimg1.src} alt="Hero Image 2" className="w-full min-h-[600px]  h-full object-cover" />
         </div>
         <div>
-          <Image  src={heroimg1.src} alt="Hero Image 3" className="w-full min-h-[600px]  h-full object-cover" />
+          <Image src={heroimg1.src} alt="Hero Image 3" className="w-full min-h-[600px]  h-full object-cover" />
         </div>
       </Carousel>
 
@@ -121,7 +121,7 @@ const Hero = () => {
               className="text-sm text-gray-700"
             />
           </div>
-          <button 
+          <button
             className="bg-[#EBCA7E] h-[48px] w-[48px] rounded-[40px] text-white flex items-center justify-center"
             onClick={handleSearch}
           >
@@ -129,6 +129,8 @@ const Hero = () => {
           </button>
         </div>
       </div>
+
+      
     </div>
   );
 };

@@ -7,7 +7,9 @@ import propartyimage from "/public/images/proparty.png";
 import ownerImage from "/public/images/user.png";
 import PropartyCard from "../ui/PropartyCard";
 import { useRouter } from "next/navigation";
-
+import whatsap from '/public/icons/whatsap.gif'
+import animationData from '/public/Animationwhatsapp.json'
+import Lottie from "lottie-react";
 const Proparty = () => {
   // Sample property data
   const router=useRouter()
@@ -101,8 +103,13 @@ const Proparty = () => {
       propertyImage: propartyimage,
     },
   ];
+
+  const whatsappNumber = '01860650703'; // Replace with your actual number
+  const message = 'Hello, I would like to chat!'; // Default message
+  const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
   return (
     <div className="container mx-auto py-12 ">
+      <div>
       <div>
         <h1 className="xl:text-[36px] lg:text-[36px] font-black  text-2xl text-white font-Merriweather text-center pb-12 leading-10">
           Transform your property into a lucrative <br /> experience for
@@ -117,6 +124,11 @@ const Proparty = () => {
       </div>
 
       <Button onClick={()=>router.push('/proparty/addpropartytrailer')} style={{backgroundColor: "#EBCA7E",color:'black',height:"48px",width:'200px'}}  className="mt-12 block mx-auto px-8  font-bold text-black bg-secoundary hover:bg-secoundary">Add a property</Button>
+      </div>
+      <div  onClick={() => window.open(whatsappLink, '_blank')} className="fixed bottom-[15%] right-[5%] rounded-full cursor-pointer shadow-lg shadow-black z-[9999]">
+      <Lottie animationData={animationData} loop={true} />
+    </div>
+
     </div>
   );
 };

@@ -8,6 +8,7 @@ import googleimg from "/public/icons/google.svg";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
+import { auth } from "@/app/firebase/Firebase.config";
 
 const GuestLogin = ({
   title = "Log in as Guest",

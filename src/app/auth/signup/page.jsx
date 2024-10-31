@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import { Input, Form, Button, Space, Checkbox } from "antd";
 import logo from "/public/images/logo.svg";
@@ -8,14 +9,12 @@ import googleimg from "/public/icons/google.svg";
 import Link from "next/link";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/app/firebase/Firebase.config";
 
 const Signup = ({
   title = "Sign UP",
   description = "Please fill in valid information to create an Appartali account",
-  onLogin,
-  onForgotPassword,
-  onFacebookLogin,
-  onGoogleLogin,
   showSocialButtons = true,
 }) => {
   const [form] = Form.useForm();
@@ -23,31 +22,55 @@ const Signup = ({
 
   const handleFinish = async (values) => {
     try {
-      if (onLogin) {
-        await onLogin(values); // Call the signup function (API request)
-        handlesignup(); // Call the handlesignup function after successful signup
-      }
+      console.log("Form Values:", values); // Log the form values directly
+
+      // Create user with email and password
+      await createUserWithEmailAndPassword(auth, values.email, values.password);
+      handlesignup();
     } catch (error) {
       Swal.fire({
-        title: 'SignUp Failed',
-        text: error.message || 'Something went wrong. Please try again.',
-        icon: 'error',
-        confirmButtonText: 'OK',
-        confirmButtonColor: '#EBCA7E',
+        title: "SignUp Failed",
+        text: error.message || "Something went wrong. Please try again.",
+        icon: "error",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#EBCA7E",
       });
     }
   };
 
   const handlesignup = () => {
     Swal.fire({
-      title: 'SignUp Successful!',
-      text: 'You have signed up successfully.',
-      icon: 'success',
-      confirmButtonText: 'OK',
-      confirmButtonColor: '#EBCA7E',
+      title: "SignUp Successful!",
+      text: "You have signed up successfully.",
+      icon: "success",
+      confirmButtonText: "OK",
+      confirmButtonColor: "#EBCA7E",
     }).then(() => {
-      router.push('/'); // Redirect to the homepage after success
+      router.push("/");
     });
+  };
+  const onGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user; // Get user data
+      console.log("Google User Data:", user); // Log user data
+      handlesignup();
+    } catch (error) {
+      Swal.fire("Login Failed", error.message, "error");
+    }
+  };
+  
+  const onFacebookLogin = async () => {
+    const provider = new FacebookAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user; // Get user data
+      console.log("Facebook User Data:", user); // Log user data
+      handlesignup();
+    } catch (error) {
+      Swal.fire("Login Failed", error.message, "error");
+    }
   };
 
   return (
@@ -62,11 +85,7 @@ const Signup = ({
             <Button
               type="primary"
               className="w-full flex items-center justify-center"
-              style={{
-                backgroundColor: "#1877f2",
-                borderColor: "#1877f2",
-                height: "44px",
-              }}
+              style={{ backgroundColor: "#1877f2", borderColor: "#1877f2", height: "44px" }}
               onClick={onFacebookLogin}
             >
               <Image src={fbimage} alt="Facebook" height={30} width={30} />
@@ -93,12 +112,7 @@ const Signup = ({
             >
               <p className="text-[#FFFFFF] text-[16px] font-medium">First Name*</p>
               <Input
-                style={{
-                  height: "44px",
-                  backgroundColor: "#242424",
-                  border: "none",
-                  color: "#FFFFFF99",
-                }}
+                style={{ height: "44px", backgroundColor: "#242424", border: "none", color: "#FFFFFF99" }}
                 placeholder="Enter your first name"
                 className="rounded-lg placeholder:text-[#FFFFFF99]"
               />
@@ -110,12 +124,7 @@ const Signup = ({
             >
               <p className="text-[#FFFFFF] text-[16px] font-medium">Last Name*</p>
               <Input
-                style={{
-                  height: "44px",
-                  backgroundColor: "#242424",
-                  border: "none",
-                  color: "#FFFFFF99",
-                }}
+                style={{ height: "44px", backgroundColor: "#242424", border: "none", color: "#FFFFFF99" }}
                 placeholder="Enter your last name"
                 className="rounded-lg placeholder:text-[#FFFFFF99]"
               />
@@ -128,12 +137,7 @@ const Signup = ({
           >
             <p className="text-[#FFFFFF] text-[16px] font-medium">Email*</p>
             <Input
-              style={{
-                height: "44px",
-                backgroundColor: "#242424",
-                border: "none",
-                color: "#FFFFFF99",
-              }}
+              style={{ height: "44px", backgroundColor: "#242424", border: "none", color: "#FFFFFF99" }}
               placeholder="Enter your Email"
               className="rounded-lg placeholder:text-[#FFFFFF99]"
             />
@@ -147,12 +151,7 @@ const Signup = ({
             >
               <p className="text-[#FFFFFF] text-[16px] font-medium">Password*</p>
               <Input.Password
-                style={{
-                  height: "44px",
-                  backgroundColor: "#242424",
-                  border: "none",
-                  color: "#FFFFFF99",
-                }}
+                style={{ height: "44px", backgroundColor: "#242424", border: "none", color: "#FFFFFF99" }}
                 placeholder="Enter your Password"
                 className="rounded-lg ant-input"
               />
@@ -165,12 +164,7 @@ const Signup = ({
             >
               <p className="text-[#FFFFFF] text-[16px] font-medium">Contact Number*</p>
               <Input
-                style={{
-                  height: "44px",
-                  backgroundColor: "#242424",
-                  border: "none",
-                  color: "#FFFFFF99",
-                }}
+                style={{ height: "44px", backgroundColor: "#242424", border: "none", color: "#FFFFFF99" }}
                 placeholder="Enter your contact number"
                 className="rounded-lg ant-input"
               />
@@ -186,13 +180,7 @@ const Signup = ({
           </div>
 
           <Button
-          onClick={handlesignup}
-            style={{
-              height: "44px",
-              backgroundColor: "#EBCA7E",
-              border: "none",
-              color: "#0F0F0F",
-            }}
+            style={{ height: "44px", backgroundColor: "#EBCA7E", border: "none", color: "#0F0F0F" }}
             type="primary"
             htmlType="submit"
             className="w-full mt-12 bg-[#EBCA7E] font-bold"
