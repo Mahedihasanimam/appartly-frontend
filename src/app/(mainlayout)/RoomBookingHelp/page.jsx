@@ -7,7 +7,7 @@ const RoomBookingHelp = () => {
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md my-6">
       <h1 className="text-3xl font-bold mb-4">Room Booking Help</h1>
       <p className="mb-4">
-        Welcome to our Room Booking Help page! Here you'll find information and guidance to assist you with booking a room.
+        Welcome to our Room Booking Help page! Here you ll find information and guidance to assist you with booking a room.
       </p>
 
       <h2 className="text-2xl font-semibold mt-6 mb-2">1. How to Book a Room</h2>
@@ -32,7 +32,7 @@ const RoomBookingHelp = () => {
       </p>
 
       <h2 className="text-2xl font-semibold mt-6 mb-2">3. Frequently Asked Questions (FAQs)</h2>
-      <h3 className="text-xl font-medium mt-4 mb-2">Q1: Can I change my booking after it's confirmed?</h3>
+      <h3 className="text-xl font-medium mt-4 mb-2">Q1: Can I change my booking after it s confirmed?</h3>
       <p className="mb-4">
         Yes, you can modify your booking details by contacting our customer service.
       </p>

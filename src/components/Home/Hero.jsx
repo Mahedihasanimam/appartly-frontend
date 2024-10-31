@@ -1,10 +1,11 @@
 'use client'; // Ensure this component uses client-side rendering
-import { Button, DatePicker, Input } from "antd";
+import { Button, DatePicker, Image, Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { Carousel } from 'antd';
 import { useState } from "react";
 import dayjs from 'dayjs'; 
 import heroimg1 from "/public/images/heroimg.png";
+
 
 const Hero = () => {
   const [destination, setDestination] = useState('');
@@ -28,13 +29,13 @@ const Hero = () => {
       {/* Hero section with carousel background */}
       <Carousel autoplay className="absolute top-0 left-0 w-full h-full z-0">
         <div className="w-full">
-          <img src={heroimg1.src} alt="Hero Image 1" className="w-full lg:min-h-[600px] min-h-[900px] h-full object-cover" />
+          <Image   src={heroimg1.src} alt="HeroImage1" className="w-full min-h-[600px]  h-full object-cover" />
         </div>
         <div>
-          <img src={heroimg1.src} alt="Hero Image 2" className="w-full lg:min-h-[600px] min-h-[900px] h-full object-cover" />
+          <Image  src={heroimg1.src} alt="Hero Image 2" className="w-full min-h-[600px]  h-full object-cover" />
         </div>
         <div>
-          <img src={heroimg1.src} alt="Hero Image 3" className="w-full lg:min-h-[600px] min-h-[900px] h-full object-cover" />
+          <Image  src={heroimg1.src} alt="Hero Image 3" className="w-full min-h-[600px]  h-full object-cover" />
         </div>
       </Carousel>
 
@@ -50,7 +51,7 @@ const Hero = () => {
         </div>
 
         {/* Search input */}
-        <div className="lg:flex md:flex sm:flex  flex-col sm:flex-row items-center bg-[#FFFFFF99] rounded-xl shadow-lg px-4 sm:px-6 lg:px-8 py-4 space-y-4 sm:space-y-0 sm:space-x-4 lg:max-w-4xl w-full mx-auto my-6 lg:mt-20 mt-8">
+        <div className="lg:flex md:flex sm:flex hidden items-center bg-[#FFFFFF99] rounded-xl shadow-lg px-4 sm:px-6 lg:px-8 py-4 space-y-4 sm:space-y-0 sm:space-x-4 lg:max-w-4xl w-full mx-auto my-6 lg:mt-20 mt-8">
           <div className="flex-1 hover:bg-white rounded-lg p-2 transition-all duration-300 ease-in-out">
             <p className="text-[16px] text-[#000000] pl-2">Where</p>
             <Input

@@ -8,7 +8,7 @@ const TermsAndConditions = () => {
       <h1 className="text-3xl font-bold mb-4">Terms and Conditions</h1>
       <p className="mb-4"><strong>Effective Date:</strong> [Insert Date]</p>
       <p className="mb-4">
-        Welcome to Appartli! These Terms and Conditions govern your use of our website located at [Your Website URL] (the "Site") and the services provided by Appartli (the "Services"). By accessing or using our Site and Services, you agree to comply with and be bound by these Terms and Conditions.
+        Welcome to Appartli! These Terms and Conditions govern your use of our website located at [Your Website URL] (the Site) and the services provided by Appartli (the Services). By accessing or using our Site and Services, you agree to comply with and be bound by these Terms and Conditions.
       </p>
 
       <h2 className="text-2xl font-semibold mt-6 mb-2">1. Acceptance of Terms</h2>
@@ -58,7 +58,7 @@ const TermsAndConditions = () => {
 
       <h2 className="text-2xl font-semibold mt-6 mb-2">10. Indemnification</h2>
       <p className="mb-4">
-        You agree to indemnify and hold harmless Appartli, its affiliates, and their respective officers, directors, employees, and agents from and against any claims, liabilities, damages, losses, costs, or expenses, including reasonable attorneys' fees, arising out of or in any way connected with your access to or use of the Site or Services.
+        You agree to indemnify and hold harmless Appartli, its affiliates, and their respective officers, directors, employees, and agents from and against any claims, liabilities, damages, losses, costs, or expenses, including reasonable attorneys fees, arising out of or in any way connected with your access to or use of the Site or Services.
       </p>
 
       <h2 className="text-2xl font-semibold mt-6 mb-2">11. Governing Law</h2>

@@ -415,9 +415,9 @@ const Page = ({ params }) => {
           </p>
         </div>
 
-        <div className="text-[#FFFFFFCC]">
+        <div className="text-[#FFFFFFCC] text-center">
           <h1 className="text-[24px] font-bold pl-4">4.91</h1>
-          <Rate style={{ color: "white" }} disabled defaultValue={4.9} />
+          <Rate className="ml-12" style={{ color: "white" }} disabled defaultValue={4.9} />
         </div>
         <div className="text-[#FFFFFFCC] ">
           <h1 className="text-[24px] font-bold">110</h1>
@@ -523,7 +523,7 @@ const Page = ({ params }) => {
         <h2 className="text-xl text-white  font-bold">
           What this places offers
         </h2>
-        <div className="lg:flex md:flex flex-row items-center justify-between p-4 my-8 lg:max-w-4xl w-full">
+        <div className="lg:flex md:flex flex-row items-center justify-between p-4 my-8 lg:max-w-[64%] w-full">
           <div>
             <ul className="space-y-4">
               <li className="flex items-center space-x-4 text-[#FFFFFFCC]  font-normal">
