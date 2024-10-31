@@ -4,13 +4,13 @@ import React from "react";
 
 const RoomBookingHelp = () => {
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md my-6">
-      <h1 className="text-3xl font-bold mb-4">Room Booking Help</h1>
+    <div className="max-w-4xl mx-auto p-6 bg-[#4B4B4B] text-[#ffffffc2] rounded-lg shadow-md my-6">
+      <h1 className="text-3xl font-bold mb-4 text-white">Room Booking Help</h1>
       <p className="mb-4">
         Welcome to our Room Booking Help page! Here you ll find information and guidance to assist you with booking a room.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-6 mb-2">1. How to Book a Room</h2>
+      <h2 className="text-2xl font-semibold mt-6 mb-2 text-white">1. How to Book a Room</h2>
       <p className="mb-4">
         To book a room, follow these steps:
         <ol className="list-decimal list-inside ml-4">
@@ -22,7 +22,7 @@ const RoomBookingHelp = () => {
         </ol>
       </p>
 
-      <h2 className="text-2xl font-semibold mt-6 mb-2">2. Cancellation Policy</h2>
+      <h2 className="text-2xl font-semibold mt-6 mb-2 text-white">2. Cancellation Policy</h2>
       <p className="mb-4">
         We understand that plans can change. Our cancellation policy is as follows:
         <ul className="list-disc list-inside ml-4">
@@ -31,7 +31,7 @@ const RoomBookingHelp = () => {
         </ul>
       </p>
 
-      <h2 className="text-2xl font-semibold mt-6 mb-2">3. Frequently Asked Questions (FAQs)</h2>
+      <h2 className="text-2xl font-semibold mt-6 mb-2 text-white">3. Frequently Asked Questions (FAQs)</h2>
       <h3 className="text-xl font-medium mt-4 mb-2">Q1: Can I change my booking after it s confirmed?</h3>
       <p className="mb-4">
         Yes, you can modify your booking details by contacting our customer service.
@@ -47,7 +47,7 @@ const RoomBookingHelp = () => {
         Yes, we have a minimum stay requirement of [insert number] nights for certain room types.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-6 mb-2">4. Contact Us</h2>
+      <h2 className="text-2xl font-semibold mt-6 mb-2 text-white">4. Contact Us</h2>
       <p className="mb-4">
         If you have any further questions or need assistance with your booking, please feel free to reach out to us:
       </p>
