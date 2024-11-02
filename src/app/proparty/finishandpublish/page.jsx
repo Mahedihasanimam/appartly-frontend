@@ -1,9 +1,9 @@
 "use client";
-import React from "react";
+import {useState} from "react";
 import { MdOutlineChevronLeft } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import { Input, Form, Button, DatePicker } from "antd";
-import { Select } from "antd";
+import { Select,Tag } from "antd";
 import imageone from "/public/icons/car.png";
 const { Option } = Select;
 import TextArea from "antd/es/input/TextArea";
@@ -38,6 +38,19 @@ const Page = () => {
       router.push('/');
     });
   }
+
+  const [selectedOptions, setSelectedOptions] = useState([]);
+
+  const handleChangeselectAllOptions = (value) => {
+    // Update selected options
+    setSelectedOptions(value);
+  };
+
+  const handleTagClose = (removedTag) => {
+    // Filter out the removed tag
+    const newSelectedOptions = selectedOptions.filter(tag => tag !== removedTag);
+    setSelectedOptions(newSelectedOptions);
+  };
   return (
     <div className="container mx-auto text-white">
       <h2 className="text-[28px] flex space-x-2 items-center font-bold mt-12">
@@ -192,32 +205,38 @@ const Page = () => {
             </div>
           </div>
 
-          <p className="text-[#FFFFFF] text-[16px] font-medium pb-1">
-            What service you offer for user?
-          </p>
-          <Select
-            showSearch
-            placeholder="Enter property categories"
-            style={{
-              height: "64px",
-              width: "100%",
-              color: "#ffff",
-            }}
-            onChange={handleChange}
-            suffixIcon={<DownOutlined className="text-lg text-white" />}
-            className="custom-select text-white mb-4" // Add a custom class
-          >
-            <Option value="door">Lock on bedroom door</Option>
-            <Option value="wifi">Wifi</Option>
-            <Option value="tv">Tv</Option>
-            <Option value="laggage">Luggage dropoff allowed</Option>
-            <Option value="refrigerator">Refrigerator</Option>
-            <Option value="Kitchen">Kitchen</Option>
-            <Option value="Dedicatedworkspace">Dedicated workspace</Option>
-            <Option value="Washer">Washer</Option>
-            <Option value="Hair dryer">Hair dryer</Option>
-            <Option value="Iron machine">Iron machine</Option>
-          </Select>
+          <div>
+      <p className="text-[#FFFFFF] text-[16px] font-medium pb-1">
+        What service do you offer for users?
+      </p>
+      <Select
+        mode="multiple"
+        showSearch
+        placeholder="Enter property categories"
+        style={{
+          height: "64px",
+          width: "100%",
+          color: "#ffff",
+        }}
+        onChange={handleChangeselectAllOptions}
+        suffixIcon={<DownOutlined className="text-lg text-white" />}
+        className="custom-select text-white mb-4"
+      >
+        <Option value="door">Lock on bedroom door</Option>
+        <Option value="wifi">Wifi</Option>
+        <Option value="tv">Tv</Option>
+        <Option value="luggage">Luggage drop-off allowed</Option>
+        <Option value="refrigerator">Refrigerator</Option>
+        <Option value="kitchen">Kitchen</Option>
+        <Option value="dedicatedWorkspace">Dedicated workspace</Option>
+        <Option value="washer">Washer</Option>
+        <Option value="hairDryer">Hair dryer</Option>
+        <Option value="ironMachine">Iron machine</Option>
+      </Select>
+
+      {/* Render selected options as tags */}
+    
+    </div>
 
           <Button
             onClick={handlepublish}

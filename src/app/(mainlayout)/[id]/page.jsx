@@ -5,7 +5,6 @@ import { Carousel, DatePicker, InputNumber, Button, Rate, Input, message } from 
 import Image from "next/image";
 import slideimage from "/public/images/Rectangle 67.png";
 import slideimage2 from "/public/images/Rectangle 68.png";
-import profile from "/public/images/user.png";
 import {
   CheckCircleFilled,
   ClearOutlined,
@@ -36,7 +35,7 @@ import { PiHairDryerLight } from "react-icons/pi";
 import { TbIroning1 } from "react-icons/tb";
 import { PiSprayBottle } from "react-icons/pi";
 import { IoIosKey } from "react-icons/io";
-import { FaCircleNotch } from "react-icons/fa";
+import { FaCircleNotch, FaStar } from "react-icons/fa";
 import userimg from "/public/images/user.png";
 import { MdOutlineWorkOutline } from "react-icons/md";
 import { FaLanguage } from "react-icons/fa";
@@ -240,23 +239,35 @@ const Page = ({ params }) => {
 
   const [reviewText, setReviewText] = useState('');
   const [rating, setRating] = useState(0);
+  const [hoverValue, setHoverValue] = useState(undefined);
 
-  const addReview = (reviewData) => {
-    // Here you would typically send the review data to your server or handle it accordingly
-    console.log('Review Added:', reviewData);
-    message.success('Review submitted successfully!'); // Ant Design message for feedback
+  const handleClick = (index) => {
+    setRating(index + 1); // Update rating directly
+  };
+
+  const handleMouseOver = (index) => {
+    setHoverValue(index + 1);
+  };
+
+  const handleMouseLeave = () => {
+    setHoverValue(undefined);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (reviewText && rating) {
-      addReview({ reviewText, rating });
+    if (reviewText.trim() && rating > 0) {
+      // Call the function to add the review (uncomment if defined)
+      // addReview({ reviewText, rating });
       setReviewText('');
       setRating(0);
+      message.success('Review submitted successfully!'); // Optional success message
     } else {
-      message.error('Please provide both review text and rating.'); // Error message
+      message.error('Please provide both review text and rating.');
     }
   };
+  
+
+
   return (
     <div className="bg-[]">
       <div className="container mx-auto mt-8 text-white flex items-center justify-between p-4  ">
@@ -902,6 +913,9 @@ const Page = ({ params }) => {
           </Card>
         </div>
       </div>
+
+
+      {/* add review or ratings ---------------------------- */}
       <div className="container mx-auto my-12 bg-[#242424] p-6 rounded-lg text-white">
       <form onSubmit={handleSubmit} className="review-form">
       <h2 className="text-lg font-bold mb-4">Leave a Review</h2>
@@ -913,16 +927,31 @@ const Page = ({ params }) => {
         style={{ marginBottom: '12px', backgroundColor: '#242424', color: '#FFFFFFCC' }}
         className="bg-[#242424] text-[#FFFFFFCC] opacity-70"
       />
-      <div className="">
-      <Rate
-      
-        allowHalf
-        value={rating}
-        onChange={setRating}
-        className="custom-rate "
-        style={{ marginBottom: '12px',color:"white" }}
-      />
+        <div>
+     <div className="flex items-center jsutify-center space-x-2">
+     <h3>Rate this item:</h3>
+      <div style={{ display: 'flex' }}>
+        {[...Array(5)].map((_, index) => {
+          const isFilled = (hoverValue || rating) > index;
+          return (
+            <FaStar
+              key={index}
+              onClick={() => handleClick(index)}
+              onMouseOver={() => handleMouseOver(index)}
+              onMouseLeave={handleMouseLeave}
+              style={{
+                cursor: 'pointer',
+                color: isFilled ? 'goldenrod' : 'white',
+                transition: 'color 0.2s',
+              }}
+              size={24} // Adjust size as needed
+            />
+          );
+        })}
       </div>
+     </div>
+     
+    </div>
       <br />
       <Button
         type="primary"
@@ -940,6 +969,9 @@ const Page = ({ params }) => {
       </Button>
     </form>
       </div>
+
+      {/* add review or ratings end ---------------------------- */}
+
     </div>
   );
 };

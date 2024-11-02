@@ -65,14 +65,15 @@ const Signup = ({
     const provider = new FacebookAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
-      const user = result.user; // Get user data
-      console.log("Facebook User Data:", user); // Log user data
+      const user = result.user;
+      console.log("Facebook User Data:", user);
       handlesignup();
     } catch (error) {
       Swal.fire("Login Failed", error.message, "error");
     }
   };
 
+  
   return (
     <div className="flex justify-center items-center min-h-screen bg-[#FFFFFF1A]">
       <div className="bg-[#060000] p-[40px] w-full max-w-2xl rounded-lg space-y-4">
