@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState,useRef } from "react";
-import { Carousel, DatePicker, InputNumber, Button, Rate } from "antd";
+import { Carousel, DatePicker, InputNumber, Button, Rate, Input, message } from "antd";
 import Image from "next/image";
 import slideimage from "/public/images/Rectangle 67.png";
 import slideimage2 from "/public/images/Rectangle 68.png";
@@ -234,6 +234,28 @@ const Page = ({ params }) => {
   const handleShowAll = () => {
     router.push('/showAllReview')
 
+  };
+
+
+
+  const [reviewText, setReviewText] = useState('');
+  const [rating, setRating] = useState(0);
+
+  const addReview = (reviewData) => {
+    // Here you would typically send the review data to your server or handle it accordingly
+    console.log('Review Added:', reviewData);
+    message.success('Review submitted successfully!'); // Ant Design message for feedback
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (reviewText && rating) {
+      addReview({ reviewText, rating });
+      setReviewText('');
+      setRating(0);
+    } else {
+      message.error('Please provide both review text and rating.'); // Error message
+    }
   };
   return (
     <div className="bg-[]">
@@ -879,6 +901,44 @@ const Page = ({ params }) => {
             </div>
           </Card>
         </div>
+      </div>
+      <div className="container mx-auto my-12 bg-[#242424] p-6 rounded-lg text-white">
+      <form onSubmit={handleSubmit} className="review-form">
+      <h2 className="text-lg font-bold mb-4">Leave a Review</h2>
+      <Input.TextArea
+        rows={8}
+        value={reviewText}
+        onChange={(e) => setReviewText(e.target.value)}
+        placeholder="Write your review..."
+        style={{ marginBottom: '12px', backgroundColor: '#242424', color: '#FFFFFFCC' }}
+        className="bg-[#242424] text-[#FFFFFFCC] opacity-70"
+      />
+      <div className="">
+      <Rate
+      
+        allowHalf
+        value={rating}
+        onChange={setRating}
+        className="custom-rate "
+        style={{ marginBottom: '12px',color:"white" }}
+      />
+      </div>
+      <br />
+      <Button
+        type="primary"
+        htmlType="submit"
+        style={{
+          backgroundColor: "#EBCA7E",
+          borderColor: "#EBCA7E",
+          width: "240px",
+          height: "44px",
+          color: "#000000",
+          fontWeight:"500"
+        }}
+      >
+        Submit Review
+      </Button>
+    </form>
       </div>
     </div>
   );

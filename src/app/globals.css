@@ -361,3 +361,15 @@ span.anticon.anticon-down.ant-select-suffix {
 }
 
 /* Add more background styles as necessary for additional slides */
+
+
+.custom-rate .ant-rate-star {
+  color: white; /* Default color for inactive stars */
+}
+
+.custom-rate .ant-rate-star.ant-rate-star-full,
+.custom-rate .ant-rate-star:hover,
+.custom-rate .ant-rate-star-half {
+  color: goldenrod; /* Color for selected, hovered, or half-filled stars */
+}
+
