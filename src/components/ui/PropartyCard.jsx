@@ -8,7 +8,7 @@ import userimg from "/public/images/user.png";
 import Link from "next/link";
 const PropartyCard = ({ item }) => {
   return (
-    <Link href={`/property/${item.id}`}>
+
     <Card
       key={item.id}
       hoverable
@@ -76,7 +76,7 @@ const PropartyCard = ({ item }) => {
         </div>
       </div>
     </Card>
-    </Link>
+   
   );
 };
 
