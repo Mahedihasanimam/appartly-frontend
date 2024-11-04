@@ -34,7 +34,7 @@ const Page = () => {
       icon: 'success',
       confirmButtonText: 'OK',
       confirmButtonColor: '#EBCA7E',
-    }).then(() => {
+    }).then(() => { 
       router.push('/');
     });
   }

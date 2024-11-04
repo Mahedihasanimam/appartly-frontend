@@ -25,7 +25,7 @@ const Hero = () => {
   };
 
   return (
-    <div className="relative w-full min-h-[407px] ">
+    <div className="relative w-full min-h-[407px] container mx-auto ">
       {/* Hero section with carousel background */}
       <Carousel autoplay className="absolute top-0 left-0 w-full h-full z-0">
         <div className="w-full">

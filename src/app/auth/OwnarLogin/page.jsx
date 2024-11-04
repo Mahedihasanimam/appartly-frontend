@@ -8,14 +8,13 @@ import googleimg from "/public/icons/google.svg";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
-
+import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/app/firebase/Firebase.config";
 const OwnarLogin = ({
   title = "OwnarLogin",
   description = "Enter your email & password which had used to create Appartali account",
   onLogin,
   onForgotPassword,
-  onFacebookLogin,
-  onGoogleLogin,
   showSocialButtons = true,
 }) => {
   const [form] = Form.useForm();
@@ -39,6 +38,51 @@ const OwnarLogin = ({
     form.resetFields();
   };
 
+
+
+
+
+
+
+
+
+  // SOCIAL SIGNING 
+   
+ const handlesignup = () => {
+  Swal.fire({
+    title: "SignUp Successful!",
+    text: "You have signed up successfully.",
+    icon: "success",
+    confirmButtonText: "OK",
+    confirmButtonColor: "#EBCA7E",
+  }).then(() => {
+    router.push("/");
+  });
+};
+const onGoogleLogin = async () => {
+  const provider = new GoogleAuthProvider();
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user; // Get user data
+    console.log("Google User Data:", user); // Log user data
+    handlesignup();
+  } catch (error) {
+    Swal.fire("Login Failed", error.message, "error");
+  }
+};
+
+const onFacebookLogin = async () => {
+  const provider = new FacebookAuthProvider();
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    console.log("Facebook User Data:", user);
+    handlesignup();
+  } catch (error) {
+    Swal.fire("Login Failed", error.message, "error");
+  }
+};
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-[#FFFFFF1A]">
       <div className="bg-[#060000] p-[40px] w-full max-w-xl rounded-lg space-y-4">
@@ -46,16 +90,13 @@ const OwnarLogin = ({
         <h2 className="text-2xl font-bold text-center text-white pt-12">{title}</h2>
         <p className="text-[#FFFFFFE5] text-center max-w-xs mx-auto opacity-70 text-sm">{description}</p>
 
+
         {showSocialButtons && (
-          <Space className="pb-4">
+          <Space className="pb-4 w-full">
             <Button
               type="primary"
               className="w-full flex items-center justify-center"
-              style={{
-                backgroundColor: "#1877f2",
-                borderColor: "#1877f2",
-                height: "44px",
-              }}
+              style={{ backgroundColor: "#1877f2", borderColor: "#1877f2", height: "44px" }}
               onClick={onFacebookLogin}
             >
               <Image src={fbimage} alt="Facebook" height={30} width={30} />
@@ -72,6 +113,7 @@ const OwnarLogin = ({
             </Button>
           </Space>
         )}
+
 
         <Form form={form} onFinish={handleFinish} className="mt-4">
           <Form.Item
