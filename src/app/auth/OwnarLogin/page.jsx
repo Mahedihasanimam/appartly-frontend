@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from "react";
+import React from "react";
 import { Input, Form, Button, Space } from "antd";
 import logo from "/public/images/logo.svg";
 import Image from "next/image";
@@ -150,7 +150,7 @@ const onFacebookLogin = async () => {
           <div className="flex justify-end items-center">
             <Link 
               href="/auth/verifyEmail"
-              className="text-secoundary border-b border-secoundary hover:text-[#EBCA7E]"
+              className="text-secondary border-b border-secondary hover:text-[#EBCA7E]"
               onClick={onForgotPassword}
             >
               Forgot password
