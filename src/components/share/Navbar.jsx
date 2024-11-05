@@ -57,13 +57,15 @@ console.log(user)
           <Link href="/ownerProfile">Owner profile</Link>
         )}
       </Menu.Item>
-      <Menu.Item key="4" style={{ color: "#EBCA7E" }}>
+      {
+        user && <Menu.Item key="4" style={{ color: "#EBCA7E" }}>
         <button onClick={logoutUser}>
 
         <a className="text-red-500" >Logout</a>
         </button>
 
       </Menu.Item>
+      }
     </Menu>
   );
 

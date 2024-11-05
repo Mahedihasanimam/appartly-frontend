@@ -16,6 +16,14 @@ const userApi=api.injectEndpoints({
         body: user,
       }),
     }),
+
+    socialLogin: builder.mutation({
+      query: (user) => ({
+        url: "/users/auth/login-social",
+        method: "POST",
+        body: user,
+      }),
+    }),
     // getUser: builder.query({
     //   query: (id) => `users/${id}`,
     // }),
@@ -23,4 +31,4 @@ const userApi=api.injectEndpoints({
   }),
 });
 
-export const { useRegisterUserMutation, useLoginUserMutation } = userApi;
+export const { useRegisterUserMutation, useLoginUserMutation,useSocialLoginMutation } = userApi;
