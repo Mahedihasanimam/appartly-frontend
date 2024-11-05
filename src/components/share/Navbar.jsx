@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Input, Button, Dropdown, Menu, Drawer, Modal, Select } from "antd";
 import { MenuOutlined, NotificationFilled } from "@ant-design/icons";
 import logo from "/public/images/logo.svg";
@@ -9,7 +9,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 import imageone from '/public/images/user.png'
+import { UserContext } from "@/app/lib/UserContext";
 const Navbar = () => {
+  const {user, logoutUser}=useContext(UserContext)
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [languageModalVisible, setLanguageModalVisible] = useState(false);
   const [isowner, setisowner] = useState(true);
@@ -26,7 +28,7 @@ const Navbar = () => {
     setisowner(!isowner);
     console.log("the owner is", isowner);
   };
-
+console.log(user)
 
   const profileMenu = (
     <Menu
@@ -54,6 +56,13 @@ const Navbar = () => {
         ) : (
           <Link href="/ownerProfile">Owner profile</Link>
         )}
+      </Menu.Item>
+      <Menu.Item key="4" style={{ color: "#EBCA7E" }}>
+        <button onClick={logoutUser}>
+
+        <a className="text-red-500" >Logout</a>
+        </button>
+
       </Menu.Item>
     </Menu>
   );

@@ -19,8 +19,7 @@ const Signup = ({
   description = "Please fill in valid information to create an Appartali account",
   showSocialButtons = true,
 }) => {
-  const [user, setUser] = useState(null);
-console.log(user)
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -31,7 +30,7 @@ console.log(user)
   const [isAgreed, setIsAgreed] = useState(false);
   const [registerUser, { isLoading, error }] = useRegisterUserMutation();
  if(isLoading){
-  return <p>Loading...</p>
+  return <p className="text-white text-4xl">Loading...</p>
  }
  console.log(error)
   const router = useRouter();
@@ -44,47 +43,48 @@ console.log(user)
   const handleCheckboxChange = (e) => {
     setIsAgreed(e.target.checked);
   };
+
+
   const handleFinish = async (e) => {
     e.preventDefault();
 
     if (!formData.firstName || !formData.lastName || !formData.email || !formData.password || !formData.phone) {
-        return Swal.fire("Validation Failed", "Please fill all fields", "error");
+      return Swal.fire("Validation Failed", "Please fill all fields", "error");
     }
 
     if (!isAgreed) {
-        return Swal.fire("Agreement Required", "You must agree to the terms and policy", "error");
+      return Swal.fire("Agreement Required", "You must agree to the terms and policy", "error");
     }
 
     try {
-        console.log("Form Data:", formData); // Log the form data
-        const response = await registerUser(formData).unwrap();
+      const response = await registerUser(formData).unwrap();
+      if (response.success) {
+        // Save user data and token in localStorage
+        localStorage.setItem("user", JSON.stringify(response.data?.newUser));
+        localStorage.setItem("token", response.data?.token);
 
-        console.log('respons',response)
-        if (response.success) {
-          Swal.fire({
-            title: "SignUp Successful!",
-            text: response?.message,
-            icon: "success",
-            confirmButtonText: "OK",
-            confirmButtonColor: "#EBCA7E",
-          }).then(() => {
-            router.push("/");
-          });
-            dispatch(setUser(response.newUser)); 
-           
-        }
-    } catch (error) {
-        console.error("Signup Error:", error); // More detailed logging
         Swal.fire({
-            title: "SignUp Failed",
-            text: error.data?.message || "Something went wrong. Please try again.",
-            icon: "error",
-            confirmButtonText: "OK",
-            confirmButtonColor: "#EBCA7E",
+          title: "SignUp successful!",
+          text: response.message || "User created successfully",
+          icon: "success",
+          confirmButtonText: "OK",
+          confirmButtonColor: "#EBCA7E",
         });
-    }
-};
 
+        // Redirect or take any action needed
+        router.push("/"); // Example route
+      }
+    } catch (error) {
+      console.error("Signup Error:", error);
+      Swal.fire({
+        title: "SignUp Failed",
+        text: error.data?.message || "Something went wrong. Please try again.",
+        icon: "error",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#EBCA7E",
+      });
+    }
+  };
 
  
 
