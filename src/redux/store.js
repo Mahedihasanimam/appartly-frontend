@@ -3,6 +3,7 @@ import storage from 'redux-persist/lib/storage';
 import { persistReducer } from 'redux-persist';
 import { api } from './api/ApiSlice';
 import useTokenReducer from './features/users/UserTokenSlice';
+import  userReducer  from './features/users/userSlice';
 
 
 const persistConfig = {
@@ -13,6 +14,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   UserAccessToken: useTokenReducer,
+  user:userReducer,
   [api.reducerPath]: api.reducer,
 });
 

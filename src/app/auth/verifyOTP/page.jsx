@@ -4,6 +4,7 @@ import { Input, Form, Button } from "antd";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "/public/images/logo.svg";
+import { useRouter } from "next/navigation";
 
 const VerifyOTP = ({
   title = "OTP Verification",
@@ -12,11 +13,14 @@ const VerifyOTP = ({
 }) => {
   const [otp, setOtp] = useState(["", "", "", ""]);
   const [form] = Form.useForm();
-
+  const router=useRouter( )
+const email=router.query
+console.log(email)
   const handleFinish = () => {
     const otpValue = otp.join("");
     console.log("Success:", { otp: otpValue });
     // Call the onFinish prop if provided
+    console.log(parseInt(otpValue))
     if (onFinish) {
       onFinish({ otp: otpValue });
     }
@@ -89,7 +93,8 @@ const VerifyOTP = ({
 </div>
 
           <Form.Item className="pt-6">
-            <Link href="/auth/createnewPassoword">
+            {/* <Link href="/auth/createnewPassoword">
+            </Link> */}
               <Button
                 className="text-[#FFFFFF] text-[16px] font-semibold p-6"
                 size="large"
@@ -100,7 +105,6 @@ const VerifyOTP = ({
               >
                 Submit
               </Button>
-            </Link>
           </Form.Item>
         </Form>
 

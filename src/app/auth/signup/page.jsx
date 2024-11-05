@@ -11,8 +11,9 @@ import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/app/firebase/Firebase.config";
-import { useRegisterUserMutation } from "@/redux/features/users/UserApi";
+import { useRegisterUserMutation, useSocialLoginMutation } from "@/redux/features/users/UserApi";
 import { useAppDispatch } from "@/redux/Hooks";
+import { setUser } from "@/redux/features/users/userSlice";
 
 const Signup = ({
   title = "Sign UP",
@@ -29,6 +30,7 @@ const Signup = ({
   });
   const [isAgreed, setIsAgreed] = useState(false);
   const [registerUser, { isLoading, error }] = useRegisterUserMutation();
+  const [socialLogin, { socialIsLoading }] = useSocialLoginMutation();
  if(isLoading){
   return <p className="text-white text-4xl">Loading...</p>
  }
@@ -60,9 +62,9 @@ const Signup = ({
       const response = await registerUser(formData).unwrap();
       if (response.success) {
         // Save user data and token in localStorage
-        localStorage.setItem("user", JSON.stringify(response.data?.newUser));
         localStorage.setItem("token", response.data?.token);
 
+        dispatch(setUser(response.data?.user));
         Swal.fire({
           title: "SignUp successful!",
           text: response.message || "User created successfully",
@@ -94,7 +96,37 @@ const Signup = ({
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       console.log("Google User Data:", user);
-      handlesignup(); // Modify this to handle the user registration if needed
+      // TO DO : call the loginUser mutation with the user data
+      const displayName = user.displayName;
+      const [firstName, lastName] = displayName.split(" "); // Split by space
+      const email = user.email;
+      const photoURL = user.photoURL;
+
+
+      const Googleuser = {
+        firstName,
+        lastName,
+        email,
+        photoURL
+      }
+      const response = await socialLogin(Googleuser) // (values).unwrap(); 
+      if (response?.data?.success) {
+        Swal.fire({
+          title: 'Login Successful!',
+          text: 'You have logged in successfully.',
+          icon: 'success',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#EBCA7E',
+        }).then(() => {
+          router.push('/');
+        });
+        // Store only the token in localStorage
+        localStorage.setItem("token", response.data?.data?.token);
+
+        // Dispatch action to set user data in RTK
+        dispatch(setUser(response.data?.data?.user));
+      }
+
     } catch (error) {
       Swal.fire("Login Failed", error.message, "error");
     }
@@ -105,8 +137,38 @@ const Signup = ({
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      console.log("Facebook User Data:", user);
-      handlesignup(); // Modify this to handle the user registration if needed
+
+      // Extract user information
+      const displayName = user.displayName;
+      const [firstName, lastName] = displayName.split(" ");
+      const email = user.email;
+      const photoURL = user.photoURL;
+
+      const GoogleUser = {
+        firstName,
+        lastName,
+        email,
+        photoURL,
+      };
+
+      const response = await socialLogin(GoogleUser);
+      if (response?.data?.success) {
+        Swal.fire({
+          title: 'Login Successful!',
+          text: 'You have logged in successfully.',
+          icon: 'success',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#EBCA7E',
+        }).then(() => {
+          router.push('/');
+        });
+
+        // Store only the token in localStorage
+        localStorage.setItem("token", response.data?.data?.token);
+
+        // Dispatch action to set user data in RTK
+        dispatch(setUser(response.data?.data?.user));
+      }
     } catch (error) {
       Swal.fire("Login Failed", error.message, "error");
     }
@@ -227,7 +289,7 @@ const Signup = ({
         </form>
 
         <p className="text-[#FFFFFFE5] text-center text-sm">
-          Already have an account? <Link href="/auth/login" className="text-secoundary">Log In</Link>
+          Already have an account? <Link href="/auth/GuestLogin" className="text-secoundary">Log In</Link>
         </p>
       </div>
     </div>

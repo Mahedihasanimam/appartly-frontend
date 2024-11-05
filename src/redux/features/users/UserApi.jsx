@@ -16,19 +16,46 @@ const userApi=api.injectEndpoints({
         body: user,
       }),
     }),
+    loginOwner: builder.mutation({
+      query: (user) => ({
+        url: "/users/auth/login-as-owner",
+        method: "POST",
+        body: user,
+      }),
+    }),
 
     socialLogin: builder.mutation({
       query: (user) => ({
         url: "/users/auth/login-social",
         method: "POST",
         body: user,
+        
+      }),
+      
+    }),
+ 
+    verifyEmail: builder.mutation({
+      query: (email) => ({
+        
+        url: "/users/auth/forgot-password",
+        method: "POST",
+        body: email,
       }),
     }),
-    // getUser: builder.query({
-    //   query: (id) => `users/${id}`,
-    // }),
+    OtpVerify: builder.mutation({
+      query: (data) => ({
+        
+        url: "/users/auth/verify-email",
+        method: "POST",
+        body: data,
+      }),
+    }),
+ 
+    getUser: builder.query({
+      query: (id) => `/users/get-one-user/${id}`,
+    }),
 
   }),
 });
 
-export const { useRegisterUserMutation, useLoginUserMutation,useSocialLoginMutation } = userApi;
+export const { useRegisterUserMutation, useLoginUserMutation,useSocialLoginMutation, useGetUserQuery,useLoginOwnerMutation,useVerifyEmailMutation,useOtpVerifyMutation  } = userApi;

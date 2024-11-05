@@ -1,26 +1,67 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input, Form, Button } from "antd";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "/public/images/logo.svg";
+import { useRouter } from "next/navigation";
+import { useOtpVerifyMutation } from "@/redux/features/users/UserApi"; // Ensure this import is correct
 
-const VerifyEmail = ({
-  title = "Verify email",
-  description = "We will send a 4-digit verification code to your email",
-  onLogin,
-  onForgotPassword,
-  onFacebookLogin,
-  onGoogleLogin,
-  showSocialButtons = true,
+const VerifyOTP = ({
+  title = "OTP Verification",
+  description = "We’ve sent you a verification code to your email",
+  onFinish,
 }) => {
+  const [otp, setOtp] = useState(["", "", "", ""]);
   const [form] = Form.useForm();
+  const router = useRouter();
+  const [otpVerify, { isLoading }] = useOtpVerifyMutation();
+  const [email, setEmail] = useState(null);
 
-  const handleFinish = (values) => {
-    if (onLogin) {
-      onLogin(values);
+  useEffect(() => {
+    // Extract email from query parameters
+    if (router.query.email) {
+      setEmail(router.query.email);
     }
+  }, [router.query.email]);
+
+  const handleFinish = async () => {
+    const otpValue = otp.join("");
+    console.log("OTP Value:", otpValue);
+
+    if (!email) {
+      console.error("No email provided!");
+      return;
+    }
+
+    try {
+      const response = await otpVerify({
+        email: email,
+        emailVerifyCode: parseInt(otpValue),
+      });
+
+      console.log("Response:", response);
+      if (response?.data?.success) {
+        console.log("OTP verified successfully!");
+        router.push("/auth/createnewPassword"); // Redirect on success
+      } else {
+        console.error("OTP verification failed.");
+      }
+    } catch (err) {
+      console.error("Error verifying OTP:", err);
+    }
+
     form.resetFields();
+  };
+
+  const handleChange = (value, index) => {
+    const otpCopy = [...otp];
+    otpCopy[index] = value;
+    setOtp(otpCopy);
+
+    if (value.length === 1 && index < 3) {
+      document.getElementById(`otpInput-${index + 1}`).focus();
+    }
   };
 
   return (
@@ -30,42 +71,58 @@ const VerifyEmail = ({
         <h2 className="text-2xl font-bold text-center text-white pt-12">{title}</h2>
         <p className="text-[#FFFFFFE5] text-center max-w-xs mx-auto opacity-70 text-sm">{description}</p>
 
-        <Form form={form} onFinish={handleFinish} className="mt-4">
-          <Form.Item
-            name="email"
-            rules={[{ required: true, message: "Please enter your email" }]}
-          >
-            <Input
-              style={{
-                height: "44px",
-                backgroundColor: "#242424",
-                border: "none",
-                color: "#FFFFFF99",
-              }}
-              type="email"
-              placeholder="Enter your Email"
-              className="rounded-lg placeholder:text-[#FFFFFF99]"
-            />
-          </Form.Item>
-          <Link href="/auth/verifyOTP">
+        <Form
+          layout="vertical"
+          onFinish={handleFinish}
+          form={form}
+          style={{ maxWidth: "400px", width: "100%" }}
+          className="mx-auto"
+        >
+          <div className="flex justify-between">
+            {otp.map((digit, index) => (
+              <Input
+                placeholder="0"
+                className="text-[#D0D5DD]"
+                key={index}
+                id={`otpInput-${index}`}
+                maxLength={1}
+                value={digit}
+                onChange={(e) => handleChange(e.target.value, index)}
+                style={{
+                  width: "80px",
+                  height: "80px",
+                  textAlign: "center",
+                  fontSize: "24px",
+                }}
+              />
+            ))}
+          </div>
+
+          <div className="text-end lg:mt-4">
+            <Link href="#">
+              <span className="text-[#EBCA7E] border-b border-[#EBCA7E] hover:text-[#EBCA7E]">
+                Resend Code
+              </span>
+            </Link>
+          </div>
+
+          <Form.Item className="pt-6">
             <Button
-              style={{
-                height: "44px",
-                backgroundColor: "#EBCA7E",
-                border: "none",
-                color: "#0F0F0F",
-              }}
+              className="text-[#FFFFFF] text-[16px] font-semibold p-6"
+              size="large"
               type="primary"
+              style={{ backgroundColor: "#EBCA7E", color: "#060000" }}
               htmlType="submit"
-              className="w-full mt-12 bg-[#EBCA7E] font-bold"
+              block
+              loading={isLoading}
             >
               Submit
             </Button>
-          </Link>
+          </Form.Item>
         </Form>
       </div>
     </div>
   );
 };
 
-export default VerifyEmail;
+export default VerifyOTP;

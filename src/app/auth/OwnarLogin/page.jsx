@@ -1,3 +1,5 @@
+
+
 'use client';
 import React from "react";
 import { Input, Form, Button, Space } from "antd";
@@ -8,9 +10,14 @@ import googleimg from "/public/icons/google.svg";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
-import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, createUserWithEmailAndPassword } from "firebase/auth";
+import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/app/firebase/Firebase.config";
-const OwnarLogin = ({
+import { useLoginOwnerMutation, useSocialLoginMutation } from "@/redux/features/users/UserApi";
+import { setUser } from "@/redux/features/users/userSlice";
+import { useDispatch } from "react-redux";
+
+
+const GuestLogin = ({
   title = "OwnarLogin",
   description = "Enter your email & password which had used to create Appartali account",
   onLogin,
@@ -19,77 +26,141 @@ const OwnarLogin = ({
 }) => {
   const [form] = Form.useForm();
   const router = useRouter();
+  const [loginUser, { isLoading }] = useLoginOwnerMutation();
+  const [socialLogin, { socialIsLoading }] = useSocialLoginMutation();
+  const dispatch = useDispatch();
+  const handleFinish = async (values) => {
 
-  const handleFinish = (values) => {
-    if (onLogin) {
-      onLogin(values);
+    try {
+      const response = await loginUser(values).unwrap(); // Unwraps the result to handle errors more easily
+      console.log(response);
+      if (response.success) {
+        if (onLogin) {
+          onLogin(response);
+        }
+        localStorage.setItem("token", response.data?.token);
+
+        dispatch(setUser(response.data?.user));
+        Swal.fire({
+          title: 'Login Successful!',
+          text: 'You have logged in successfully.',
+          icon: 'success',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#EBCA7E',
+        }).then(() => {
+          router.push('/');
+        });
+
+        form.resetFields();
+
+      }
+    } catch (error) {
+      Swal.fire("Login Failed", error.data?.message || "Something went wrong", "error");
     }
-
-    Swal.fire({
-      title: 'Login Successful!',
-      text: 'You have logged in successfully.',
-      icon: 'success',
-      confirmButtonText: 'OK',
-      confirmButtonColor: '#EBCA7E',
-    }).then(() => {
-      router.push('/');
-    });
-
-    form.resetFields();
   };
 
+  const handlesignup = () => {
+    Swal.fire({
+      title: "SignUp Successful!",
+      text: "You have signed up successfully.",
+      icon: "success",
+      confirmButtonText: "OK",
+      confirmButtonColor: "#EBCA7E",
+    }).then(() => {
+      router.push("/");
+    });
+  };
+
+  const onGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      console.log("Google User Data:", user);
+      // TO DO : call the loginUser mutation with the user data
+      const displayName = user.displayName;
+      const [firstName, lastName] = displayName.split(" "); // Split by space
+      const email = user.email;
+      const photoURL = user.photoURL;
 
 
+      const Googleuser = {
+        firstName,
+        lastName,
+        email,
+        photoURL
+      }
+      const response = await socialLogin(Googleuser) // (values).unwrap(); 
+      if (response?.data?.success) {
+        Swal.fire({
+          title: 'Login Successful!',
+          text: 'You have logged in successfully.',
+          icon: 'success',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#EBCA7E',
+        }).then(() => {
+          router.push('/');
+        });
+        // Store only the token in localStorage
+        localStorage.setItem("token", response.data?.data?.token);
 
+        // Dispatch action to set user data in RTK
+        dispatch(setUser(response.data?.data?.user));
+      }
 
+    } catch (error) {
+      Swal.fire("Login Failed", error.message, "error");
+    }
+  };
 
+  const onFacebookLogin = async () => {
+    const provider = new FacebookAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
 
+      // Extract user information
+      const displayName = user.displayName;
+      const [firstName, lastName] = displayName.split(" ");
+      const email = user.email;
+      const photoURL = user.photoURL;
 
+      const GoogleUser = {
+        firstName,
+        lastName,
+        email,
+        photoURL,
+      };
 
-  // SOCIAL SIGNING 
-   
- const handlesignup = () => {
-  Swal.fire({
-    title: "SignUp Successful!",
-    text: "You have signed up successfully.",
-    icon: "success",
-    confirmButtonText: "OK",
-    confirmButtonColor: "#EBCA7E",
-  }).then(() => {
-    router.push("/");
-  });
-};
-const onGoogleLogin = async () => {
-  const provider = new GoogleAuthProvider();
-  try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user; // Get user data
-    console.log("Google User Data:", user); // Log user data
-    handlesignup();
-  } catch (error) {
-    Swal.fire("Login Failed", error.message, "error");
-  }
-};
+      const response = await socialLogin(GoogleUser);
+      if (response?.data?.success) {
+        Swal.fire({
+          title: 'Login Successful!',
+          text: 'You have logged in successfully.',
+          icon: 'success',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#EBCA7E',
+        }).then(() => {
+          router.push('/');
+        });
 
-const onFacebookLogin = async () => {
-  const provider = new FacebookAuthProvider();
-  try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-    console.log("Facebook User Data:", user);
-    handlesignup();
-  } catch (error) {
-    Swal.fire("Login Failed", error.message, "error");
-  }
-};
+        // Store only the token in localStorage
+        localStorage.setItem("token", response.data?.data?.token);
+
+        // Dispatch action to set user data in RTK
+        dispatch(setUser(response.data?.data?.user));
+      }
+    } catch (error) {
+      Swal.fire("Login Failed", error.message, "error");
+    }
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-[#FFFFFF1A]">
       <div className="bg-[#060000] p-[40px] w-full max-w-xl rounded-lg space-y-4">
         <Image src={logo} alt="Logo" className="mb-4" height={200} width={200} />
         <h2 className="text-2xl font-bold text-center text-white pt-12">{title}</h2>
-        <p className="text-[#FFFFFFE5] text-center max-w-xs mx-auto opacity-70 text-sm">{description}</p>
-
+        <p className="text-[#FFFFFFE5] text-center max-w-2xl mx-auto opacity-70 text-sm">{description}</p>
 
         {showSocialButtons && (
           <Space className="pb-4 w-full">
@@ -113,7 +184,6 @@ const onFacebookLogin = async () => {
             </Button>
           </Space>
         )}
-
 
         <Form form={form} onFinish={handleFinish} className="mt-4">
           <Form.Item
@@ -148,7 +218,7 @@ const onFacebookLogin = async () => {
             />
           </Form.Item>
           <div className="flex justify-end items-center">
-            <Link 
+            <Link
               href="/auth/verifyEmail"
               className="text-secondary border-b border-secondary hover:text-[#EBCA7E]"
               onClick={onForgotPassword}
@@ -166,6 +236,7 @@ const onFacebookLogin = async () => {
             type="primary"
             htmlType="submit"
             className="w-full mt-12 bg-[#EBCA7E] font-bold"
+            loading={isLoading}
           >
             Log in
           </Button>
@@ -179,4 +250,4 @@ const onFacebookLogin = async () => {
   );
 };
 
-export default OwnarLogin;
+export default GuestLogin;

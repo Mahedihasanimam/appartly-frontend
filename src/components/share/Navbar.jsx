@@ -10,12 +10,16 @@ import Link from "next/link";
 
 import imageone from '/public/images/user.png'
 import { UserContext } from "@/app/lib/UserContext";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "@/redux/features/users/userSlice";
 const Navbar = () => {
-  const {user, logoutUser}=useContext(UserContext)
+  const user = useSelector((state) => state.user.user);
+  const {logoutUser,token}=useContext(UserContext)
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [languageModalVisible, setLanguageModalVisible] = useState(false);
   const [isowner, setisowner] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
+  const dispatch=useDispatch()
   const showLanguageModal = () => {
     setLanguageModalVisible(true);
   };
@@ -28,8 +32,18 @@ const Navbar = () => {
     setisowner(!isowner);
     console.log("the owner is", isowner);
   };
-console.log(user)
 
+console.log("user",user?.role)
+
+// const userRole=user?.role
+// const isownerr=userRole.map((role) => role === "owner")
+// const isguest=userRole.map((role) => role === "guest")
+// console.log('userRoleeeee',isownerr,isguest)
+
+const handleLogut = () => {
+  logoutUser()
+  dispatch(clearUser())
+}
   const profileMenu = (
     <Menu
       style={{
@@ -58,8 +72,8 @@ console.log(user)
         )}
       </Menu.Item>
       {
-        user && <Menu.Item key="4" style={{ color: "#EBCA7E" }}>
-        <button onClick={logoutUser}>
+        token && <Menu.Item key="4" style={{ color: "#EBCA7E" }}>
+        <button onClick={handleLogut}>
 
         <a className="text-red-500" >Logout</a>
         </button>
@@ -155,17 +169,19 @@ console.log(user)
                 overlay={profileMenu}
                 trigger={["hover"]}
               >
-                <svg width="40" height="41" viewBox="0 0 40 41" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect y="0.0361328" width="40" height="40" rx="16" fill="url(#paint0_linear_99_1963)" />
-                  <path d="M16 16.8361C16 14.627 17.7909 12.8361 20 12.8361C22.2091 12.8361 24 14.627 24 16.8361C24 19.0453 22.2091 20.8361 20 20.8361C17.7909 20.8361 16 19.0453 16 16.8361Z" fill="black" />
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M20 8.03613C13.3726 8.03613 8 13.4087 8 20.0361C8 26.6635 13.3726 32.0361 20 32.0361C26.6274 32.0361 32 26.6635 32 20.0361C32 13.4087 26.6274 8.03613 20 8.03613ZM9.6 20.0361C9.6 14.2924 14.2562 9.63613 20 9.63613C25.7438 9.63613 30.4 14.2924 30.4 20.0361C30.4 22.9954 29.164 25.6661 27.1801 27.5599C26.9385 24.6899 24.5324 22.4361 21.6 22.4361H18.4C15.4676 22.4361 13.0615 24.6899 12.8199 27.5599C10.836 25.6661 9.6 22.9954 9.6 20.0361Z" fill="black" />
-                  <defs>
-                    <linearGradient id="paint0_linear_99_1963" x1="0" y1="20.0361" x2="40" y2="20.0361" gradientUnits="userSpaceOnUse">
-                      <stop stop-color="#EBCA7E" />
-                      <stop offset="1" stop-color="#C4B490" />
-                    </linearGradient>
-                  </defs>
-                </svg>
+              {
+                user ? <div>{user?.email}</div> :   <svg width="40" height="41" viewBox="0 0 40 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect y="0.0361328" width="40" height="40" rx="16" fill="url(#paint0_linear_99_1963)" />
+                <path d="M16 16.8361C16 14.627 17.7909 12.8361 20 12.8361C22.2091 12.8361 24 14.627 24 16.8361C24 19.0453 22.2091 20.8361 20 20.8361C17.7909 20.8361 16 19.0453 16 16.8361Z" fill="black" />
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M20 8.03613C13.3726 8.03613 8 13.4087 8 20.0361C8 26.6635 13.3726 32.0361 20 32.0361C26.6274 32.0361 32 26.6635 32 20.0361C32 13.4087 26.6274 8.03613 20 8.03613ZM9.6 20.0361C9.6 14.2924 14.2562 9.63613 20 9.63613C25.7438 9.63613 30.4 14.2924 30.4 20.0361C30.4 22.9954 29.164 25.6661 27.1801 27.5599C26.9385 24.6899 24.5324 22.4361 21.6 22.4361H18.4C15.4676 22.4361 13.0615 24.6899 12.8199 27.5599C10.836 25.6661 9.6 22.9954 9.6 20.0361Z" fill="black" />
+                <defs>
+                  <linearGradient id="paint0_linear_99_1963" x1="0" y1="20.0361" x2="40" y2="20.0361" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#EBCA7E" />
+                    <stop offset="1" stop-color="#C4B490" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              }
 
               </Dropdown>
             </div>
