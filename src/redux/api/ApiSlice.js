@@ -13,10 +13,6 @@ export const api = createApi({
       }
       return headers;
     },
-    
-    
-    
-  
 }),
  
   endpoints: () => ({}),
