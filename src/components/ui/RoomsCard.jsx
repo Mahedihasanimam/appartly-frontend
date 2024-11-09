@@ -4,10 +4,10 @@ import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import Link from "next/link";
 const RoomsCard = ({ data }) => {
-
+console.log(data)
   return (
     <div>
-      <Link href={`/${data.id}`}>
+      <Link href={`/${data._id}`}>
 
       <Card
         hoverable
@@ -25,7 +25,7 @@ const RoomsCard = ({ data }) => {
         <div>
         <h2 className="text-lg font-medium">{data.location}</h2>
           <p className="text-[16px] font-medium">{data.host}</p>
-         <p className="text-lg font-medium mb-2">{data.price} Per Night</p>
+         <p className="text-lg font-medium mb-2"> $ {data.pricePerNight} Per Night</p>
         </div>
           <div>
             <div className="flex items-center space-x-1">

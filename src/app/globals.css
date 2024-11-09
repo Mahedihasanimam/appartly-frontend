@@ -196,7 +196,16 @@ span.anticon.anticon-calendar {
 span.anticon.anticon-swap-right {
   color: white;
 }
+.custom-select{
+  
+  -webkit-appearance: none; /* For Safari */
+  -moz-appearance: none; /* For Firefox */
+  appearance: none; /* For modern browsers */
+  background-image: none; /* Removes any default background image */
+  padding-right: 2rem; 
 
+
+}
 /* Customize the Ant Design Select component */
 .custom-select .ant-select-selector {
   background-color: #4b4b4b !important; /* Background color of the select input */

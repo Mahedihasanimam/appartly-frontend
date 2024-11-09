@@ -1,31 +1,60 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { MdOutlineChevronLeft } from "react-icons/md";
 import { useRouter } from "next/navigation";
-import { Input, Form, Button } from "antd";
-import { Select } from 'antd';
-import imageone from '/public/icons/home.png'
-const { Option } = Select;
-import TextArea from "antd/es/input/TextArea";
 import { DownOutlined } from "@ant-design/icons";
 import Image from "next/image";
+import imageone from '/public/icons/home.png';
+import { useDispatch } from "react-redux";
+import { setValue1 } from "@/redux/features/addPropertySlice/AddPropertySlice";
 
 const Page = () => {
+  const dispatch=useDispatch()
   const router = useRouter();
-  const [form] = Form.useForm(); // Initialize the form instance
+  const [formData, setFormData] = useState({
+    location: '',
+    numofrooms: '',
+    guest: '',
+    description: '',
+    propertyType: '',
+  });
 
-  const handleFinish = (values) => {
-    console.log('Form values:', values);
-    // Handle form submission logic here
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
-  const handleChange = (value) => {
-    console.log(`Selected: ${value}`);
+
+  const handleSelectChange = (value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      propertyType: value,
+    }));
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Validate that all fields are filled
+    const { location, numofrooms, guest, description, propertyType } = formData;
+    if (!location || !numofrooms || !guest || !description || !propertyType) {
+      alert("Please fill all the fields");
+      return;
+    }
+
+    console.log("Form data:", formData);
+    dispatch(setValue1(formData));
+    // Redirect to the next page
+    router.push("/proparty/makeitstandout");
+  };
+
   return (
     <div className="container mx-auto text-white p-4">
-      <div className="flex itemcs-center justify-between py-6 mt-12">
-        <div className="">
-          <h2 className="text-[24px] flex space-x-2 items-center font-bold ">
+      <div className="flex items-center justify-between py-6 mt-12">
+        <div>
+          <h2 className="text-[24px] flex space-x-2 items-center font-bold">
             <button onClick={() => router.back()} className="focus:outline-none">
               <MdOutlineChevronLeft className="text-4xl cursor-pointer" />
             </button>
@@ -42,124 +71,82 @@ const Page = () => {
       </div>
 
       <div>
-        <Form form={form} onFinish={handleFinish} className="mt-4 w-full">
+        <form onSubmit={handleSubmit} className="mt-4 w-full">
           <p className="text-[#FFFFFF] text-[16px] font-medium pb-1">What kind of property you have?</p>
-          <Select
-            showSearch
-            placeholder="Enter property categories"
-            style={{
-              height: "64px",
-              width: "100%",
-              color: "#ffff",
-            }}
-            onChange={handleChange}
-            suffixIcon={<DownOutlined className="text-lg text-white" />}
-            className="custom-select text-white mb-4" // Add a custom class
-          >
-            <Option value="rooms">Rooms</Option>
-            <Option value="countryside">Country side</Option>
-            <Option value="Apartment">Apartment</Option>
-            <Option value="Beachfront">Beachfront</Option>
-          </Select>
-
-
+          <div className="relative">
+            <select
+              name="propertyType"
+              value={formData.propertyType}
+              onChange={(e) => handleSelectChange(e.target.value)}
+              className="custom-select text-white mb-4 bg-[#242424] text-[#FFFFFF99] placeholder:text-[#FFFFFF99] w-full h-16 rounded-lg border-none p-4"
+            >
+              <option value="">Select property type</option>
+              <option value="rooms">Rooms</option>
+              <option value="countryside">Countryside</option>
+              <option value="apartment">Apartment</option>
+              <option value="beachfront">Beachfront</option>
+            </select>
+            <DownOutlined className="absolute right-4 top-1/2 transform -translate-y-1/2 text-lg text-white" />
+          </div>
 
           <div className="w-full flex gap-[20px] items-center justify-between">
-            <Form.Item
-              className="w-full"
-              name="location"
-              rules={[{ required: true, message: "Please enter your location" }]}
-            >
+            <div className="w-full">
               <p className="text-[#FFFFFF] text-[16px] font-medium pb-1">Location</p>
-              <Input
-                style={{
-                  height: "64px",
-                  backgroundColor: "#242424",
-                  border: "none",
-                  color: "#FFFFFF99",
-                }}
-                placeholder="Please enter your location of property"
-                className="rounded-lg ant-input"
-              />
-            </Form.Item>
-
-
-          </div>
-          <div className="w-full flex gap-[20px] items-center justify-between">
-
-            <Form.Item
-              className="w-full"
-              name="numofrooms"
-              rules={[{ required: true, message: "Please enter your Number of rooms" }]}
-            >
-              <p className="text-[#FFFFFF] text-[16px] font-medium pb-1">Number of rooms</p>
-              <Input
-                style={{
-                  width: "100%",
-                  height: "64px",
-                  backgroundColor: "#242424",
-                  border: "none",
-                  color: "#FFFFFF99",
-                }}
+              <input
                 type="text"
-                placeholder="Enter the total number of your rooms"
-                className="rounded-lg placeholder:text-[#FFFFFF99]"
+                name="location"
+                value={formData.location}
+                onChange={handleChange}
+                className="w-full h-16 bg-[#242424] text-[#FFFFFF99] rounded-lg p-4"
+                placeholder="Please enter your location of property"
               />
-            </Form.Item>
+            </div>
           </div>
 
-          <Form.Item
-            name="guest"
-            rules={[{ required: true, message: "Please enter that how many guest can stay" }]}
-          >
+          <div className="w-full flex gap-[20px] items-center justify-between">
+            <div className="w-full">
+              <p className="text-[#FFFFFF] text-[16px] font-medium pb-1">Number of rooms</p>
+              <input
+                type="text"
+                name="numofrooms"
+                value={formData.numofrooms}
+                onChange={handleChange}
+                className="w-full h-16 bg-[#242424] text-[#FFFFFF99] rounded-lg p-4"
+                placeholder="Enter the total number of rooms"
+              />
+            </div>
+          </div>
+
+          <div className="w-full">
             <p className="text-[#FFFFFF] text-[16px] font-medium pb-1">Guest</p>
-            <Input
-              style={{
-                height: "64px",
-                backgroundColor: "#242424",
-                border: "none",
-                color: "#FFFFFF99",
-              }}
-              type="email"
-              placeholder="Please enter that how many guest can stay"
-              className="rounded-lg placeholder:text-[#FFFFFF99]"
+            <input
+              type="text"
+              name="guest"
+              value={formData.guest}
+              onChange={handleChange}
+              className="w-full h-16 bg-[#242424] text-[#FFFFFF99] rounded-lg p-4"
+              placeholder="Please enter how many guests can stay"
             />
-          </Form.Item>
-          <Form.Item
-            name="decription"
-            rules={[{ required: true, message: "Please Describe about your" }]}
-          >
-            <p className="text-[#FFFFFF] text-[16px] font-medium pb-1">Describe </p>
-            <TextArea
-              style={{
-                height: "189px",
-                backgroundColor: "#242424",
-                border: "none",
-                color: "#FFFFFF99",
-              }}
-              type="email"
-              placeholder="Please enter that how many guest can stay"
-              className="rounded-lg placeholder:text-[#FFFFFF99]"
+          </div>
+
+          <div className="w-full">
+            <p className="text-[#FFFFFF] text-[16px] font-medium pb-1">Description</p>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              className="w-full h-48 bg-[#242424] text-[#FFFFFF99] rounded-lg p-4"
+              placeholder="Please describe your property"
             />
-          </Form.Item>
+          </div>
 
-
-
-          <Button
-            onClick={() => router.push('/proparty/makeitstandout')}
-            style={{
-              height: "48px",
-              backgroundColor: "#EBCA7E",
-              border: "none",
-              color: "#0F0F0F",
-            }}
-            type="primary"
-            htmlType="submit"
-            className="w-full mt-6 bg-[#EBCA7E] font-bold"
+          <button
+            type="submit"
+            className="w-full mt-6 h-12 bg-[#EBCA7E] font-bold rounded-lg text-[#0F0F0F] border-none"
           >
             Submit
-          </Button>
-        </Form>
+          </button>
+        </form>
       </div>
     </div>
   );

@@ -1,18 +1,17 @@
-'use client'
-import { Button, Card, Rate } from "antd";
+'use client';
+import { Button } from "antd";
 import React from "react";
-import { HeartFilled, HeartOutlined } from "@ant-design/icons";
-import Image from "next/image";
-import propartyimage from "/public/images/proparty.png";
-import ownerImage from "/public/images/user.png";
-import PropartyCard from "../ui/PropartyCard";
 import { useRouter } from "next/navigation";
-import whatsap from '/public/icons/whatsap.gif'
-import animationData from '/public/Animationwhatsapp.json'
-import Lottie from "lottie-react";
+import dynamic from 'next/dynamic';
+import ownerImage from "/public/images/user.png";
+import propartyimage from "/public/images/proparty.png";
+import PropartyCard from "../ui/PropartyCard";
+import animationData from '/public/Animationwhatsapp.json';
+
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
+
 const Proparty = () => {
-  // Sample property data
-  const router=useRouter()
+  const router = useRouter();
   const proparty = [
     {
       id: "1",
@@ -104,31 +103,39 @@ const Proparty = () => {
     },
   ];
 
-  const whatsappNumber = '+8801860650703'; // Replace with your actual number
-  const message = 'Hello, I would like to chat!'; // Default message
+  const whatsappNumber = '+8801860650703';
+  const message = 'Hello, I would like to chat!';
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+
   return (
-    <div className="container mx-auto py-12 ">
+    <div className="container mx-auto py-12">
       <div>
-      <div>
-        <h1 className="xl:text-[36px] lg:text-[36px] font-black  text-2xl text-white font-Merriweather text-center pb-12 leading-10">
-          Transform your property into a lucrative <br /> experience for
-          travelers
+        <h1 className="xl:text-[36px] lg:text-[36px] font-black text-2xl text-white font-Merriweather text-center pb-12 leading-10">
+          Transform your property into a lucrative <br /> experience for travelers
         </h1>
-        <p></p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          {proparty.map((item) => (
+            <PropartyCard item={item} key={item.id} />
+          ))}
+        </div>
+        <Button
+          onClick={() => router.push('/proparty/addpropartytrailer')}
+          style={{ backgroundColor: "#EBCA7E", color: 'black', height: "48px", width: '200px' }}
+          className="mt-12 block mx-auto px-8 font-bold text-black bg-secoundary hover:bg-secoundary"
+        >
+          Add a property
+        </Button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-        {proparty.map((item) => (
-          <PropartyCard item={item} key={item.id} />
-        ))}
-      </div>
-
-      <Button onClick={()=>router.push('/proparty/addpropartytrailer')} style={{backgroundColor: "#EBCA7E",color:'black',height:"48px",width:'200px'}}  className="mt-12 block mx-auto px-8  font-bold text-black bg-secoundary hover:bg-secoundary">Add a property</Button>
-      </div>
-      <div  onClick={() => window.open(whatsappLink, '_blank')} className="fixed bottom-[10%] right-[5%] rounded-full cursor-pointer h-[70px] w-[70px] shadow-lg shadow-black z-[9999]">
-      <Lottie animationData={animationData} loop={true} />
-    </div>
-
+      {typeof window !== 'undefined' && (
+        <div
+          onClick={() => {
+            window.open(whatsappLink, '_blank');
+          }}
+          className="fixed bottom-[10%] right-[5%] rounded-full cursor-pointer h-[70px] w-[70px] shadow-lg shadow-black z-[9999]"
+        >
+          <Lottie animationData={animationData} loop={true} />
+        </div>
+      )}
     </div>
   );
 };

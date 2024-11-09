@@ -12,8 +12,9 @@ import { useRouter } from "next/navigation";
 import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/app/firebase/Firebase.config";
 import { useRegisterUserMutation, useSocialLoginMutation } from "@/redux/features/users/UserApi";
-import { useAppDispatch } from "@/redux/Hooks";
+
 import { setUser } from "@/redux/features/users/userSlice";
+import { useAppDispatch } from "@/redux/hooks";
 
 const Signup = ({
   title = "Sign UP",
@@ -28,6 +29,9 @@ const Signup = ({
     phone: "",
     password: "",
   });
+  const router = useRouter();
+  
+  const dispatch = useAppDispatch();
   const [isAgreed, setIsAgreed] = useState(false);
   const [registerUser, { isLoading, error }] = useRegisterUserMutation();
   const [socialLogin, { socialIsLoading }] = useSocialLoginMutation();
@@ -35,8 +39,7 @@ const Signup = ({
   return <p className="text-white text-4xl">Loading...</p>
  }
  console.log(error)
-  const router = useRouter();
-  const dispatch = useAppDispatch();
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
