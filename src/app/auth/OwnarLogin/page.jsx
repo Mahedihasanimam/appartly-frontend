@@ -88,7 +88,7 @@ const GuestLogin = ({
         firstName,
         lastName,
         email,
-        photoURL
+        image:photoURL
       }
       const response = await socialLogin(Googleuser) // (values).unwrap(); 
       if (response?.data?.success) {
@@ -243,7 +243,7 @@ const GuestLogin = ({
         </Form>
         <p className="mt-2 text-center text-sm text-white">
           Don’t have an account?{" "}
-          <Link href="/auth/signup" className="text-[#EBCA7E]">SignUp</Link>
+          <Link href="/auth/ownerSignup" className="text-[#EBCA7E]">SignUp as Owner</Link>
         </p>
       </div>
     </div>

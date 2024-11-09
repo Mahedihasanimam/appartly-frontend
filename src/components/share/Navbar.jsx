@@ -37,6 +37,7 @@ console.log(user?.role.includes('owner'))
   };
 
 console.log("user",user?.role)
+console.log("user",user?.role)
 
 
 console.log(isowner)

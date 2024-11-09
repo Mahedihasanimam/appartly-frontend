@@ -9,6 +9,20 @@ const userApi=api.injectEndpoints({
         body: user,
       }),
     }),
+    registerOwner: builder.mutation({
+      query: (user) => ({
+        url: "/users/auth/signup-as-owner",
+        method: "POST",
+        body: user,
+      }),
+    }),
+    BecomeAnInvestor: builder.mutation({
+      query: (user) => ({
+        url: "/users/auth/become-an-investor",
+        method: "POST",
+        body: user,
+      }),
+    }),
     loginUser: builder.mutation({
       query: (user) => ({
         url: "/users/auth/login",
@@ -66,4 +80,4 @@ const userApi=api.injectEndpoints({
   }),
 });
 
-export const { useRegisterUserMutation, useLoginUserMutation,useSocialLoginMutation, useGetUserQuery,useLoginOwnerMutation,useVerifyEmailMutation,useOtpVerifyMutation,useResetPasswordMutation  } = userApi;
+export const { useRegisterUserMutation,useRegisterOwnerMutation,useBecomeAnInvestorMutation, useLoginUserMutation,useSocialLoginMutation, useGetUserQuery,useLoginOwnerMutation,useVerifyEmailMutation,useOtpVerifyMutation,useResetPasswordMutation  } = userApi;

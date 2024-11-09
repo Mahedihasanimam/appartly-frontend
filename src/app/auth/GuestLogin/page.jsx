@@ -91,12 +91,14 @@ const dispatch = useDispatch();
       firstName,
       lastName,
       email,
-      photoURL
+      image:photoURL
     }
+
     const response = await socialLogin(Googleuser) // (values).unwrap(); 
     if(response?.data?.success){
+console.log('-----------------------',response)
       Swal.fire({
-        title: 'Login Successful!',
+        title: 'Social Login Successful!',
         text: 'You have logged in successfully.',
         icon: 'success',
         confirmButtonText: 'OK',
@@ -135,6 +137,7 @@ const dispatch = useDispatch();
         photoURL,
       };
   
+      console.log('---------------------',GoogleUser)
       const response = await socialLogin(GoogleUser);
       if (response?.data?.success) {
         Swal.fire({

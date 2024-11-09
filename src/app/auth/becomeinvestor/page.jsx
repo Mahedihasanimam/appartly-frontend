@@ -1,44 +1,71 @@
 "use client";
 import React, { useState } from "react";
-import { Input, Form, Button, Space, Checkbox, Flex } from "antd";
-import logo from "/public/images/logo.svg";
 import Image from "next/image";
-import fbimage from "/public/icons/fb.svg";
-import googleimg from "/public/icons/google.svg";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import logo from "/public/images/logo.svg";
 import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
+import { useBecomeAnInvestorMutation } from "@/redux/features/users/UserApi";
+
 const Becomeinvestor = ({
   title = "Become an Investor",
-  description = "Please fill the valid information to create appartali investor account",
-  onLogin,
-  onForgotPassword,
-  onFacebookLogin,
-  onGoogleLogin,
-  showSocialButtons = true,
+  description = "Please fill the valid information to create an investor account",
 }) => {
-  const [form] = Form.useForm();
-  const router=useRouter()
-  const handleFinish = (values) => {
-   
-    if (onLogin) {
-      onLogin(values);
-    }
-    form.resetFields();
+  const router = useRouter();
+  const [becomeAnInvestor] = useBecomeAnInvestorMutation();
+  const [formData, setFormData] = useState({
+    firstname: "",
+    email: "",
+    location: "",
+    roomnumber: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handesubmit=()=>{
-    Swal.fire({
-      title: "Submited!",
-      text: "details submitted successfully please wait for approval",
-      icon: "success"
-    });
-    router.push('/')
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Call the mutation with form data
+      const response = await becomeAnInvestor({
+        email: formData.email,
+        rooms: formData.roomnumber,
+        phone: formData.firstname,
+        location: formData.location,
+      });
+
+      console.log(response);
+
+      if (response.data?.success) {
+        Swal.fire({
+          title: "Submitted!",
+          text: response.data?.message || "Details submitted successfully, please wait for approval",
+          icon: "success",
+        }).then(() => {
+          router.push('/');
+        });
+      } else {
+        Swal.fire({
+          title: "Something went wrong!",
+          text: response.error?.data?.message || "An error occurred, please try again.",
+          icon: "error",
+        }).then(() => {
+          router.push('/auth/ownerSignup');
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Submission Failed",
+        text: error.message || "An unexpected error occurred",
+        icon: "error",
+      });
+    }
+  };
 
   return (
-    <div className="flex  justify-center items-center min-h-screen bg-[#FFFFFF1A]">
-      <div className=" bg-[#060000] p-[40px] w-full max-w-2xl rounded-lg space-y-4 ">
+    <div className="flex justify-center items-center min-h-screen bg-[#FFFFFF1A]">
+      <div className="bg-[#060000] p-[40px] w-full max-w-2xl rounded-lg space-y-4">
         <Image
           src={logo}
           alt="Logo"
@@ -47,118 +74,82 @@ const Becomeinvestor = ({
           width={200}
         />
         <h2 className="text-2xl font-bold text-center text-white pt-12">{title}</h2>
-        <p className="text-[#FFFFFFE5]  text-center max-w-xs mx-auto opacity-70 text-sm ">{description}</p>
+        <p className="text-[#FFFFFFE5] text-center max-w-xs mx-auto opacity-70 text-sm">{description}</p>
 
-        <Form form={form} onFinish={handleFinish} className="mt-4 w-full">
-
-            <div className="w-full flex gap-[20px] items-center justify-between"> 
-                 <Form.Item
-                 className="w-full"
-               
-            name="firstname"
-            rules={[{ required: true, message: "Please Enter your last name" }]}
-          >
-            <p className="text-[#FFFFFF] text-[16px] font-medium">Contact number*</p>
-            <Input
-              style={{
-                width: "100%",
-                height: "44px",
-                backgroundColor: "#242424",
-                border: "none",
-                color: "#FFFFFF99",
-              }}
-              type="text"
+        <form onSubmit={handleSubmit} className="mt-4 w-full space-y-4">
+          <div>
+            <label className="text-[#FFFFFF] text-[16px] font-medium" htmlFor="firstname">
+              Contact number*
+            </label>
+            <input
+              id="firstname"
+              name="firstname"
+              type="number"
               placeholder="Enter your phone number"
-              className="rounded-lg placeholder:text-[#FFFFFF99] w-full"
+              value={formData.firstname}
+              onChange={handleChange}
+              className="w-full h-[44px] bg-[#242424] border-none rounded-lg placeholder:text-[#FFFFFF99] text-[#FFFFFF99] p-2"
+              required
             />
-        
-    
-          </Form.Item>
-          
-          
-          
           </div>
-          <Form.Item
-            name="email"
-            rules={[{ required: true, message: "Please enter your email" }]}
-          >
-             <p className="text-[#FFFFFF] text-[16px] font-medium">Email*</p>
-            <Input
-              style={{
-                height: "44px",
-                backgroundColor: "#242424",
-                border: "none",
-                color: "#FFFFFF99",
-              }}
+
+          <div>
+            <label className="text-[#FFFFFF] text-[16px] font-medium" htmlFor="email">
+              Email*
+            </label>
+            <input
+              id="email"
+              name="email"
               type="email"
               placeholder="Enter your Email"
-              className="rounded-lg placeholder:text-[#FFFFFF99]"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full h-[44px] bg-[#242424] border-none rounded-lg placeholder:text-[#FFFFFF99] text-[#FFFFFF99] p-2"
+              required
             />
-          </Form.Item>
-          
-
-
-          <div className="w-full flex gap-[20px] items-center justify-between"> 
-          <Form.Item
-          className="w-full"
-            name="location"
-            rules={[{ required: true, message: "Please enter Property/Home" }]}
-          >
-             <p className="text-[#FFFFFF] text-[16px] font-medium">Property/Home Location*</p>
-            <Input
-              style={{
-                height: "44px",
-                backgroundColor: "#242424",
-                border: "none",
-                color: "#FFFFFF99",
-              }}
-              placeholder="Property/Home"
-              className="rounded-lg ant-input"
-            />
-          </Form.Item>
-
-
-          <Form.Item
-          className="w-full"
-            name="roomnumber"
-            rules={[{ required: true, message: "Please enter your Number of rooms*" }]}
-          >
-             <p className="text-[#FFFFFF] text-[16px] font-medium">Number of rooms*</p>
-            <Input
-              style={{
-                height: "44px",
-                backgroundColor: "#242424",
-                border: "none",
-                color: "#FFFFFF99",
-              }}
-              placeholder="Number of rooms"
-              className="rounded-lg ant-input"
-            />
-          </Form.Item>
-          
-          
-          
           </div>
 
+          <div className="lg:flex flex-row items-center space-x-4 pb-4">
+            <div>
+              <label className="text-[#FFFFFF] text-[16px] font-medium" htmlFor="location">
+                Property/Home Location*
+              </label>
+              <input
+                id="location"
+                name="location"
+                type="text"
+                placeholder="Property/Home"
+                value={formData.location}
+                onChange={handleChange}
+                className="w-full h-[44px] bg-[#242424] border-none rounded-lg placeholder:text-[#FFFFFF99] text-[#FFFFFF99] p-2"
+                required
+              />
+            </div>
 
+            <div>
+              <label className="text-[#FFFFFF] text-[16px] font-medium" htmlFor="roomnumber">
+                Number of rooms*
+              </label>
+              <input
+                id="roomnumber"
+                name="roomnumber"
+                type="number"
+                placeholder="Number of rooms"
+                value={formData.roomnumber}
+                onChange={handleChange}
+                className="w-full h-[44px] bg-[#242424] border-none rounded-lg placeholder:text-[#FFFFFF99] text-[#FFFFFF99] p-2"
+                required
+              />
+            </div>
+          </div>
 
-
-          <Button
-          onClick={handesubmit}
-            style={{
-              height: "44px",
-              backgroundColor: "#EBCA7E",
-              border: "none",
-              color: "#0F0F0F",
-            }}
-            type="primary"
-            htmlType="submit"
-            className="w-full mt-12 bg-[#EBCA7E] font-bold"
+          <button
+            type="submit"
+            className="w-full h-[44px] bg-[#EBCA7E] text-[#0F0F0F] font-bold rounded-lg mt-4"
           >
-           Submit
-          </Button>
-        </Form>
-    
+            Submit
+          </button>
+        </form>
       </div>
     </div>
   );
