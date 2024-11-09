@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Input, Button, Dropdown, Menu, Drawer, Modal, Select } from "antd";
 import { MenuOutlined, NotificationFilled } from "@ant-design/icons";
 import logo from "/public/images/logo.svg";
@@ -12,8 +12,10 @@ import imageone from '/public/images/user.png'
 import { UserContext } from "@/app/lib/UserContext";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "@/redux/features/users/userSlice";
+import { useRouter } from "next/navigation";
 const Navbar = () => {
   const user = useSelector((state) => state.user.user);
+  const router=useRouter()
   const {logoutUser,token}=useContext(UserContext)
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [languageModalVisible, setLanguageModalVisible] = useState(false);
@@ -29,12 +31,15 @@ const Navbar = () => {
   };
 
   const handleSwitch = () => {
-    setisowner(!isowner);
-    console.log("the owner is", isowner);
+console.log(user?.role.includes('owner'))
+    user?.role.includes("owner")?  setisowner(!isowner) : router.push('/auth/becomeinvestor')
+    
   };
 
 console.log("user",user?.role)
 
+
+console.log(isowner)
 // const userRole=user?.role
 // const isownerr=userRole.map((role) => role === "owner")
 // const isguest=userRole.map((role) => role === "guest")
@@ -125,14 +130,14 @@ const handleLogut = () => {
         {/* Right Side: Links (Hidden on small screens) */}
         <div className="hidden lg:flex items-center space-x-6">
           {isowner ? (
-            <Link href={'#'}>  <Button
+              <Button
               onClick={handleSwitch}
               style={{ backgroundColor: "#EBCA7E", color: "#000000" }}
               className="bg-[#EBCA7E] text-[#000000] font-bold text-[16px] p-5"
               type="primary"
             >
               Estimate my property
-            </Button></Link>
+            </Button>
           ) : (
             <Button
               onClick={handleSwitch}
