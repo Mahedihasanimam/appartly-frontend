@@ -8,8 +8,8 @@ import { useGetRoomsQuery } from '@/redux/features/roomsSlice/RoomApi';
 
 const Rooms = () => {
 
-  const {data,isError,isLoading}=useGetRoomsQuery()
-  console.log(data.properties)
+  // const {data,isError,isLoading}=useGetRoomsQuery()
+  // console.log(data.properties)
   // Sample data for categories
   const categories = ["All Category", "Apartment", "Studio", "Villa", "House", "Cottage"];
 
@@ -116,9 +116,9 @@ const Rooms = () => {
   // Function to filter rooms by category
   const filterRoomsByCategory = (category) => {
     if (category === "All Category") {
-      return data?.properties; // Return all rooms for "All Category"
+      return roomsData; // Return all rooms for "All Category"
     }
-    return data?.properties.filter((room) => room.category === category);
+    return roomsData.filter((room) => room.category === category);
   };
 const router=useRouter()
   return (

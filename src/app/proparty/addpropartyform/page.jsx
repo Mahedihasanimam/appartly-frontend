@@ -11,6 +11,7 @@ import { setValue1 } from "@/redux/features/addPropertySlice/AddPropertySlice";
 const Page = () => {
   const dispatch=useDispatch()
   const router = useRouter();
+
   const [formData, setFormData] = useState({
     location: '',
     numofrooms: '',
@@ -49,6 +50,7 @@ const Page = () => {
     // Redirect to the next page
     router.push("/proparty/makeitstandout");
   };
+
 
   return (
     <div className="container mx-auto text-white p-4">
@@ -107,7 +109,7 @@ const Page = () => {
             <div className="w-full">
               <p className="text-[#FFFFFF] text-[16px] font-medium pb-1">Number of rooms</p>
               <input
-                type="text"
+                type="number"
                 name="numofrooms"
                 value={formData.numofrooms}
                 onChange={handleChange}

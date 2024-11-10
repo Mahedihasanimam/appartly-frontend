@@ -6,7 +6,7 @@ export const api = createApi({
     prepareHeaders: (headers, { getState }) => {
       const state = getState();
       console.log('Current state:', state); // Log entire state for debugging
-      const token = state.UserAccessToken.token; // This should reflect the correct path
+      const token = localStorage.getItem('token'); // This should reflect the correct path
       console.log('Current token:', token);
       if (token) {
         headers.set('authorization', `Bearer ${token}`);

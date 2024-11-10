@@ -7,6 +7,8 @@ import { Input, Form, Button, Progress, message } from "antd";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
 import imageone from "/public/icons/stand.png";
+import { useDispatch } from "react-redux";
+import { setValue2 } from "@/redux/features/addPropertySlice/AddPropertySlice";
 
 const Page = () => {
   const router = useRouter();
@@ -15,11 +17,22 @@ const Page = () => {
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const maxFiles = 4;
-
+  
+  const dispatch=useDispatch()
   const handleFinish = (values) => {
-    console.log("Form values:", values);
-    // Handle form submission logic here
+
+    
+    // Combine form values and files for a comprehensive log
+    const allValues = {
+      ...values,
+      files: files,
+    };
+  
+    console.log("All form data with files:", allValues);
+    dispatch(setValue2(allValues))
+    router.push("/proparty/finishandpublish");
   };
+  
 
   const onDrop = (acceptedFiles) => {
     if (files.length + acceptedFiles.length > maxFiles) {
@@ -82,9 +95,9 @@ const Page = () => {
     setProgress(0);
     setUploading(false);
 
-    if (totalUploaded === totalFiles) {
-      router.push("/proparty/finishandpublish");
-    }
+    // if (totalUploaded === totalFiles) {
+    //   router.push("/proparty/finishandpublish");
+    // }
   };
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
@@ -99,7 +112,7 @@ const Page = () => {
             </button>
             Make it stand out
           </h2>
-          <p className="text-[#FFFFFFCC] pl-2 pl-8 pt-2">
+          <p className="text-[#FFFFFFCC]  pl-8 pt-2">
             Share some basic info, like where it is and how many guests can stay.
           </p>
         </div>
