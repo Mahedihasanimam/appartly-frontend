@@ -17,3 +17,6 @@ export const api = createApi({
  
   endpoints: () => ({}),
 });
+
+
+export const imageUrl = "http://192.168.12.158:4000/"

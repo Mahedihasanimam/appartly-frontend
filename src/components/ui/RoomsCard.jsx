@@ -3,8 +3,9 @@ import { React, useState } from "react";
 import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import Link from "next/link";
+import { imageUrl } from "@/redux/api/ApiSlice";
 const RoomsCard = ({ data }) => {
-console.log(data)
+console.log(imageUrl+data.images?.[0])
   return (
     <div>
       <Link href={`/${data._id}`}>
@@ -14,9 +15,11 @@ console.log(data)
         className="rounded-lg bg-gray-800  overflow-hidden shadow-lg border-none"
         cover={
           <Image
+            width={300}
+            height={200}
             alt={data.location}
-            src={data.image}
-            className="h-48 w-full object-cover "
+            src={ imageUrl+ data.images?.[0]}
+            className=" w-full object-cover "
           />
         }
         bodyStyle={{ padding: "16px", backgroundColor: "#3B3B3B", color: "white" }}
