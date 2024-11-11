@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import imageone from "/public/icons/car.png";
 import { useDispatch, useSelector } from "react-redux";
 import { selectFormData, setValue3 } from "@/redux/features/addPropertySlice/AddPropertySlice";
-import { useAddAPropertyMutation } from "@/redux/features/addPropertyapi/page";
+import { useAddAPropertyMutation } from "@/redux/features/Propertyapi/page";
 const Page = () => {
   const allFormData = useSelector(selectFormData);
   const router = useRouter();

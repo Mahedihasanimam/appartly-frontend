@@ -2,12 +2,17 @@
 import { Button, Tabs } from 'antd';
 import RoomsCard from '../ui/RoomsCard';
 import { useRouter } from 'next/navigation';
-import { useGetRoomsQuery } from '@/redux/features/roomsSlice/RoomApi';
+
 import { useState } from 'react';
+import { useGetRoomsQuery } from '@/redux/features/Propertyapi/page';
 
 const Rooms = () => {
-  const { data, isError, isLoading } = useGetRoomsQuery();
+  const router = useRouter();
+  const { data, isError, isLoading,refetch } = useGetRoomsQuery({}, {
+    refetchOnFocus: true
+  });
   const [activeKey, setActiveKey] = useState("1");
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -17,16 +22,15 @@ const Rooms = () => {
   }
 
   // Log the data structure to verify its contents
-  console.log(data?.properties);
+  console.log("property data: ",data?.properties);
 
   // Extract properties from the data for easier handling
   const roomsData = data?.properties || [];
+  console.log(roomsData);
 
-  // Sample categories for filtering
-  const categories = ["All Category", "Apartment", "Rooms", "Villa", "House", "Cottage", "Countryside"];
-
-  // State to manage the active tab key
-
+  // Create a unique list of categories with "All Category" at the beginning
+  const uniqueCategories = Array.from(new Set(roomsData.map((room) => room.category)));
+  const categories = ['All Category', ...uniqueCategories];
 
   // Function to handle tab change
   const handleTabChange = (key) => {
@@ -41,13 +45,14 @@ const Rooms = () => {
     return roomsData.filter((room) => room.category.toLowerCase() === category.toLowerCase());
   };
 
-  const router = useRouter();
-
+  
   return (
     <div className="container mx-auto py-16 px-4">
       <h1 className="xl:text-[56px] lg:text-[56px] font-black leading-none text-2xl text-white font-Merriweather text-center pb-12">
         Explore Amazing Rooms
       </h1>
+
+   
 
       {/* Tabs for categories */}
       <Tabs
@@ -72,9 +77,9 @@ const Rooms = () => {
           >
             {/* Room cards for each category */}
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 gap-8">
-              {filterRoomsByCategory(category).slice(1,7).map((item) => (
+              {filterRoomsByCategory(category).slice(-8).map((item, itemIndex) => (
                 <RoomsCard key={item._id} data={item} />
-              ))}
+              )).slice(-8, category === 'All Category' ? undefined : 7)}
             </div>
           </Tabs.TabPane>
         ))}

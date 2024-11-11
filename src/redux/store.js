@@ -7,24 +7,17 @@ import  userReducer  from './features/users/userSlice';
 import  formReducer  from './features/addPropertySlice/AddPropertySlice';
 
 
-const persistConfig = {
-  key: 'next',
-  storage,
- 
-};
-
-const rootReducer = combineReducers({
-  UserAccessToken: useTokenReducer,
-  user:userReducer,
-  form:formReducer,
-  [api.reducerPath]: api.reducer,
-});
 
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+
 
 const store = configureStore({
-  reducer: persistedReducer,
+  reducer : {
+    UserAccessToken: useTokenReducer,
+    user:userReducer,
+    form:formReducer,
+    [api.reducerPath]: api.reducer,
+  },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware),
 });
