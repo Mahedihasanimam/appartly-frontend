@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState,useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Carousel, DatePicker, InputNumber, Button, Rate, Input, message } from "antd";
 import Image from "next/image";
 import slideimage from "/public/images/Rectangle 67.png";
@@ -14,6 +14,7 @@ import {
   LeftOutlined,
   MessageOutlined,
   ShopOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
 import favimg from "/public/icons/fevorite.png";
@@ -45,132 +46,46 @@ import { FaLocationPinLock } from "react-icons/fa6";
 import { Card, Avatar, List, Divider, Progress, Tooltip } from "antd"; // Import from Ant Design
 import profileimg from "/public/images/about.png";
 import { useRouter } from "next/navigation";
+import { useGetRoomsByIdQuery } from "@/redux/features/Propertyapi/page";
+import { imageUrl } from "@/redux/api/ApiSlice";
 
 const Page = ({ params }) => {
-  console.log(params);
-  const reviews = [
-    {
-      id: 1,
-      name: "Cheng Chuang",
-      years: 6,
-      stayType: "Apartotel",
-      date: "August 2024",
-      rating: 5,
-      review:
-        "This was an astonishing stay in a gorgeous place. The taste in decorations and internal design is something else. I cannot fault anything. Sai Nana is beautiful and so is the house. The room was clean and comfortable with all the necessary amenities. The staff was incredibly welcoming, making our stay truly unforgettable.",
-      shortReview:
-        "This was an astonishing stay in a gorgeous place. The taste in decorations...",
-      imageUrl: profileimg,
-    },
-    {
-      id: 2,
-      name: "Ayesha Khan",
-      years: 4,
-      stayType: "Apartotel",
-      date: "July 2024",
-      rating: 4,
-      review:
-        "I had a great time staying here. The staff were friendly, and the location was perfect for sightseeing. The interiors were modern and clean, though a bit small for a family. Overall, I’d recommend it to anyone visiting the area.",
-      shortReview:
-        "I had a great time staying here. The staff were friendly, and the location...",
-      imageUrl: profileimg,
-    },
-    {
-      id: 3,
-      name: "John Doe",
-      years: 2,
-      stayType: "Hotel",
-      date: "June 2024",
-      rating: 3,
-      review:
-        "The hotel was decent, but I had some issues with the air conditioning. The location was good, but the service could use some improvement.",
-      shortReview:
-        "The hotel was decent, but I had some issues with the air conditioning.",
-      imageUrl: profileimg,
-    },
-    {
-      id: 4,
-      name: "Emma Watson",
-      years: 5,
-      stayType: "Apartotel",
-      date: "August 2024",
-      rating: 5,
-      review:
-        "Absolutely loved my stay here! The decor was stunning and the staff were incredibly helpful. I can't wait to return!",
-      shortReview: "Absolutely loved my stay here! The decor was stunning...",
-      imageUrl: profileimg,
-    },
-    {
-      id: 5,
-      name: "Michael Smith",
-      years: 3,
-      stayType: "Hotel",
-      date: "September 2024",
-      rating: 4,
-      review:
-        "Very comfortable stay. The bed was cozy, and the breakfast was delicious. I would recommend this hotel to anyone.",
-      shortReview: "Very comfortable stay. The bed was cozy...",
-      imageUrl: profileimg,
-    },
-    {
-      id: 6,
-      name: "Sophia Johnson",
-      years: 1,
-      stayType: "Resort",
-      date: "October 2024",
-      rating: 2,
-      review:
-        "The resort was beautiful, but the service was lacking. I expected more from such a high-end place.",
-      shortReview: "The resort was beautiful, but the service was lacking.",
-      imageUrl: profileimg,
-    },
-    {
-      id: 7,
-      name: "William Brown",
-      years: 7,
-      stayType: "Apartotel",
-      date: "July 2024",
-      rating: 5,
-      review:
-        "Best stay ever! Everything was perfect, from the cleanliness to the friendly staff. Highly recommend!",
-      shortReview: "Best stay ever! Everything was perfect...",
-      imageUrl: profileimg,
-    },
-    {
-      id: 8,
-      name: "Olivia Davis",
-      years: 2,
-      stayType: "Hotel",
-      date: "September 2024",
-      rating: 4,
-      review:
-        "I enjoyed my stay here, especially the pool area. The staff were nice, and the food was great.",
-      shortReview: "I enjoyed my stay here, especially the pool area...",
-      imageUrl: profileimg,
-    },
-   
-  ];
+  const router = useRouter();
 
-
+  // Place hooks at the top level
   const [dates, setDates] = useState(null);
   const [guests, setGuests] = useState(2);
   const [total, setTotal] = useState(0);
   const [value, setValue] = useState(0);
   const [isRated, setIsRated] = useState(false);
-  const [visibleReviews, setVisibleReviews] = useState(8); // Initially display 4 reviews
+  const [visibleReviews, setVisibleReviews] = useState(8);
   const [expandedReviewIds, setExpandedReviewIds] = useState([]);
-  const router=useRouter()
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [reviewText, setReviewText] = useState('');
+  const [rating, setRating] = useState(0);
+  const [hoverValue, setHoverValue] = useState(undefined);
+  const carouselRef = useRef(null);
+
+  // Fetch data using query
+  const { isLoading, data: roomsalldata, error } = useGetRoomsByIdQuery(params?.id);
+
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
+
+  if (error) {
+    console.error(error);
+  }
+
+  console.log('singleRoomsData -----', roomsalldata);
+
   const perNightRate = 560;
   const cleaningFee = 80;
   const serviceFee = 80;
 
-  const [activeSlide, setActiveSlide] = useState(0);
-  const carouselRef = useRef(null);
-  const images = [slideimage, slideimage2,slideimage];
   const handlePreviewClick = (index) => {
     setActiveSlide(index);
-    // Use the Ant Design `goTo` method directly from the Carousel ref
-    carouselRef.current?.goTo(index, false); // The second argument `false` disables animation for faster transitions
+    carouselRef.current?.goTo(index, false);
   };
 
   const handleDateChange = (dateRange) => {
@@ -206,43 +121,29 @@ const Page = ({ params }) => {
     }
   };
 
-
-
   const handleReserveClick = () => {
-    console.log("Reservation Details:");
-    console.log("Selected Dates:", dates);
-    console.log("Number of Guests:", guests);
-    console.log("Total Amount:", total);
-    router.push('/payment')
+  console.log("Reservation Details:");
+  console.log("Selected Dates:", dates);
+  console.log("Number of Guests:", guests);
+  console.log("Total Amount:", total);
+  router.push('/payment');
   };
 
-
-
-  // Toggle show more for a specific review
   const toggleShowMore = (id) => {
+  
     if (expandedReviewIds.includes(id)) {
-      setExpandedReviewIds(
-        expandedReviewIds.filter((reviewId) => reviewId !== id)
-      );
+      setExpandedReviewIds(expandedReviewIds.filter((reviewId) => reviewId !== id));
     } else {
       setExpandedReviewIds([...expandedReviewIds, id]);
     }
   };
 
-  // Show all reviews
   const handleShowAll = () => {
-    router.push('/showAllReview')
-
+    router.push('/showAllReview');
   };
 
-
-
-  const [reviewText, setReviewText] = useState('');
-  const [rating, setRating] = useState(0);
-  const [hoverValue, setHoverValue] = useState(undefined);
-
   const handleClick = (index) => {
-    setRating(index + 1); // Update rating directly
+    setRating(index + 1);
   };
 
   const handleMouseOver = (index) => {
@@ -254,20 +155,20 @@ const Page = ({ params }) => {
   };
 
   const handleSubmit = (e) => {
+    console.log(e)
     e.preventDefault();
     if (reviewText.trim() && rating > 0) {
-      // Call the function to add the review (uncomment if defined)
-      // addReview({ reviewText, rating });
       setReviewText('');
       setRating(0);
-      message.success('Review submitted successfully!'); // Optional success message
+      message.success('Review submitted successfully!');
     } else {
       message.error('Please provide both review text and rating.');
     }
   };
-  
+  const { category, createdAt, description, services, images, location, maxGuests, owner, reviews, roomCount, startDate, endDate, roomId, totalRatings } = roomsalldata?.room
 
-
+  const allservicess=services.map(i=>i)
+  console.log('services',allservicess)
   return (
     <div className="bg-[]">
       <div className="container mx-auto mt-8 text-white flex items-center justify-between p-4  ">
@@ -275,55 +176,54 @@ const Page = ({ params }) => {
           {" "}
           <LeftOutlined /> Stylish ensuite double bedroom in trendy Dalston
         </Link>
-    
+
       </div>
       <div className="flex flex-col lg:flex-row text-white lg:p-2 md:p-2 p-8  container mx-auto">
         {/* Image Carousel */}
         <div className="lg:w-2/3">
-      {/* Image Carousel */}
-      <Carousel
-        ref={carouselRef}
-        beforeChange={(current, next) => setActiveSlide(next)}
-      >
-        {images.map((image, index) => (
-          <div key={index}>
-            <Image
-              src={image}
-              alt={`Room Slide ${index + 1}`}
-              width={800}
-              height={600}
-              className="w-full h-auto rounded-md"
-            />
-          </div>
-        ))}
-      </Carousel>
-
-      {/* Preview Section */}
-      <div className="mt-4 flex space-x-4">
-        {images.map((image, index) => (
-          <div
-            key={index}
-            className={`cursor-pointer ${
-              activeSlide === index ? "border-2 border-yellow-500" : ""
-            }`}
-            onClick={() => handlePreviewClick(index)}
+          {/* Image Carousel */}
+          <Carousel
+            ref={carouselRef}
+            beforeChange={(current, next) => setActiveSlide(next)}
           >
-            <Image
-              src={image}
-              alt={`Preview ${index + 1}`}
-              width={150}
-              height={100}
-              className="rounded-md"
-            />
+            {roomsalldata?.room?.images?.map((image, index) => (
+              <div key={index}>
+                <Image
+                  src={imageUrl + image}
+                  alt={`Room Slide ${index + 1}`}
+                  width={800}
+                  height={600}
+                  className="w-full h-auto rounded-md"
+                />
+              </div>
+            ))}
+          </Carousel>
+
+          {/* Preview Section */}
+          <div className="mt-4 flex space-x-4">
+            {roomsalldata?.room?.images?.map((image, index) => (
+              <div
+                key={index}
+                className={`cursor-pointer ${activeSlide === index ? "border-2 border-yellow-500" : ""
+                  }`}
+                onClick={() => handlePreviewClick(index)}
+              >
+                <Image
+                  src={imageUrl + image}
+                  alt={`Preview ${index + 1}`}
+                  width={150}
+                  height={100}
+                  className="rounded-md"
+                />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      
-      <p className="mt-4 text-[24px] font-bold text-[#FFFFFF]">
-        Room in Clichy, France
-      </p>
-      <p className="text-sm">Room id: 569845</p>
-    </div>
+
+          <p className="mt-4 text-[24px] font-bold text-[#FFFFFF]">
+            Room in {location}
+          </p>
+          <p className="text-sm">Room id: {roomId}</p>
+        </div>
 
         {/* Booking Form */}
         <div className="lg:w-1/3 lg:ml-8 mt-8 lg:mt-0 bg-[#1B1B1B] h-fit pb-20 rounded-lg space-y-8 p-6">
@@ -449,11 +349,11 @@ const Page = ({ params }) => {
         </div>
 
         <div className="text-[#FFFFFFCC] text-center">
-          <h1 className="text-[24px] font-bold pl-4">4.91</h1>
-          <Rate className="ml-12" style={{ color: "white" }} disabled defaultValue={4.9} />
+          <h1 className="text-[24px] font-bold pl-4">{totalRatings}</h1>
+          <Rate className="ml-12" style={{ color: "white" }} disabled defaultValue={totalRatings} />
         </div>
         <div className="text-[#FFFFFFCC] ">
-          <h1 className="text-[24px] font-bold">110</h1>
+          <h1 className="text-[24px] font-bold">{reviews.length}</h1>
           <p className="underline">Reviews </p>
         </div>
       </div>
@@ -464,32 +364,30 @@ const Page = ({ params }) => {
           {/* Profile Section */}
           <Card className="w-full bg-transparent text-white" bordered={false}>
             <div className="flex items-center">
-              <Avatar
-                size="large"
-                icon={
-                  <Image
-                    height={96}
-                    width={96}
-                    src={profileimg}
-                    alt="Profile"
-                  />
-                }
-              />
+              {
+                owner?.image ? <Avatar
+                  size="large"
+                  icon={
+                    <Image
+                      height={96}
+                      width={96}
+                      src={imageUrl + owner?.image}
+                      alt="Profile"
+                    />
+                  }
+                /> : <div className="h-[44px] w-[44px] flex items-center justify-center rounded-full bg-gray-400 "> <UserOutlined className="text-xl " /></div>
+              }
               <div className="ml-4">
-                <h2 className="text-xl  font-bold">Stay with David</h2>
+                <h2 className="text-xl  font-bold">Stay with {owner?.fullName}</h2>
                 <p className="text-sm text-[#FFFFFFCC]">
-                  Superhost • 12 years hosting
+                  {owner?.role?.map(i => <span className="pr-1"> {i}</span>)} • 12 years hosting
                 </p>
               </div>
             </div>
             <br />
             <h2 className="text-xl  font-bold py-4">About this place</h2>
             <p className="text-[#FFFFFFCC] text-[16px] font-normal leading-6 max-w-lg">
-              I rent a small room in my house, it is new and cosy. House is
-              quite light, modern and guest can cook. Bathroom will be shared.
-              House is 6 minutes from lines 14 and 13, RER and tram. it takes 20
-              minutes to go to City center. many restaurants, bars, supermarkets
-              around my house.
+              {description}
             </p>
           </Card>
 
@@ -721,77 +619,90 @@ const Page = ({ params }) => {
           </div>
         </div>
       </div>
+
+
+
+      {/* all reviews hurdCodedreviews---------------------------- */}
       <div className="container mx-auto">
         <div className=" text-white py-8 px-4 mt-12">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {reviews.slice(0, visibleReviews).map((review) => (
               <Card
-                key={review.id}
+                key={review?._id}
                 className="bg-[#1c1c1c] text-white"
                 style={{ border: "none" }}
               >
                 <div className="flex items-center mb-2">
-                  <Image
-                    src={review.imageUrl}
-                    alt="Avatar"
-                    className="bg-gray-700 rounded-full w-10 h-10"
-                  />
-
+                {
+                review?.user?.image ? <Avatar
+                  size="large"
+                  icon={
+                    <Image
+                      height={96}
+                      width={96}
+                      src={imageUrl+review?.user?.image}
+                      alt="Profile"
+                    />
+                  }
+                /> : <div className="h-[44px] w-[44px] flex items-center justify-center rounded-full bg-gray-400 "> <UserOutlined className="text-xl " /></div>
+              }
+                  
                   <div className="ml-2">
                     <p className="text-[16px] text-[#FFFFFF] font-bold">
-                      {review.name}
+                      {review?.user?.fullName}
                     </p>
                     <p className="text-[12px] text-[#FFFFFFCC] font-normal">
-                      {review.years} years on {review.stayType}
+                      {review.years} years on {review?.user?.location}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Rate
                     disabled
-                    defaultValue={review.rating}
+                    defaultValue={review?.rating}
                     className="mb-1"
                   />
                   <p className="text-[12px] font-medium text-[#FFFFFF] pb-4">
                     <span className="text-4xl font-bold">. </span>
-                    {review.date}
+                   {new Date(review?.updatedAt).toLocaleDateString()}
                   </p>
                 </div>
                 <p className="text-sm mt-2">
-                  {expandedReviewIds.includes(review.id)
+                  {expandedReviewIds.includes(review?._id)
                     ? review.review
-                    : review.shortReview}
+                    : review.review.slice(0,250) }
                 </p>
+                
                 <Button
                   type="link"
                   className="text-yellow-500 p-0"
-                  onClick={() => toggleShowMore(review.id)}
+                  onClick={() => toggleShowMore(review?._id)}
                 >
-                  {expandedReviewIds.includes(review.id)
+                  {expandedReviewIds.includes(review?._id)
                     ? "Show less"
                     : "Show more"}
                 </Button>
               </Card>
             ))}
           </div>
-     
-            <div className="mt-4 text-center w-full flex items-center justify-end">
-              <Button
-               style={{backgroundColor: "#EBCA7E",width: "240px", height: "44px", color: "#000000"}}
-               className=" border-none text-black font-bold"
-                type="primary"
-                onClick={handleShowAll}
-    
-              >
-                Show all
-              </Button>
-            </div>
-     
+
+          <div className="mt-4 text-center w-full flex items-center justify-end">
+            <Button
+              style={{ backgroundColor: "#EBCA7E", width: "240px", height: "44px", color: "#000000" }}
+              className=" border-none text-black font-bold"
+              type="primary"
+              onClick={handleShowAll}
+
+            >
+              Show all
+            </Button>
+          </div>
+
         </div>
       </div>
 
       <div className="container mx-auto border-t-2 border-[#424242]  my-12 p-4">
-      <h3 className="text-[24px]  font-bold text-[#FFFFFF] py-6">Meet your host</h3>
+        <h3 className="text-[24px]  font-bold text-[#FFFFFF] py-6">Meet your host</h3>
         <div className=" text-white  flex  items-center">
           <Card
             className="w-full bg-transparent lg:p-8"
@@ -803,16 +714,22 @@ const Page = ({ params }) => {
               <div className="bg-[#242424] h-fit rounded-lg p-6 w-full max-w-md ">
                 <div className="flex items-center pb-4">
                   {/* Avatar and Name */}
-                  <Avatar size={80} className="bg-gray-400">
-                    <Image src={userimg} alt="Avatar" />
-                  </Avatar>
+
+
+                  {
+                    owner?.image ? <Avatar size={80} className="bg-gray-400">
+                      <Image height={96}
+                        width={100} src={imageUrl + owner?.image} alt="Avatar" />
+                    </Avatar> : <div className="h-[44px] w-[44px] flex items-center justify-center rounded-full bg-gray-400 "> <UserOutlined className="text-xl " /></div>
+                  }
+
                   <div className="ml-4">
                     <h2 className="text-lg font-semibold text-white">
-                      Jenifer Lopez
+                      {owner?.fullName}
                     </h2>
                     <Tooltip title="Superhost">
                       <span className="text-[#FFFFFFCC] text-sm font-semibold">
-                        Superhost
+                        {owner?.role?.map(i => <span className="pr-1"> {i}</span>)}
                       </span>
                     </Tooltip>
                   </div>
@@ -822,7 +739,7 @@ const Page = ({ params }) => {
                     <div className="text-sm text-gray-400 mt-2">
                       {" "}
                       <p className="text-[#FFFFFF] text-2xl pb-1 font-bold">
-                        939
+                        {reviews.length}
                       </p>{" "}
                       Reviews
                     </div>
@@ -830,17 +747,17 @@ const Page = ({ params }) => {
                   <div className="flex items-center mt-1">
                     <div className="text-sm text-gray-400 mt-2">
                       <p className="text-[#FFFFFF] text-2xl pb-1 font-bold">
-                        939 *
+                        {totalRatings}
                       </p>{" "}
                       Ratings
                     </div>
                   </div>
-                  <div className="text-sm text-gray-400 mt-2">
+                  {/* <div className="text-sm text-gray-400 mt-2">
                     <p className="text-[#FFFFFF] text-2xl pb-1 font-bold">
                       7 years
                     </p>{" "}
                     Hosting
-                  </div>
+                  </div> */}
                 </div>
               </div>
 
@@ -848,7 +765,7 @@ const Page = ({ params }) => {
               <div className="w-full">
                 <div className="mb-4">
                   <h3 className="text-[20px] font-medium text-white">
-                    Bua is a Superhost:
+                    {owner?.fullName} a {owner?.role?.map(i => <span className="pr-1">- {i}</span>)}
                   </h3>
                   <p className="text-sm text-[#FFFFFFCC] opacity-70 py-4">
                     Superhosts are experienced, highly rated hosts who are
@@ -856,9 +773,7 @@ const Page = ({ params }) => {
                   </p>
                 </div>
                 <div className="mb-4">
-                  <h3 className="text-[20px] font-medium text-[#FFFFFFCC] pb-3">
-                    Co-Host:
-                  </h3>
+
                   <div className="flex items-center space-x-2">
                     <div>
                       <Avatar size={30} className="bg-gray-400">
@@ -867,7 +782,7 @@ const Page = ({ params }) => {
                     </div>
                     <div>
                       <p className="text-[20px] font-[300] opacity-70 text-[#FFFFFFCC]">
-                        Riyad Hasan
+                        {owner?.fullName}
                       </p>
                     </div>
                   </div>
@@ -879,14 +794,14 @@ const Page = ({ params }) => {
                     </h3>
 
                     <p className="text-[20px] font-[300] opacity-70 text-[#FFFFFFCC]">
-                      Response Rate: 87%
+                      Email: {owner?.email}
                     </p>
                     <p className="text-[20px] font-[300] opacity-70 text-[#FFFFFFCC]">
-                      Response within one hour
+                      Phone : {owner?.phone}
                     </p>
                   </div>
-                     {/* Message Button */}
-             {/* <Link href={"/message"}	> 
+                  {/* Message Button */}
+                  {/* <Link href={"/message"}	> 
              <Button
               style={{backgroundColor: "#EBCA7E",width: "240px",height: "44px", color: "#000000"}}
                 type="primary"
@@ -904,11 +819,11 @@ const Page = ({ params }) => {
             <div className="mt-6 flex justify-between items-center">
               {/* Work and Languages */}
               <div className="text-sm space-y-2">
-                <p className="flex gap-3  text-[16px] text-white font-medium"> <MdOutlineWorkOutline  className="text-[24px]" /> My work: <span className="text-white opacity-70">F&B Business</span></p>
-                <p className="flex gap-3 text-[16px] text-white font-medium"> <FaLanguage className="text-[24px]" /> Language: <span className="text-white opacity-70">English & Spanish</span></p>
-                <p className="flex gap-3  text-[16px] text-white font-medium"> <FaLocationPinLock className="text-[24px]"  />Lives in: <span className="text-white opacity-70">Times Square, USA</span></p>
+
+                <p className="flex gap-3 text-[16px] text-white font-medium"> <FaLanguage className="text-[24px]" /> Language: <span className="text-white opacity-70">English</span></p>
+                <p className="flex gap-3  text-[16px] text-white font-medium"> <FaLocationPinLock className="text-[24px]" />Lives in: <span className="text-white opacity-70">{owner?.address}</span></p>
               </div>
-         
+
             </div>
           </Card>
         </div>
@@ -917,57 +832,57 @@ const Page = ({ params }) => {
 
       {/* add review or ratings ---------------------------- */}
       <div className="container mx-auto my-12 bg-[#242424] p-6 rounded-lg text-white">
-      <form onSubmit={handleSubmit} className="review-form">
-      <h2 className="text-lg font-bold mb-4">Leave a Review</h2>
-      <Input.TextArea
-        rows={8}
-        value={reviewText}
-        onChange={(e) => setReviewText(e.target.value)}
-        placeholder="Write your review..."
-        style={{ marginBottom: '12px', backgroundColor: '#242424', color: '#FFFFFFCC' }}
-        className="bg-[#242424] text-[#FFFFFFCC] opacity-70"
-      />
-        <div>
-     <div className="flex items-center jsutify-center space-x-2">
-     <h3>Rate this item:</h3>
-      <div style={{ display: 'flex' }}>
-        {[...Array(5)].map((_, index) => {
-          const isFilled = (hoverValue || rating) > index;
-          return (
-            <FaStar
-              key={index}
-              onClick={() => handleClick(index)}
-              onMouseOver={() => handleMouseOver(index)}
-              onMouseLeave={handleMouseLeave}
-              style={{
-                cursor: 'pointer',
-                color: isFilled ? 'goldenrod' : 'white',
-                transition: 'color 0.2s',
-              }}
-              size={24} // Adjust size as needed
-            />
-          );
-        })}
-      </div>
-     </div>
-     
-    </div>
-      <br />
-      <Button
-        type="primary"
-        htmlType="submit"
-        style={{
-          backgroundColor: "#EBCA7E",
-          borderColor: "#EBCA7E",
-          width: "240px",
-          height: "44px",
-          color: "#000000",
-          fontWeight:"500"
-        }}
-      >
-        Submit Review
-      </Button>
-    </form>
+        <form onSubmit={handleSubmit} className="review-form">
+          <h2 className="text-lg font-bold mb-4">Leave a Review</h2>
+          <Input.TextArea
+            rows={8}
+            value={reviewText}
+            onChange={(e) => setReviewText(e.target.value)}
+            placeholder="Write your review..."
+            style={{ marginBottom: '12px', backgroundColor: '#242424', color: '#FFFFFFCC' }}
+            className="bg-[#242424] text-[#FFFFFFCC] opacity-70"
+          />
+          <div>
+            <div className="flex items-center jsutify-center space-x-2">
+              <h3>Rate this item:</h3>
+              <div style={{ display: 'flex' }}>
+                {[...Array(5)].map((_, index) => {
+                  const isFilled = (hoverValue || rating) > index;
+                  return (
+                    <FaStar
+                      key={index}
+                      onClick={() => handleClick(index)}
+                      onMouseOver={() => handleMouseOver(index)}
+                      onMouseLeave={handleMouseLeave}
+                      style={{
+                        cursor: 'pointer',
+                        color: isFilled ? 'goldenrod' : 'white',
+                        transition: 'color 0.2s',
+                      }}
+                      size={24} // Adjust size as needed
+                    />
+                  );
+                })}
+              </div>
+            </div>
+
+          </div>
+          <br />
+          <Button
+            type="primary"
+            htmlType="submit"
+            style={{
+              backgroundColor: "#EBCA7E",
+              borderColor: "#EBCA7E",
+              width: "240px",
+              height: "44px",
+              color: "#000000",
+              fontWeight: "500"
+            }}
+          >
+            Submit Review
+          </Button>
+        </form>
       </div>
 
       {/* add review or ratings end ---------------------------- */}

@@ -8,14 +8,19 @@ const AddPropertyApi=api.injectEndpoints({
       }),
     providesTags:["Properties"]
     }),
+
+
+
     getRoomsById:builder.query({
       query: (id) => ({
-        url: ` /property/get-property-by-id/${id}` ,
+        url: `/property/get-property-by-id/${id}`,
+        method:'GET'
       }),
-     providesTags : [
-      "Properties"
-     ]
+  
     }),
+
+
+
     addAProperty: builder.mutation({
       query: (data) => ({
         url: "/property/add-property",
@@ -34,4 +39,4 @@ const AddPropertyApi=api.injectEndpoints({
   }),
 });
 
-export const {useAddAPropertyMutation,useGetRoomsQuery } = AddPropertyApi;
+export const {useAddAPropertyMutation,useGetRoomsQuery,useGetRoomsByIdQuery } = AddPropertyApi;

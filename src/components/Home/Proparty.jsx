@@ -6,12 +6,12 @@ import dynamic from 'next/dynamic';
 import ownerImage from "/public/images/user.png";
 import propartyimage from "/public/images/proparty.png";
 import PropartyCard from "../ui/PropartyCard";
-import animationData from '/public/Animationwhatsapp.json';
-
-const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
+import Image from "next/image";
+import whatsapplogo from '/public/images/wlogo.gif'
 
 const Proparty = () => {
   const router = useRouter();
+  
   const proparty = [
     {
       id: "1",
@@ -126,16 +126,16 @@ const Proparty = () => {
           Add a property
         </Button>
       </div>
-      {typeof window !== 'undefined' && (
+    
         <div
           onClick={() => {
             window.open(whatsappLink, '_blank');
           }}
-          className="fixed bottom-[10%] right-[5%] rounded-full cursor-pointer h-[70px] w-[70px] shadow-lg shadow-black z-[9999]"
+          className="fixed bottom-[5%] right-[5%] rounded-full cursor-pointer h-[70px] w-[70px] shadow-lg shadow-black z-[9999]"
         >
-          <Lottie animationData={animationData} loop={true} />
+         <Image src={whatsapplogo} alt="Whatsapp logo" width={70} height={70} />
         </div>
-      )}
+   
     </div>
   );
 };

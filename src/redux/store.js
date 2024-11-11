@@ -6,11 +6,6 @@ import useTokenReducer from './features/users/UserTokenSlice';
 import  userReducer  from './features/users/userSlice';
 import  formReducer  from './features/addPropertySlice/AddPropertySlice';
 
-
-
-
-
-
 const store = configureStore({
   reducer : {
     UserAccessToken: useTokenReducer,
