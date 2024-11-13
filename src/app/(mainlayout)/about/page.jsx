@@ -1,3 +1,5 @@
+
+'use client'
 import { Input } from "antd";
 import React from "react";
 import heroimg from "/public/images/aboutimg.png";
@@ -6,8 +8,19 @@ import titleimg from "/public/images/sign.png";
 import imageone from "/public/images/Group 11.png";
 import imagetow from "/public/images/Group 11 (1).png";
 import Image from "next/image";
+import { useGetAboutContentQuery } from "@/redux/features/EditContent/editContentApi";
 
-const page = () => {
+const Page = () => {
+
+  const {isLoading,isError,data}=useGetAboutContentQuery()
+  if(isLoading){
+    return <div>Loading....</div>
+}
+if(isError){
+    return <div>something went wrong</div>
+}
+const {firstStepDescription,firstStepTitle,heroDescription,heroTitle,mainTitle
+  ,secondStepDescription,secondStepTitle}=data?.data
   return (
     <div>
       {/* Hero section with image and search bar and category dropdown  */}
@@ -18,12 +31,11 @@ const page = () => {
         <div className="lg:pt-28 md:pt-28 py-12 px-6">
           <div className=" s-mobile:py-6  items-center  max-w-5xl  mx-auto ">
             <h1 className="text-white  text-[48px] leading-tight font-bold text-center ">
-              Know Our History...
+             {heroTitle}
             </h1>
         
             <p className="text-white text-[36px] font-medium leading-[45px] mt-4 ">
-              At Appartali we believe that every journey begins with a place to
-              call home, and we’re dedicated to making your stay unforgettable.
+              {heroDescription}
             </p>
           </div>
         </div>
@@ -38,21 +50,17 @@ const page = () => {
           {/* title -------------- */}
           <div className="mx-auto w-fit py-6">
             <h1 className="text-[#FFFFFF] text-[48px] font-medium">
-              Booking room anytime
+             {mainTitle}
             </h1>
             <Image src={titleimg} className="mx-auto mt-4" alt="signimage" />
           </div>
           <div className="lg:flex md:flex flex-row items-center justify-around py-12">
             <div className="text-white max-w-xl ">
               <h1 className="text-[36px] font-semibold leading-[45px] border-b-2 border-[#FFFFFF] w-fit pb-4">
-                Developing Confident and <br />
-                Successful Learners
+                {firstStepTitle}
               </h1>
               <p className="text-[20px] text-[#848383] font-normal  leading-[30px] py-4">
-                Ut enim ad minima veniam, quis nostrum exercitationem ullam
-                corporis suscipit laboriosam, nisi ut al Ut enim ad minima
-                veniam, quis nostrum exercitationem ullam corporis suscipit
-                laboriosam, nisi ut al
+                {firstStepDescription}
               </p>
             </div>
             <div className="">
@@ -66,21 +74,17 @@ const page = () => {
           {/* title -------------- */}
           <div className="mx-auto w-fit py-6">
             <h1 className="text-[#FFFFFF] text-[48px] font-medium">
-            Invest your property
+            {secondStepTitle}
             </h1>
             <Image src={titleimg} className="mx-auto mt-4" alt="signimage" />
           </div>
           <div className="lg:flex md:flex flex-row items-center justify-around py-12">
             <div className="text-white max-w-xl ">
               <h1 className="text-[36px] font-semibold leading-[45px] border-b-2 border-[#FFFFFF] w-fit pb-4">
-                Developing Confident and <br />
-                Successful Learners
+                {secondStepTitle}
               </h1>
               <p className="text-[20px] text-[#848383] font-normal  leading-[30px] py-4">
-                Ut enim ad minima veniam, quis nostrum exercitationem ullam
-                corporis suscipit laboriosam, nisi ut al Ut enim ad minima
-                veniam, quis nostrum exercitationem ullam corporis suscipit
-                laboriosam, nisi ut al
+                {secondStepDescription}
               </p>
             </div>
             <div className="">
@@ -97,4 +101,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
