@@ -10,213 +10,232 @@ import { MdOutlineWorkOutline } from "react-icons/md";
 import userimg from "/public/images/user.png";
 import profileimg from "/public/images/about.png";
 import Link from "next/link";
+import { useGetAllReviewByPropertyIdQuery } from "@/redux/features/Propertyapi/page";
 
-const Page = () => {
+import { useRouter, useSearchParams } from "next/navigation";
+import { UserOutlined } from "@ant-design/icons";
+
+const Page = ({params}) => {
+const searchParams=useSearchParams()
+  const id = searchParams.get('id')
   const [expandedReviewIds, setExpandedReviewIds] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 8;
 
-  const reviews = [
-            {
-              id: 1,
-              name: "Cheng Chuang",
-              years: 6,
-              stayType: "Apartotel",
-              date: "August 2024",
-              rating: 5,
-              review:
-                "This was an astonishing stay in a gorgeous place. The taste in decorations and internal design is something else. I cannot fault anything. Sai Nana is beautiful and so is the house. The room was clean and comfortable with all the necessary amenities. The staff was incredibly welcoming, making our stay truly unforgettable.",
-              shortReview:
-                "This was an astonishing stay in a gorgeous place. The taste in decorations...",
-              imageUrl: profileimg,
-            },
-            {
-              id: 2,
-              name: "Ayesha Khan",
-              years: 4,
-              stayType: "Apartotel",
-              date: "July 2024",
-              rating: 4,
-              review:
-                "I had a great time staying here. The staff were friendly, and the location was perfect for sightseeing. The interiors were modern and clean, though a bit small for a family. Overall, I’d recommend it to anyone visiting the area.",
-              shortReview:
-                "I had a great time staying here. The staff were friendly, and the location...",
-              imageUrl: profileimg,
-            },
-            {
-              id: 3,
-              name: "John Doe",
-              years: 2,
-              stayType: "Hotel",
-              date: "June 2024",
-              rating: 3,
-              review:
-                "The hotel was decent, but I had some issues with the air conditioning. The location was good, but the service could use some improvement.",
-              shortReview:
-                "The hotel was decent, but I had some issues with the air conditioning.",
-              imageUrl: profileimg,
-            },
-            {
-              id: 4,
-              name: "Emma Watson",
-              years: 5,
-              stayType: "Apartotel",
-              date: "August 2024",
-              rating: 5,
-              review:
-                "Absolutely loved my stay here! The decor was stunning and the staff were incredibly helpful. I can't wait to return!",
-              shortReview: "Absolutely loved my stay here! The decor was stunning...",
-              imageUrl: profileimg,
-            },
-            {
-              id: 5,
-              name: "Michael Smith",
-              years: 3,
-              stayType: "Hotel",
-              date: "September 2024",
-              rating: 4,
-              review:
-                "Very comfortable stay. The bed was cozy, and the breakfast was delicious. I would recommend this hotel to anyone.",
-              shortReview: "Very comfortable stay. The bed was cozy...",
-              imageUrl: profileimg,
-            },
-            {
-              id: 6,
-              name: "Sophia Johnson",
-              years: 1,
-              stayType: "Resort",
-              date: "October 2024",
-              rating: 2,
-              review:
-                "The resort was beautiful, but the service was lacking. I expected more from such a high-end place.",
-              shortReview: "The resort was beautiful, but the service was lacking.",
-              imageUrl: profileimg,
-            },
-            {
-              id: 7,
-              name: "William Brown",
-              years: 7,
-              stayType: "Apartotel",
-              date: "July 2024",
-              rating: 5,
-              review:
-                "Best stay ever! Everything was perfect, from the cleanliness to the friendly staff. Highly recommend!",
-              shortReview: "Best stay ever! Everything was perfect...",
-              imageUrl: profileimg,
-            },
-            {
-              id: 8,
-              name: "Olivia Davis",
-              years: 2,
-              stayType: "Hotel",
-              date: "September 2024",
-              rating: 4,
-              review:
-                "I enjoyed my stay here, especially the pool area. The staff were nice, and the food was great.",
-              shortReview: "I enjoyed my stay here, especially the pool area...",
-              imageUrl: profileimg,
-            },
-            {
-              id: 9,
-              name: "Liam Wilson",
-              years: 4,
-              stayType: "Hostel",
-              date: "August 2024",
-              rating: 3,
-              review:
-                "It was a decent hostel experience. The facilities were basic, but it was clean and affordable.",
-              shortReview:
-                "It was a decent hostel experience. The facilities were basic...",
-              imageUrl: profileimg,
-            },
-            {
-              id: 10,
-              name: "Isabella Martinez",
-              years: 3,
-              stayType: "Apartotel",
-              date: "June 2024",
-              rating: 5,
-              review:
-                "This place exceeded my expectations! The attention to detail was remarkable, and I loved every moment of my stay.",
-              shortReview:
-                "This place exceeded my expectations! The attention to detail was remarkable...",
-              imageUrl: profileimg,
-            },
-            {
-              id: 11,
-              name: "Michael Smith",
-              years: 3,
-              stayType: "Hotel",
-              date: "September 2024",
-              rating: 4,
-              review:
-                "Very comfortable stay. The bed was cozy, and the breakfast was delicious. I would recommend this hotel to anyone.",
-              shortReview: "Very comfortable stay. The bed was cozy...",
-              imageUrl: profileimg,
-            },
-            {
-              id: 12,
-              name: "Sophia Johnson",
-              years: 1,
-              stayType: "Resort",
-              date: "October 2024",
-              rating: 2,
-              review:
-                "The resort was beautiful, but the service was lacking. I expected more from such a high-end place.",
-              shortReview: "The resort was beautiful, but the service was lacking.",
-              imageUrl: profileimg,
-            },
-            {
-              id: 13,
-              name: "William Brown",
-              years: 7,
-              stayType: "Apartotel",
-              date: "July 2024",
-              rating: 5,
-              review:
-                "Best stay ever! Everything was perfect, from the cleanliness to the friendly staff. Highly recommend!",
-              shortReview: "Best stay ever! Everything was perfect...",
-              imageUrl: profileimg,
-            },
-            {
-              id: 14,
-              name: "Olivia Davis",
-              years: 2,
-              stayType: "Hotel",
-              date: "September 2024",
-              rating: 4,
-              review:
-                "I enjoyed my stay here, especially the pool area. The staff were nice, and the food was great.",
-              shortReview: "I enjoyed my stay here, especially the pool area...",
-              imageUrl: profileimg,
-            },
-            {
-              id: 15,
-              name: "Liam Wilson",
-              years: 4,
-              stayType: "Hostel",
-              date: "August 2024",
-              rating: 3,
-              review:
-                "It was a decent hostel experience. The facilities were basic, but it was clean and affordable.",
-              shortReview:
-                "It was a decent hostel experience. The facilities were basic...",
-              imageUrl: profileimg,
-            },
-            {
-              id: 16,
-              name: "Isabella Martinez",
-              years: 3,
-              stayType: "Apartotel",
-              date: "June 2024",
-              rating: 5,
-              review:
-                "This place exceeded my expectations! The attention to detail was remarkable, and I loved every moment of my stay.",
-              shortReview:
-                "This place exceeded my expectations! The attention to detail was remarkable...",
-              imageUrl: profileimg,
-            },
-          ];
+
+
+const {data,isLoading}=useGetAllReviewByPropertyIdQuery(id)
+
+if(isLoading){
+  return <h1>Loading...</h1>
+}
+
+const reviews=data?.data
+console.log('all reviews',reviews)
+
+
+
+  // const reviews = [
+  //           {
+  //             id: 1,
+  //             name: "Cheng Chuang",
+  //             years: 6,
+  //             stayType: "Apartotel",
+  //             date: "August 2024",
+  //             rating: 5,
+  //             review:
+  //               "This was an astonishing stay in a gorgeous place. The taste in decorations and internal design is something else. I cannot fault anything. Sai Nana is beautiful and so is the house. The room was clean and comfortable with all the necessary amenities. The staff was incredibly welcoming, making our stay truly unforgettable.",
+  //             shortReview:
+  //               "This was an astonishing stay in a gorgeous place. The taste in decorations...",
+  //             imageUrl: profileimg,
+  //           },
+  //           {
+  //             id: 2,
+  //             name: "Ayesha Khan",
+  //             years: 4,
+  //             stayType: "Apartotel",
+  //             date: "July 2024",
+  //             rating: 4,
+  //             review:
+  //               "I had a great time staying here. The staff were friendly, and the location was perfect for sightseeing. The interiors were modern and clean, though a bit small for a family. Overall, I’d recommend it to anyone visiting the area.",
+  //             shortReview:
+  //               "I had a great time staying here. The staff were friendly, and the location...",
+  //             imageUrl: profileimg,
+  //           },
+  //           {
+  //             id: 3,
+  //             name: "John Doe",
+  //             years: 2,
+  //             stayType: "Hotel",
+  //             date: "June 2024",
+  //             rating: 3,
+  //             review:
+  //               "The hotel was decent, but I had some issues with the air conditioning. The location was good, but the service could use some improvement.",
+  //             shortReview:
+  //               "The hotel was decent, but I had some issues with the air conditioning.",
+  //             imageUrl: profileimg,
+  //           },
+  //           {
+  //             id: 4,
+  //             name: "Emma Watson",
+  //             years: 5,
+  //             stayType: "Apartotel",
+  //             date: "August 2024",
+  //             rating: 5,
+  //             review:
+  //               "Absolutely loved my stay here! The decor was stunning and the staff were incredibly helpful. I can't wait to return!",
+  //             shortReview: "Absolutely loved my stay here! The decor was stunning...",
+  //             imageUrl: profileimg,
+  //           },
+  //           {
+  //             id: 5,
+  //             name: "Michael Smith",
+  //             years: 3,
+  //             stayType: "Hotel",
+  //             date: "September 2024",
+  //             rating: 4,
+  //             review:
+  //               "Very comfortable stay. The bed was cozy, and the breakfast was delicious. I would recommend this hotel to anyone.",
+  //             shortReview: "Very comfortable stay. The bed was cozy...",
+  //             imageUrl: profileimg,
+  //           },
+  //           {
+  //             id: 6,
+  //             name: "Sophia Johnson",
+  //             years: 1,
+  //             stayType: "Resort",
+  //             date: "October 2024",
+  //             rating: 2,
+  //             review:
+  //               "The resort was beautiful, but the service was lacking. I expected more from such a high-end place.",
+  //             shortReview: "The resort was beautiful, but the service was lacking.",
+  //             imageUrl: profileimg,
+  //           },
+  //           {
+  //             id: 7,
+  //             name: "William Brown",
+  //             years: 7,
+  //             stayType: "Apartotel",
+  //             date: "July 2024",
+  //             rating: 5,
+  //             review:
+  //               "Best stay ever! Everything was perfect, from the cleanliness to the friendly staff. Highly recommend!",
+  //             shortReview: "Best stay ever! Everything was perfect...",
+  //             imageUrl: profileimg,
+  //           },
+  //           {
+  //             id: 8,
+  //             name: "Olivia Davis",
+  //             years: 2,
+  //             stayType: "Hotel",
+  //             date: "September 2024",
+  //             rating: 4,
+  //             review:
+  //               "I enjoyed my stay here, especially the pool area. The staff were nice, and the food was great.",
+  //             shortReview: "I enjoyed my stay here, especially the pool area...",
+  //             imageUrl: profileimg,
+  //           },
+  //           {
+  //             id: 9,
+  //             name: "Liam Wilson",
+  //             years: 4,
+  //             stayType: "Hostel",
+  //             date: "August 2024",
+  //             rating: 3,
+  //             review:
+  //               "It was a decent hostel experience. The facilities were basic, but it was clean and affordable.",
+  //             shortReview:
+  //               "It was a decent hostel experience. The facilities were basic...",
+  //             imageUrl: profileimg,
+  //           },
+  //           {
+  //             id: 10,
+  //             name: "Isabella Martinez",
+  //             years: 3,
+  //             stayType: "Apartotel",
+  //             date: "June 2024",
+  //             rating: 5,
+  //             review:
+  //               "This place exceeded my expectations! The attention to detail was remarkable, and I loved every moment of my stay.",
+  //             shortReview:
+  //               "This place exceeded my expectations! The attention to detail was remarkable...",
+  //             imageUrl: profileimg,
+  //           },
+  //           {
+  //             id: 11,
+  //             name: "Michael Smith",
+  //             years: 3,
+  //             stayType: "Hotel",
+  //             date: "September 2024",
+  //             rating: 4,
+  //             review:
+  //               "Very comfortable stay. The bed was cozy, and the breakfast was delicious. I would recommend this hotel to anyone.",
+  //             shortReview: "Very comfortable stay. The bed was cozy...",
+  //             imageUrl: profileimg,
+  //           },
+  //           {
+  //             id: 12,
+  //             name: "Sophia Johnson",
+  //             years: 1,
+  //             stayType: "Resort",
+  //             date: "October 2024",
+  //             rating: 2,
+  //             review:
+  //               "The resort was beautiful, but the service was lacking. I expected more from such a high-end place.",
+  //             shortReview: "The resort was beautiful, but the service was lacking.",
+  //             imageUrl: profileimg,
+  //           },
+  //           {
+  //             id: 13,
+  //             name: "William Brown",
+  //             years: 7,
+  //             stayType: "Apartotel",
+  //             date: "July 2024",
+  //             rating: 5,
+  //             review:
+  //               "Best stay ever! Everything was perfect, from the cleanliness to the friendly staff. Highly recommend!",
+  //             shortReview: "Best stay ever! Everything was perfect...",
+  //             imageUrl: profileimg,
+  //           },
+  //           {
+  //             id: 14,
+  //             name: "Olivia Davis",
+  //             years: 2,
+  //             stayType: "Hotel",
+  //             date: "September 2024",
+  //             rating: 4,
+  //             review:
+  //               "I enjoyed my stay here, especially the pool area. The staff were nice, and the food was great.",
+  //             shortReview: "I enjoyed my stay here, especially the pool area...",
+  //             imageUrl: profileimg,
+  //           },
+  //           {
+  //             id: 15,
+  //             name: "Liam Wilson",
+  //             years: 4,
+  //             stayType: "Hostel",
+  //             date: "August 2024",
+  //             rating: 3,
+  //             review:
+  //               "It was a decent hostel experience. The facilities were basic, but it was clean and affordable.",
+  //             shortReview:
+  //               "It was a decent hostel experience. The facilities were basic...",
+  //             imageUrl: profileimg,
+  //           },
+  //           {
+  //             id: 16,
+  //             name: "Isabella Martinez",
+  //             years: 3,
+  //             stayType: "Apartotel",
+  //             date: "June 2024",
+  //             rating: 5,
+  //             review:
+  //               "This place exceeded my expectations! The attention to detail was remarkable, and I loved every moment of my stay.",
+  //             shortReview:
+  //               "This place exceeded my expectations! The attention to detail was remarkable...",
+  //             imageUrl: profileimg,
+  //           },
+  //         ];
 
   const toggleShowMore = (id) => {
     if (expandedReviewIds.includes(id)) {
@@ -402,23 +421,32 @@ const Page = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {displayedReviews.map((review) => (
               <Card
-                key={review.id}
+                key={review._id}
                 className="bg-[#1c1c1c] text-white"
                 style={{ border: "none" }}
               >
                 <div className="flex items-center mb-2">
-                  <Image
-                    src={review.imageUrl}
-                    alt="Avatar"
-                    className="bg-gray-700 rounded-full w-10 h-10"
-                  />
+                {
+                review?.user?.image ? <Avatar
+                  size="large"
+                  icon={
+                    <Image
+                      height={96}
+                      width={96}
+                      src={imageUrl+review?.user?.image}
+                      alt="Profile"
+                    />
+                  }
+                /> : <div className="h-[44px] w-[44px] flex items-center justify-center rounded-full bg-gray-400 "> <UserOutlined className="text-xl " /></div>
+              }
+                  
 
                   <div className="ml-2">
                     <p className="text-[16px] text-[#FFFFFF] font-bold">
-                      {review.name}
+                      {review?.user?.fullName}
                     </p>
                     <p className="text-[12px] text-[#FFFFFFCC] font-normal">
-                      {review.years} years on {review.stayType}
+                    {review.years} years on {review?.user?.location}
                     </p>
                   </div>
                 </div>
@@ -431,20 +459,20 @@ const Page = () => {
                   />
                   <p className="text-[12px] font-medium text-[#FFFFFF] pb-4">
                     <span className="text-4xl font-bold">. </span>
-                    {review.date}
+                    {review?.createdAt && new Date(review.createdAt).toLocaleDateString()}
                   </p>
                 </div>
                 <p className="text-sm mt-2">
-                  {expandedReviewIds.includes(review.id)
+                  {expandedReviewIds.includes(review?._id)
                     ? review.review
-                    : review.shortReview}
+                    : review.review.slice(0,250) }
                 </p>
                 <Button
                   type="link"
                   className="text-yellow-500 p-0"
-                  onClick={() => toggleShowMore(review.id)}
+                  onClick={() => toggleShowMore(review?._id)}
                 >
-                  {expandedReviewIds.includes(review.id)
+                  {expandedReviewIds.includes(review?._id)
                     ? "Show less"
                     : "Show more"}
                 </Button>

@@ -16,6 +16,7 @@ const AddPropertyApi=api.injectEndpoints({
         url: `/property/get-property-by-id/${id}`,
         method:'GET'
       }),
+      providesTags:["reviewRating"]
   
     }),
 
@@ -31,6 +32,24 @@ const AddPropertyApi=api.injectEndpoints({
     }),
 
 
+    addReviewRatings: builder.mutation({
+      query: (data) => ({
+        url: "/review/add-review",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["reviewRating"],
+    }),
+
+    getAllReviewByPropertyId:builder.query({
+      query: (id) => ({
+        url: `/review/review-by-property/${id}`,
+        method:'GET'
+      }),
+  
+    }),
+
+
 
   
     
@@ -39,4 +58,4 @@ const AddPropertyApi=api.injectEndpoints({
   }),
 });
 
-export const {useAddAPropertyMutation,useGetRoomsQuery,useGetRoomsByIdQuery } = AddPropertyApi;
+export const {useAddAPropertyMutation,useGetRoomsQuery,useGetRoomsByIdQuery,useAddReviewRatingsMutation,useGetAllReviewByPropertyIdQuery } = AddPropertyApi;

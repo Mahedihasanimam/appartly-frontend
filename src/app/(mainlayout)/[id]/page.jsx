@@ -46,7 +46,7 @@ import { FaLocationPinLock } from "react-icons/fa6";
 import { Card, Avatar, List, Divider, Progress, Tooltip } from "antd"; // Import from Ant Design
 import profileimg from "/public/images/about.png";
 import { useRouter } from "next/navigation";
-import { useGetRoomsByIdQuery } from "@/redux/features/Propertyapi/page";
+import {useAddReviewRatingsMutation, useGetRoomsByIdQuery } from "@/redux/features/Propertyapi/page";
 import { imageUrl } from "@/redux/api/ApiSlice";
 
 const Page = ({ params }) => {
@@ -68,12 +68,12 @@ const Page = ({ params }) => {
 
   // Fetch data using query
   const { isLoading, data: roomsalldata, error } = useGetRoomsByIdQuery(params?.id);
-
-  if (isLoading) {
+const [addReviewRatings,{isLoading:reviewLoading,error:reviewError}]=useAddReviewRatingsMutation({},{refetchOnFocus: true})
+  if (isLoading || reviewLoading) {
     return <h1>Loading...</h1>;
   }
 
-  if (error) {
+  if (error || reviewError) {
     console.error(error);
   }
 
@@ -139,7 +139,7 @@ const Page = ({ params }) => {
   };
 
   const handleShowAll = () => {
-    router.push('/showAllReview');
+    router.push(`/showAllReview?id=${params?.id}`);
   };
 
   const handleClick = (index) => {
@@ -154,13 +154,34 @@ const Page = ({ params }) => {
     setHoverValue(undefined);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     console.log(e)
     e.preventDefault();
     if (reviewText.trim() && rating > 0) {
       setReviewText('');
       setRating(0);
-      message.success('Review submitted successfully!');
+      const reviewData={
+        propertyId:params?.id,
+        review:reviewText,
+        rating
+      }
+
+      try {
+        const respons=await addReviewRatings(reviewData)
+        console.log('the respons is ',respons)
+        if(respons?.data?.success){
+          message.success(respons?.data?.message)
+        }
+        if(respons?.error){
+
+          message.error( respons?.error?.data?.message ||'someting went wrong')
+        }
+      } catch (error) {
+        message.error(error?.message || 'Something went wrong')
+      }
+
+
+
     } else {
       message.error('Please provide both review text and rating.');
     }
@@ -193,7 +214,7 @@ const Page = ({ params }) => {
                   alt={`Room Slide ${index + 1}`}
                   width={800}
                   height={600}
-                  className="w-full h-auto rounded-md"
+                  className="w-full max-h-[600px] h-auto rounded-md"
                 />
               </div>
             ))}
@@ -213,7 +234,7 @@ const Page = ({ params }) => {
                   alt={`Preview ${index + 1}`}
                   width={150}
                   height={100}
-                  className="rounded-md"
+                  className="rounded-md max-h-[100px]"
                 />
               </div>
             ))}
@@ -529,10 +550,10 @@ const Page = ({ params }) => {
 
       {/* guest fevorite section -------------------- */}
       <div className=" border-b-2 border-[#424242]  my-6 container mx-auto p-4">
-        <div className="space-y-2 py-8">
-          <div className="text-[#FFFFFFCC] mx-auto w-fit">
-            <h1 className="text-[24px] font-bold pl-4">4.91</h1>
-            <Rate style={{ color: "white" }} disabled defaultValue={4.9} />
+        <div className="space-y-2 py-8  ">
+          <div className="text-[#FFFFFFCC] mx-auto w-fit ">
+            <h1 className="text-[24px] font-bold pl-4">{totalRatings}</h1>
+            <Rate className="w-fit mx-auto text-center" allowHalf style={{ color: "white" }} disabled defaultValue={totalRatings} />
           </div>
           <h1 className="text-2xl text-white  font-bold  text-center">
             Guest favorite
@@ -736,7 +757,7 @@ const Page = ({ params }) => {
                 </div>
                 <div className="flex items-center justify-around pb-4">
                   <div className="mt-2">
-                    <div className="text-sm text-gray-400 mt-2">
+                    <div className="text-sm text-gray-400 mt-2 text-center">
                       {" "}
                       <p className="text-[#FFFFFF] text-2xl pb-1 font-bold">
                         {reviews.length}
@@ -745,9 +766,9 @@ const Page = ({ params }) => {
                     </div>
                   </div>
                   <div className="flex items-center mt-1">
-                    <div className="text-sm text-gray-400 mt-2">
+                    <div className="text-sm text-gray-400 mt-2 text-center">
                       <p className="text-[#FFFFFF] text-2xl pb-1 font-bold">
-                        {totalRatings}
+                        {totalRatings}*
                       </p>{" "}
                       Ratings
                     </div>
@@ -765,7 +786,7 @@ const Page = ({ params }) => {
               <div className="w-full">
                 <div className="mb-4">
                   <h3 className="text-[20px] font-medium text-white">
-                    {owner?.fullName} a {owner?.role?.map(i => <span className="pr-1">- {i}</span>)}
+                    {owner?.fullName} a {owner?.role?.map(i =><span className="pr-1">{i}</span>)}
                   </h3>
                   <p className="text-sm text-[#FFFFFFCC] opacity-70 py-4">
                     Superhosts are experienced, highly rated hosts who are
@@ -776,9 +797,12 @@ const Page = ({ params }) => {
 
                   <div className="flex items-center space-x-2">
                     <div>
-                      <Avatar size={30} className="bg-gray-400">
-                        <Image src={userimg} alt="Avatar" />
-                      </Avatar>
+                     {
+                    owner?.image ? <Avatar size={80} className="bg-gray-400">
+                      <Image height={96}
+                        width={100} src={imageUrl + owner?.image} alt="Avatar" />
+                    </Avatar> : <div className="h-[44px] w-[44px] flex items-center justify-center rounded-full bg-gray-400 "> <UserOutlined className="text-xl " /></div>
+                  }
                     </div>
                     <div>
                       <p className="text-[20px] font-[300] opacity-70 text-[#FFFFFFCC]">
@@ -821,7 +845,7 @@ const Page = ({ params }) => {
               <div className="text-sm space-y-2">
 
                 <p className="flex gap-3 text-[16px] text-white font-medium"> <FaLanguage className="text-[24px]" /> Language: <span className="text-white opacity-70">English</span></p>
-                <p className="flex gap-3  text-[16px] text-white font-medium"> <FaLocationPinLock className="text-[24px]" />Lives in: <span className="text-white opacity-70">{owner?.address}</span></p>
+                <p className="flex gap-3  text-[16px] text-white font-medium"> <FaLocationPinLock className="text-[24px]" />Lives in: <span className="text-white opacity-70">{owner?.address || 'address not found'}</span></p>
               </div>
 
             </div>

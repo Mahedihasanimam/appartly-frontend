@@ -5,9 +5,9 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'http://192.168.12.158:4000' ,
     prepareHeaders: (headers, { getState }) => {
       const state = getState();
-      console.log('Current state:', state); // Log entire state for debugging
+      // console.log('Current state:', state); // Log entire state for debugging
       const token = localStorage.getItem('token'); // This should reflect the correct path
-      console.log('Current token:', token);
+      // console.log('Current token:', token);
       if (token) {
         headers.set('authorization', `Bearer ${token}`);
       }

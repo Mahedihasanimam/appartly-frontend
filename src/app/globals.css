@@ -293,6 +293,10 @@ span.anticon.anticon-down.ant-select-suffix {
   background-color: #242424 !important; /* Modal background */
 }
 
+.custom-modal2{
+  background-color: #242424 !important; /* Modal background */
+}
+
 
 
 .custom-modal .ant-modal-content {
@@ -382,3 +386,6 @@ span.anticon.anticon-down.ant-select-suffix {
   color: goldenrod; /* Color for selected, hovered, or half-filled stars */
 }
 
+li.ant-rate-star.ant-rate-star-zero span svg {
+  fill: white;
+}

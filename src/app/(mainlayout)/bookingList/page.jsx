@@ -2,22 +2,53 @@
 
 
 "use client";
-import { Button, Rate, Table, Pagination, DatePicker } from "antd";
+import { Button, Rate, Table, Pagination, DatePicker, Modal } from "antd";
 import Image from "next/image";
 import React, { useState } from "react";
 import imageone from "/public/images/user.png";
 import { MdOutlineChevronLeft } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
+import { PiSprayBottleDuotone } from "react-icons/pi";
+import { IoKeySharp } from "react-icons/io5";
+import { BiMessageRoundedDetail } from "react-icons/bi";
+import { RiCircleLine } from "react-icons/ri";
 
 const Page = () => {
   const router = useRouter();
-  
-  // State for pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(10); // Set your desired page size here
   const [selectedDate, setSelectedDate] = useState(dayjs());
   const [showDatePicker, setShowDatePicker] = useState(false); 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [ratings, setRatings] = useState({
+    cleanliness: 0,
+    checkIn: 0,
+    communication: 0,
+    value: 0,
+  });
+
+  const handleReviewClick = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleModalOk = () => {
+    console.log("Ratings:", ratings);
+    setIsModalVisible(false);
+  };
+
+  const handleModalCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleRatingChange = (field, value) => {
+    setRatings((prevRatings) => ({
+      ...prevRatings,
+      [field]: value,
+    }));
+  };
+  // State for pagination
+  
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
@@ -32,7 +63,7 @@ const Page = () => {
       roomId: "125658",
       checkIn: "24 Aug, 2024",
       checkOut: "---",
-      review: <a className="text-[#EBCA7E]">Give review</a>,
+      review: <a onClick={handleReviewClick} className="text-[#EBCA7E]">Give review</a>,
     },
     {
       key: "2",
@@ -46,7 +77,7 @@ const Page = () => {
       roomId: "125658",
       checkIn: "24 Aug, 2024",
       checkOut: "---",
-      review: <a className="text-[#EBCA7E]">Give review</a>,
+      review: <a onClick={handleReviewClick} className="text-[#EBCA7E]">Give review</a>,
     },
     {
       key: "4",
@@ -81,7 +112,7 @@ const Page = () => {
       roomId: "125658",
       checkIn: "24 Aug, 2024",
       checkOut: "---",
-      review: <a className="text-[#EBCA7E]">Give review</a>,
+      review: <a onClick={handleReviewClick} className="text-[#EBCA7E]">Give review</a>,
     },
     {
       key: "49",
@@ -102,7 +133,7 @@ const Page = () => {
       roomId: "125658",
       checkIn: "24 Aug, 2024",
       checkOut: "---",
-      review: <a className="text-[#EBCA7E]">Give review</a>,
+      review: <a onClick={handleReviewClick} className="text-[#EBCA7E]">Give review</a>,
     },
     {
       key: "12",
@@ -151,7 +182,7 @@ const Page = () => {
       roomId: "125658",
       checkIn: "24 Aug, 2024",
       checkOut: "---",
-      review: <a className="text-[#EBCA7E]">Give review</a>,
+      review: <a onClick={handleReviewClick} className="text-[#EBCA7E]">Give review</a>,
     },
     {
       key: "19",
@@ -274,6 +305,65 @@ const Page = () => {
           </Button>
         </div>
       </div>
+      
+
+      <Modal
+      width={700}
+      className="custom-modal text-white"
+       
+        visible={isModalVisible}
+        onCancel={handleModalCancel}
+        footer={[
+          <Button className="hidden" key="cancel"  style={{ backgroundColor: "#ccc", color: "#000" }}>
+            Cancel
+          </Button>,
+        
+        <Button className="mt-6"  key="submit" onClick={handleModalOk} style={{ backgroundColor: "#EBCA7E",height:"44px",width:"100%", color: "#0F0F0F",fontWeight:700 }}>
+        Submit
+      </Button>,
+        ]}
+      
+        
+      >
+        <div className="lg:flex md:flex flex-row items-center justify-between space-y-4 pt-6">
+          <div className="space-y-2 pt-4 ">
+          <PiSprayBottleDuotone className="text-xl block mx-auto" />
+
+
+            <p className="text-[16px] font-medium text-center">Cleanliness:</p>
+            <Rate
+              onChange={(value) => handleRatingChange("cleanliness", value)}
+              value={ratings.cleanliness}
+            />
+          </div>
+          <div className="space-y-2">
+          <IoKeySharp className="text-xl block mx-auto" />
+
+            <p className="text-[16px] font-medium text-center">Check in:</p>
+            <Rate
+              onChange={(value) => handleRatingChange("checkIn", value)}
+              value={ratings.checkIn}
+            />
+          </div>
+          <div className="space-y-2">
+          <BiMessageRoundedDetail className="text-xl block mx-auto" />
+
+            <p className="text-[16px] font-medium text-center">Communication:</p>
+            <Rate
+              onChange={(value) => handleRatingChange("communication", value)}
+              value={ratings.communication}
+            />
+          </div>
+          <div className="space-y-2">
+          <RiCircleLine className="text-xl block mx-auto"  />
+            <p className="text-[16px] font-medium text-center">Value:</p>
+            <Rate
+              onChange={(value) => handleRatingChange("value", value)}
+              value={ratings.value}
+            />
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
