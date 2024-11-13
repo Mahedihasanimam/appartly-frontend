@@ -9,7 +9,7 @@ import PropartyCard from "../ui/PropartyCard";
 import Image from "next/image";
 import whatsapplogo from '/public/images/wlogo.gif'
 
-const Proparty = () => {
+const Proparty = ({title}) => {
   const router = useRouter();
   
   const proparty = [
@@ -110,8 +110,8 @@ const Proparty = () => {
   return (
     <div className="container mx-auto py-12">
       <div>
-        <h1 className="xl:text-[36px] lg:text-[36px] font-black text-2xl text-white font-Merriweather text-center pb-12 leading-10">
-          Transform your property into a lucrative <br /> experience for travelers
+        <h1 className="xl:text-[36px] lg:text-[36px] font-black text-2xl text-white font-Merriweather text-center pb-12 leading-10 max-w-2xl mx-auto">
+          {title}
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {proparty.map((item) => (

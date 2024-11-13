@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useGetRoomsQuery } from '@/redux/features/Propertyapi/page';
 
-const Rooms = () => {
+const Rooms = ({title}) => {
   const router = useRouter();
   const { data, isError, isLoading,refetch } = useGetRoomsQuery({}, {
     refetchOnFocus: true
@@ -48,8 +48,8 @@ const Rooms = () => {
   
   return (
     <div className="container mx-auto py-16 px-4">
-      <h1 className="xl:text-[56px] lg:text-[56px] font-black leading-none text-2xl text-white font-Merriweather text-center pb-12">
-        Explore Amazing Rooms
+      <h1 className="xl:text-[56px] lg:text-[56px] font-black leading-none text-2xl text-white font-Merriweather text-center pb-12 max-w-2xl mx-auto">
+       {title}
       </h1>
 
    

@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import heroimg1 from "/public/images/heroimg.png";
 
 
-const Hero = () => {
+const Hero = ({title, description}) => {
   const [destination, setDestination] = useState('');
   const [checkInDate, setCheckInDate] = useState(null);
   const [checkOutDate, setCheckOutDate] = useState(null);
@@ -43,10 +43,10 @@ const Hero = () => {
       <div className="absolute inset-0 flex flex-col items-center justify-center  z-20 px-4 sm:px-6 lg:px-0">
         <div className="max-w-4xl text-center">
           <h1 className="text-white text-3xl sm:text-4xl lg:text-5xl leading-tight font-bold">
-            Experience Unforgettable Stays <br /> with Our Easy Room Booking
+           {title}
           </h1>
           <p className="text-white text-lg leading-tight mt-4">
-            Discover the perfect accommodation tailored just for you, whether it’s a weekend getaway or a business trip.
+            {description}
           </p>
         </div>
 
