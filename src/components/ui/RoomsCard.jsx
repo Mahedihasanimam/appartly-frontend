@@ -24,7 +24,7 @@ const RoomsCard = ({ data }) => {
             height={200}
             alt={data.location}
             src={ imageUrl+ data.images?.[0]}
-            className=" w-full object-cover max-h-[200px] "
+            className=" w-full object-cover max-h-[200px] min-h-[200px] "
           />
         }
         bodyStyle={{ padding: "16px", backgroundColor: "#3B3B3B", color: "white" }}
@@ -40,10 +40,10 @@ const RoomsCard = ({ data }) => {
               <Rate
                 disabled
                 count={1}
-                value={data.rating || 4.3}
+                value={data?.totalRatings }
                 className="text-[#FDB022] text-lg"
               />
-              <span className="text-white text-xl font-medium">{data.rating || 4.3}</span>
+              <span className="text-white text-xl font-medium">{data?.totalRatings }</span>
             </div>
             <div>
               <p className="text-[16px] font-medium">Room id: {data?._id?.slice(0,6)}</p>

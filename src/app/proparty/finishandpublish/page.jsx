@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { useState } from "react";
 import { MdOutlineChevronLeft } from "react-icons/md";
 import { useRouter } from "next/navigation";
@@ -40,91 +40,76 @@ const Page = () => {
   };
 
   const handlepublish = async () => {
-  
     try {
-
       const alldata = {
         category: allFormData.value1?.propertyType,
         location: allFormData.value1?.location,
         roomCount: allFormData.value1?.numofrooms,
         description: allFormData.value1?.description,
-
         pricePerNight: allFormData.value3?.cost,
         maxGuests: parseInt(allFormData.value3?.maxgust),
         startDate: allFormData.value3?.startdate,
         endDate: allFormData.value3?.enddate,
-        services: allFormData.value3?.services,
-
-     
-
-
-      }
-   
-      const formDataUp = new FormData()
-
-      Object.keys(alldata)?.forEach((item,index) => {
-        console.log(item)
-        formDataUp.append(item, alldata[item])
+        services: Array.isArray(allFormData.value3?.services) ? allFormData.value3?.services : [], // Ensure it’s an array
+      };
+  console.log('the type is ', typeof alldata.services)
+      const formDataUp = new FormData();
+      Object.keys(alldata)?.forEach((item) => {
+        formDataUp.append(item, alldata[item]);
       });
-
-      console.log(allFormData.value3?.services)
-
+  
       if (allFormData.value2?.files) {
         Array.from(allFormData.value2.files).forEach((file) => {
-          formDataUp.append("productImage", file); // Use the same field name for multiple images
+          formDataUp.append("productImage", file);
         });
       }
-
-
-      console.log(formDataUp)
-     
-      const respons = await addAProperty(formDataUp)
-      console.log('response', respons)
-
-      if(respons.data?.success){
+  
+      const respons = await addAProperty(formDataUp);
+  
+      if (respons.data?.success) {
         Swal.fire({
           title: 'Property Added!',
           text: respons.data?.message,
           icon: 'success',
           confirmButtonText: 'OK',
           confirmButtonColor: '#EBCA7E',
-        }).then(
-          router.push('/')
-        )
+        }).then(() => router.push('/'));
       }
-      
     } catch (error) {
       Swal.fire({
-        title: 'something went wrong !',
-        text: 'please try again latter',
+        title: 'Something went wrong!',
+        text: 'Please try again later',
         icon: 'error',
         confirmButtonText: 'OK',
         confirmButtonColor: '#EBCA7E',
-      })
+      });
     }
-  };
 
+
+  }
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
   const handleSelectOption = (option) => {
+    // Check if the option is already selected, if not, add it
     if (!selectedOptions.includes(option)) {
       const newSelectedOptions = [...selectedOptions, option];
       setSelectedOptions(newSelectedOptions);
       setFormData({
         ...formData,
-        services: newSelectedOptions,
+        services: [...newSelectedOptions],  // Ensure it's always an array of strings
       });
     }
   };
-
+  
+  
   const handleRemoveOption = (option) => {
     const newSelectedOptions = selectedOptions.filter(item => item !== option);
     setSelectedOptions(newSelectedOptions);
     setFormData({
       ...formData,
-      services: newSelectedOptions,
+      services: [...newSelectedOptions],  // Ensure it's always an array of strings
     });
   };
 

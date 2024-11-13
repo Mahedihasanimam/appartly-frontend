@@ -46,7 +46,7 @@ import { FaLocationPinLock } from "react-icons/fa6";
 import { Card, Avatar, List, Divider, Progress, Tooltip } from "antd"; // Import from Ant Design
 import profileimg from "/public/images/about.png";
 import { useRouter } from "next/navigation";
-import {useAddReviewRatingsMutation, useGetRoomsByIdQuery } from "@/redux/features/Propertyapi/page";
+import { useAddReviewRatingsMutation, useGetRoomsByIdQuery } from "@/redux/features/Propertyapi/page";
 import { imageUrl } from "@/redux/api/ApiSlice";
 
 const Page = ({ params }) => {
@@ -68,7 +68,7 @@ const Page = ({ params }) => {
 
   // Fetch data using query
   const { isLoading, data: roomsalldata, error } = useGetRoomsByIdQuery(params?.id);
-const [addReviewRatings,{isLoading:reviewLoading,error:reviewError}]=useAddReviewRatingsMutation({},{refetchOnFocus: true})
+  const [addReviewRatings, { isLoading: reviewLoading, error: reviewError }] = useAddReviewRatingsMutation({}, { refetchOnFocus: true })
   if (isLoading || reviewLoading) {
     return <h1>Loading...</h1>;
   }
@@ -122,15 +122,15 @@ const [addReviewRatings,{isLoading:reviewLoading,error:reviewError}]=useAddRevie
   };
 
   const handleReserveClick = () => {
-  console.log("Reservation Details:");
-  console.log("Selected Dates:", dates);
-  console.log("Number of Guests:", guests);
-  console.log("Total Amount:", total);
-  router.push('/payment');
+    console.log("Reservation Details:");
+    console.log("Selected Dates:", dates);
+    console.log("Number of Guests:", guests);
+    console.log("Total Amount:", total);
+    router.push('/payment');
   };
 
   const toggleShowMore = (id) => {
-  
+
     if (expandedReviewIds.includes(id)) {
       setExpandedReviewIds(expandedReviewIds.filter((reviewId) => reviewId !== id));
     } else {
@@ -154,27 +154,27 @@ const [addReviewRatings,{isLoading:reviewLoading,error:reviewError}]=useAddRevie
     setHoverValue(undefined);
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     console.log(e)
     e.preventDefault();
     if (reviewText.trim() && rating > 0) {
       setReviewText('');
       setRating(0);
-      const reviewData={
-        propertyId:params?.id,
-        review:reviewText,
+      const reviewData = {
+        propertyId: params?.id,
+        review: reviewText,
         rating
       }
 
       try {
-        const respons=await addReviewRatings(reviewData)
-        console.log('the respons is ',respons)
-        if(respons?.data?.success){
+        const respons = await addReviewRatings(reviewData)
+        console.log('the respons is ', respons)
+        if (respons?.data?.success) {
           message.success(respons?.data?.message)
         }
-        if(respons?.error){
+        if (respons?.error) {
 
-          message.error( respons?.error?.data?.message ||'someting went wrong')
+          message.error(respons?.error?.data?.message || 'someting went wrong')
         }
       } catch (error) {
         message.error(error?.message || 'Something went wrong')
@@ -188,8 +188,41 @@ const [addReviewRatings,{isLoading:reviewLoading,error:reviewError}]=useAddRevie
   };
   const { category, createdAt, description, services, images, location, maxGuests, owner, reviews, roomCount, startDate, endDate, roomId, totalRatings } = roomsalldata?.room
 
-  const allservicess=services.map(i=>i)
-  console.log('services',allservicess)
+
+  if (services && services[0]) {
+    // Convert the services string into an array
+    const servicesArray = services[0].split(',').map(service => service.trim());
+    console.log('servicesArray:', servicesArray);
+  }
+
+
+
+  const renderServiceIcon = (service) => {
+    switch (service) {
+      case 'Lock on bedroom door':
+        return <LockOutlined className="text-xl text-white" />;
+      case 'Wifi':
+        return <WifiOutlined className="text-xl text-white" />;
+      case 'Tv':
+        return <MdLiveTv className="text-xl text-white" />;
+      case 'Luggage drop-off allowed':
+        return <MdLuggage className="text-xl text-white" />;
+      case 'Refrigerator':
+        return <LuRefrigerator className="text-xl text-white" />;
+      case 'Kitchen':
+        return <CoffeeOutlined className="text-xl text-white" />;
+      case 'Dedicated workspace':
+        return <BsPersonWorkspace className="text-xl text-white" />;
+      case 'Washer':
+        return <BiSolidWasher className="text-xl text-white" />;
+      case 'Hair dryer':
+        return <PiHairDryerLight className="text-xl text-white" />;
+      case 'Iron machine':
+        return <TbIroning1 className="text-xl text-white" />;
+      default:
+        return null;
+    }
+  };
   return (
     <div className="bg-[]">
       <div className="container mx-auto mt-8 text-white flex items-center justify-between p-4  ">
@@ -199,6 +232,7 @@ const [addReviewRatings,{isLoading:reviewLoading,error:reviewError}]=useAddRevie
         </Link>
 
       </div>
+
       <div className="flex flex-col lg:flex-row text-white lg:p-2 md:p-2 p-8  container mx-auto">
         {/* Image Carousel */}
         <div className="lg:w-2/3">
@@ -401,14 +435,14 @@ const [addReviewRatings,{isLoading:reviewLoading,error:reviewError}]=useAddRevie
               <div className="ml-4">
                 <h2 className="text-xl  font-bold">Stay with {owner?.fullName}</h2>
                 <p className="text-sm text-[#FFFFFFCC]">
-                  {owner?.role?.map(i => <span className="pr-1"> {i}</span>)} • 12 years hosting
+                  {owner?.role?.map(i, idx => <span key={idx} className="pr-1"> {i}</span>)} • 12 years hosting
                 </p>
               </div>
             </div>
             <br />
             <h2 className="text-xl  font-bold py-4">About this place</h2>
             <p className="text-[#FFFFFFCC] text-[16px] font-normal leading-6 max-w-lg">
-              {description}
+              {description?.slice(0, 300)}
             </p>
           </Card>
 
@@ -470,82 +504,52 @@ const [addReviewRatings,{isLoading:reviewLoading,error:reviewError}]=useAddRevie
         </div>
       </div>
 
+
+
+
+
+
+
+
+
+
+
       {/* what this places offers section-------------------- */}
       <div className=" container mx-auto  border-b-2 border-[#424242]  my-6 p-4">
         <h2 className="text-xl text-white  font-bold">
           What this places offers
         </h2>
-        <div className="lg:flex md:flex flex-row items-center justify-between p-4 my-8 lg:max-w-[64%] w-full">
-          <div>
+        <div className="lg:flex md:flex flex-row  my-8  w-full">
+          {/* Left Column - First 5 Items */}
+          <div className="w-full ">
             <ul className="space-y-4">
-              <li className="flex items-center space-x-4 text-[#FFFFFFCC]  font-normal">
-                <LockOutlined className="text-xl text-white" />{" "}
-                <p className="text-sm text-[#FFFFFFCC] font-normal text-[16px]">
-                  Lock on bedroom door
-                </p>
-              </li>
-              <li className="flex items-center space-x-4 text-[#FFFFFFCC] font-normal">
-                <WifiOutlined className="text-xl text-white" />{" "}
-                <p className="text-sm text-[#FFFFFFCC] font-normal    text-[16px]">
-                  Free Wi-Fi
-                </p>
-              </li>
-              <li className="flex items-center space-x-4 text-[#FFFFFFCC] font-normal">
-                <MdLiveTv className="text-xl text-white" />{" "}
-                <p className="text-sm text-[#FFFFFFCC] font-normal    text-[16px]">
-                  Tv
-                </p>
-              </li>
-              <li className="flex items-center space-x-4 text-[#FFFFFFCC] font-normal">
-                <MdLuggage className="text-xl text-white" />{" "}
-                <p className="text-sm text-[#FFFFFFCC] font-normal    text-[16px]">
-                  Luggage dropoff allowed
-                </p>
-              </li>
-              <li className="flex items-center space-x-4 text-[#FFFFFFCC] font-normal">
-                <LuRefrigerator className="text-xl text-white" />{" "}
-                <p className="text-sm text-[#FFFFFFCC] font-normal    text-[16px]">
-                  Refrigerator
-                </p>
-              </li>
+              {services[0]?.split(',').map(service => service.trim()).slice(0, 5).map((service, idx) => (
+                <li key={idx} className="flex items-center space-x-4 text-[#FFFFFFCC] font-normal">
+                  {renderServiceIcon(service)}
+                  <p className="text-sm text-[#FFFFFFCC] font-normal text-[16px]">
+                    {service}
+                  </p>
+                </li>
+              ))}
             </ul>
           </div>
 
-          <div>
+          {/* Right Column - Remaining Items */}
+          <div className="w-full lg:pl-8 md:pl-8 lg:mt-0 md:mt-0 mt-8">
             <ul className="space-y-4">
-              <li className="flex items-center space-x-4 text-[#FFFFFFCC] font-normal">
-                <CoffeeOutlined className="text-xl text-white" />{" "}
-                <p className="text-sm text-[#FFFFFFCC] font-normal  text-[16px]">
-                  Kitchen
-                </p>
-              </li>
-              <li className="flex items-center space-x-4 text-[#FFFFFFCC] font-normal">
-                <BsPersonWorkspace className="text-xl text-white" />{" "}
-                <p className="text-sm text-[#FFFFFFCC] font-normal  text-[16px]">
-                  Dedicated workspace
-                </p>
-              </li>
-              <li className="flex items-center space-x-4 text-[#FFFFFFCC] font-normal">
-                <BiSolidWasher className="text-xl text-white" />{" "}
-                <p className="text-sm text-[#FFFFFFCC] font-normal  text-[16px]">
-                  Washer
-                </p>
-              </li>
-              <li className="flex items-center space-x-4 text-[#FFFFFFCC] font-normal">
-                <PiHairDryerLight className="text-xl text-white" />{" "}
-                <p className="text-sm text-[#FFFFFFCC] font-normal  text-[16px]">
-                  Hair dryer
-                </p>
-              </li>
-              <li className="flex items-center space-x-4 text-[#FFFFFFCC] font-normal">
-                <TbIroning1 className="text-xl text-white" />{" "}
-                <p className="text-sm text-[#FFFFFFCC] font-normal  text-[16px]">
-                  Iron machine
-                </p>
-              </li>
+              {services[0]?.split(',').map(service => service.trim()).slice(5).map((service, idx) => (
+                <li key={idx} className="flex items-center space-x-4 text-[#FFFFFFCC] font-normal">
+                  {renderServiceIcon(service)}
+                  <p className="text-sm text-[#FFFFFFCC] font-normal text-[16px]">
+                    {service}
+                  </p>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
+
+
       </div>
 
       {/* guest fevorite section -------------------- */}
@@ -654,20 +658,20 @@ const [addReviewRatings,{isLoading:reviewLoading,error:reviewError}]=useAddRevie
                 style={{ border: "none" }}
               >
                 <div className="flex items-center mb-2">
-                {
-                review?.user?.image ? <Avatar
-                  size="large"
-                  icon={
-                    <Image
-                      height={96}
-                      width={96}
-                      src={imageUrl+review?.user?.image}
-                      alt="Profile"
-                    />
+                  {
+                    review?.user?.image ? <Avatar
+                      size="large"
+                      icon={
+                        <Image
+                          height={96}
+                          width={96}
+                          src={imageUrl + review?.user?.image}
+                          alt="Profile"
+                        />
+                      }
+                    /> : <div className="h-[44px] w-[44px] flex items-center justify-center rounded-full bg-gray-400 "> <UserOutlined className="text-xl " /></div>
                   }
-                /> : <div className="h-[44px] w-[44px] flex items-center justify-center rounded-full bg-gray-400 "> <UserOutlined className="text-xl " /></div>
-              }
-                  
+
                   <div className="ml-2">
                     <p className="text-[16px] text-[#FFFFFF] font-bold">
                       {review?.user?.fullName}
@@ -685,15 +689,15 @@ const [addReviewRatings,{isLoading:reviewLoading,error:reviewError}]=useAddRevie
                   />
                   <p className="text-[12px] font-medium text-[#FFFFFF] pb-4">
                     <span className="text-4xl font-bold">. </span>
-                   {new Date(review?.updatedAt).toLocaleDateString()}
+                    {new Date(review?.updatedAt).toLocaleDateString()}
                   </p>
                 </div>
                 <p className="text-sm mt-2">
                   {expandedReviewIds.includes(review?._id)
                     ? review.review
-                    : review.review.slice(0,250) }
+                    : review.review.slice(0, 250)}
                 </p>
-                
+
                 <Button
                   type="link"
                   className="text-yellow-500 p-0"
@@ -750,7 +754,7 @@ const [addReviewRatings,{isLoading:reviewLoading,error:reviewError}]=useAddRevie
                     </h2>
                     <Tooltip title="Superhost">
                       <span className="text-[#FFFFFFCC] text-sm font-semibold">
-                        {owner?.role?.map(i => <span className="pr-1"> {i}</span>)}
+                        {owner?.role?.map(i, idx => <span key={idx} className="pr-1"> {i}</span>)}
                       </span>
                     </Tooltip>
                   </div>
@@ -786,7 +790,7 @@ const [addReviewRatings,{isLoading:reviewLoading,error:reviewError}]=useAddRevie
               <div className="w-full">
                 <div className="mb-4">
                   <h3 className="text-[20px] font-medium text-white">
-                    {owner?.fullName} a {owner?.role?.map(i =><span className="pr-1">{i}</span>)}
+                    {owner?.fullName} a {owner?.role?.map(i, idx => <span key={idx} className="pr-1">{i}</span>)}
                   </h3>
                   <p className="text-sm text-[#FFFFFFCC] opacity-70 py-4">
                     Superhosts are experienced, highly rated hosts who are
@@ -797,12 +801,12 @@ const [addReviewRatings,{isLoading:reviewLoading,error:reviewError}]=useAddRevie
 
                   <div className="flex items-center space-x-2">
                     <div>
-                     {
-                    owner?.image ? <Avatar size={80} className="bg-gray-400">
-                      <Image height={96}
-                        width={100} src={imageUrl + owner?.image} alt="Avatar" />
-                    </Avatar> : <div className="h-[44px] w-[44px] flex items-center justify-center rounded-full bg-gray-400 "> <UserOutlined className="text-xl " /></div>
-                  }
+                      {
+                        owner?.image ? <Avatar size={80} className="bg-gray-400">
+                          <Image height={96}
+                            width={100} src={imageUrl + owner?.image} alt="Avatar" />
+                        </Avatar> : <div className="h-[44px] w-[44px] flex items-center justify-center rounded-full bg-gray-400 "> <UserOutlined className="text-xl " /></div>
+                      }
                     </div>
                     <div>
                       <p className="text-[20px] font-[300] opacity-70 text-[#FFFFFFCC]">
