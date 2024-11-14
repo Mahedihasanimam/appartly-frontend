@@ -70,6 +70,12 @@ const AddPropertyApi=api.injectEndpoints({
         method:'GET'
       }),
     }),
+    logdinuserReservation:builder.query({
+      query: () => ({
+        url: `/reservation/get-reservation-by-user`,
+        method:'GET'
+      }),
+    }),
 
 
 
@@ -80,4 +86,4 @@ const AddPropertyApi=api.injectEndpoints({
   }),
 });
 
-export const {useAddAPropertyMutation,useGetRoomsQuery,useGetRoomsByIdQuery,useAddReviewRatingsMutation,useGetAllReviewByPropertyIdQuery,useAddRatingsMutation,useGetRatingsByPropertyIdQuery } = AddPropertyApi;
+export const {useAddAPropertyMutation,useGetRoomsQuery,useGetRoomsByIdQuery,useAddReviewRatingsMutation,useGetAllReviewByPropertyIdQuery,useAddRatingsMutation,useGetRatingsByPropertyIdQuery,useLogdinuserReservationQuery } = AddPropertyApi;

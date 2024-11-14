@@ -16,10 +16,13 @@ import { IoKeySharp } from "react-icons/io5";
 import { BiMessageRoundedDetail } from "react-icons/bi";
 import { RiCircleLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
+import { imageUrl } from "@/redux/api/ApiSlice";
+import { useLogdinuserReservationQuery } from "@/redux/features/Propertyapi/page";
 const Profile = () => {
   const user = useSelector((state) => state.user.user);
+  const {isLoading,data:logdinUserReservation}=useLogdinuserReservationQuery()
 console.log(user)
-
+console.log('loppp',logdinUserReservation)
 
   const router = useRouter();
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -185,7 +188,7 @@ console.log(user)
 
 
       <div className="lg:flex flex-row space-x-6 mb-8 ">
-        <Card className="bg-[#2C2C2E] w-full max-w-sm  w-full p-4 border-none h-fit">
+        <Card className="bg-[#2C2C2E] w-full max-w-sm  p-4 border-none h-fit">
           <div className="text-white flex items-center w-fit mx-auto space-x-2 ">
             {
               user?.image ? <Avatar size={80} className="bg-gray-400">

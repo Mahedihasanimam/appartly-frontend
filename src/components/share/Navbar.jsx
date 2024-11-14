@@ -36,7 +36,7 @@ useEffect(()=>{
 
 
   const user = useSelector((state) => state.user.user);
-
+//  console.log(user?._id)
   
   const router=useRouter()
   const {logoutUser,token}=useContext(UserContext)
