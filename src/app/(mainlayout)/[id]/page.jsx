@@ -46,8 +46,10 @@ import { FaLocationPinLock } from "react-icons/fa6";
 import { Card, Avatar, List, Divider, Progress, Tooltip } from "antd"; // Import from Ant Design
 import profileimg from "/public/images/about.png";
 import { useRouter } from "next/navigation";
-import { useAddReviewRatingsMutation, useGetRoomsByIdQuery } from "@/redux/features/Propertyapi/page";
+import { useAddReviewRatingsMutation, useGetRatingsByPropertyIdQuery, useGetRoomsByIdQuery } from "@/redux/features/Propertyapi/page";
 import { imageUrl } from "@/redux/api/ApiSlice";
+import { useMakeAreservationMutation } from "@/redux/features/reservation/ReservationApi";
+import Swal from "sweetalert2";
 
 const Page = ({ params }) => {
   const router = useRouter();
@@ -65,11 +67,16 @@ const Page = ({ params }) => {
   const [rating, setRating] = useState(0);
   const [hoverValue, setHoverValue] = useState(undefined);
   const carouselRef = useRef(null);
+const [startResarveDate,setstartresarveDate]=useState('')
+const [endResarveDate,setEndResarveDate]=useState('')
 
   // Fetch data using query
   const { isLoading, data: roomsalldata, error } = useGetRoomsByIdQuery(params?.id);
-  const [addReviewRatings, { isLoading: reviewLoading, error: reviewError }] = useAddReviewRatingsMutation({}, { refetchOnFocus: true })
-  if (isLoading || reviewLoading) {
+  const [addReviewRatings, { isLoading: reviewLoading, error:reviewError }] = useAddReviewRatingsMutation({}, { refetchOnFocus: true })
+  const[MakeAreservation,{isLoading:reservationLoading,}]=useMakeAreservationMutation()
+
+  const {isLoading:getratingLoading , data:ratingsData}=useGetRatingsByPropertyIdQuery(params?.id)
+  if (isLoading || reviewLoading || getratingLoading) {
     return <h1>Loading...</h1>;
   }
 
@@ -77,7 +84,7 @@ const Page = ({ params }) => {
     console.error(error);
   }
 
-  console.log('singleRoomsData -----', roomsalldata);
+
 
   const perNightRate = 560;
   const cleaningFee = 80;
@@ -87,13 +94,35 @@ const Page = ({ params }) => {
     setActiveSlide(index);
     carouselRef.current?.goTo(index, false);
   };
-
   const handleDateChange = (dateRange) => {
-    setDates(dateRange);
-    calculateTotal(dateRange, guests);
-    console.log("Selected Dates:", dateRange);
-  };
+    if (dateRange && dateRange.length === 2) {
+      const [startDate, endDate] = dateRange;
+  
+      // Convert to JavaScript Date objects
+      const startDateJS = startDate.toDate();
+      const endDateJS = endDate.toDate();
+  
+      // Or format as strings (e.g., "YYYY-MM-DD")
+      const startDateFormatted = startDate.format("YYYY-MM-DD");
+      const endDateFormatted = endDate.format("YYYY-MM-DD");
+      setstartresarveDate(startDateFormatted)
+      setEndResarveDate(endDateFormatted)
 
+      console.log("Start Date (Date object):", startDateJS);
+      console.log("End Date (Date object):", endDateJS);
+
+
+      console.log("Start Date (formatted):", startDateFormatted);
+      console.log("End Date (formatted):", endDateFormatted);
+  
+      setDates(dateRange);
+      calculateTotal(dateRange, guests);
+    } else {
+      console.log("Date range is not complete or is invalid");
+    }
+  };
+  
+  
   const handleGuestsChange = (value) => {
     setGuests(value);
     calculateTotal(dates, value);
@@ -121,12 +150,43 @@ const Page = ({ params }) => {
     }
   };
 
-  const handleReserveClick = () => {
-    console.log("Reservation Details:");
-    console.log("Selected Dates:", dates);
-    console.log("Number of Guests:", guests);
-    console.log("Total Amount:", total);
-    router.push('/payment');
+  const handleReserveClick = async() => {
+    try {
+
+      const allresarveData={
+        propertyId:params?.id,
+        checkInDate:startResarveDate,
+        checkOutDate:endResarveDate,
+        guests:guests,
+        totalPrice:total
+      }
+
+      const respons=await MakeAreservation(allresarveData)
+      console.log(respons)
+      if (respons?.data?.success) {
+        Swal.fire({
+          title: 'Reserved!',
+          text: respons?.data?.message,
+          icon: 'success',
+        });
+
+        router.push('/payment')
+      } else {
+        Swal.fire({
+          title: 'Something went wrong',
+          text: 'Please try again...',
+          icon: 'error',
+        });
+      }
+      
+      
+    } catch (error) {
+      console.log(error)
+    }
+   
+
+
+    
   };
 
   const toggleShowMore = (id) => {
@@ -223,6 +283,19 @@ const Page = ({ params }) => {
         return null;
     }
   };
+
+
+
+  console.log('ratings -----',ratingsData?.data?.[0]);
+  const {
+    averageRating = 0, 
+    checkin = 0,       
+    communication = 0, 
+    cleanliness = 0,  
+    values = 0         
+  } = ratingsData?.data?.[0] || {};
+  
+// console.log('asjdlasl',averageRating,checkin,communication,cleanliness)
   return (
     <div className="bg-[]">
       <div className="container mx-auto mt-8 text-white flex items-center justify-between p-4  ">
@@ -304,7 +377,7 @@ const Page = ({ params }) => {
           <div className="mt-4">
             <InputNumber
               min={1}
-              max={10}
+              max={maxGuests}
               defaultValue={2}
               className="w-full text-[16px] font-medium custom-input" // Add custom class
               placeholder="Guests"
@@ -323,7 +396,10 @@ const Page = ({ params }) => {
             className="mt-4 w-full text-[16px] font-bold bg-yellow-500  text-black"
             onClick={handleReserveClick} // Attach the click handler here
           >
-            Reserve
+            {
+              reservationLoading ? "loading...":"Reserve"
+            }
+            
           </Button>
           <p className="mt-4 text-sm text-[#FFFFFFB2] font-medium text-center py-8">
             You won’t be charged yetz
@@ -433,7 +509,7 @@ const Page = ({ params }) => {
                 /> : <div className="h-[44px] w-[44px] flex items-center justify-center rounded-full bg-gray-400 "> <UserOutlined className="text-xl " /></div>
               }
               <div className="ml-4">
-                <h2 className="text-xl  font-bold">Stay with {owner?.fullName}</h2>
+                <h2 className="text-xl  font-bold">Stay with {owner?.firstName}</h2>
                 <p className="text-sm text-[#FFFFFFCC]">
                   {owner?.role?.map(i, idx => <span key={idx} className="pr-1"> {i}</span>)} • 12 years hosting
                 </p>
@@ -556,8 +632,8 @@ const Page = ({ params }) => {
       <div className=" border-b-2 border-[#424242]  my-6 container mx-auto p-4">
         <div className="space-y-2 py-8  ">
           <div className="text-[#FFFFFFCC] mx-auto w-fit ">
-            <h1 className="text-[24px] font-bold pl-4">{totalRatings}</h1>
-            <Rate className="w-fit mx-auto text-center" allowHalf style={{ color: "white" }} disabled defaultValue={totalRatings} />
+            <h1 className="text-[24px] font-bold pl-4 text-white"> {averageRating}</h1>
+            <Rate className="w-fit mx-auto text-center" allowHalf disabled  value={averageRating} />
           </div>
           <h1 className="text-2xl text-white  font-bold  text-center">
             Guest favorite
@@ -574,38 +650,69 @@ const Page = ({ params }) => {
               Overall rating
             </h3>
             <Progress
-              percent={100}
+  percent={
+    averageRating === 1 ? 20 :
+    averageRating === 2 ? 40 :
+    averageRating === 3 ? 60 :
+    averageRating === 4 ? 80 :
+    averageRating === 5 ? 100 : 0 
+  }
+  width={100}
+  format={(percent) => (
+    <span style={{ color: "white" }}>{averageRating}</span>
+  )}
+/>
+
+            <Progress
+              percent={
+                cleanliness === 1 ? 20 :
+                cleanliness === 2 ? 40 :
+                cleanliness === 3 ? 60 :
+                cleanliness === 4 ? 80 :
+                cleanliness === 5 ? 100 : 0
+              }
               width={100}
               format={(percent) => (
-                <span style={{ color: "white" }}>{percent - 95}</span>
+                <span style={{ color: "white" }}>{cleanliness}</span>
               )}
             />
             <Progress
-              percent={99}
+              percent={
+                checkin === 1 ? 20 :
+                checkin === 2 ? 40 :
+                checkin === 3 ? 60 :
+                checkin === 4 ? 80 :
+                checkin === 5 ? 100 : 0
+              }
               width={100}
               format={(percent) => (
-                <span style={{ color: "white" }}>{percent - 95}</span>
+                <span style={{ color: "white" }}>{checkin}</span>
               )}
             />
             <Progress
-              percent={98}
+              percent={
+                communication === 1 ? 20 :
+                communication === 2 ? 40 :
+                communication === 3 ? 60 :
+                communication === 4 ? 80 :
+                communication === 5 ? 100 : 0
+              }
               width={100}
               format={(percent) => (
-                <span style={{ color: "white" }}>{percent - 95}</span>
+                <span style={{ color: "white" }}>{communication}</span>
               )}
             />
             <Progress
-              percent={97}
+              percent={
+                values === 1 ? 20 :
+                values === 2 ? 40 :
+                values === 3 ? 60 :
+                values === 4 ? 80 :
+                values === 5 ? 100 : 0
+              }
               width={100}
               format={(percent) => (
-                <span style={{ color: "white" }}>{percent - 95}</span>
-              )}
-            />
-            <Progress
-              percent={96}
-              width={100}
-              format={(percent) => (
-                <span style={{ color: "white" }}>{percent - 95}</span>
+                <span style={{ color: "white" }}>{values}</span>
               )}
             />
           </div>
@@ -613,14 +720,14 @@ const Page = ({ params }) => {
           <div className="border-r border-[#424242]  pr-8 mb-4 space-y-2 w-full max-w-xs text-center">
             <h3 className="text-lg  font-medium text-[#FFFFFF]">Cleanliness</h3>
             <h3 className="text-xl font-bold text-center text-[#FFFFFF]">
-              4.0
+              {cleanliness}
             </h3>
             <PiSprayBottle className="text-6xl text-white text-center block mx-auto" />
           </div>
           <div className="border-r border-[#424242]  pr-8 mb-4 space-y-2 w-full max-w-xs text-center">
             <h3 className="text-lg  font-medium text-[#FFFFFF]">Check In</h3>
             <h3 className="text-xl font-bold text-center text-[#FFFFFF]">
-              4.0
+             {checkin}
             </h3>
             <IoIosKey className="text-6xl text-white text-center block mx-auto" />
           </div>
@@ -630,15 +737,15 @@ const Page = ({ params }) => {
               Communication
             </h3>
             <h3 className="text-xl font-bold text-center text-[#FFFFFF]">
-              4.0
+             {communication}
             </h3>
             <MessageOutlined className="text-6xl text-white text-center block mx-auto" />
           </div>
 
           <div className=" space-y-2 w-full max-w-xs text-center">
-            <h3 className="text-lg  font-medium text-[#FFFFFF]">Value</h3>
+            <h3 className="text-lg  font-medium text-[#FFFFFF]">Values</h3>
             <h3 className="text-xl font-bold text-center text-[#FFFFFF]">
-              4.0
+              {values}
             </h3>
             <FaCircleNotch className="text-6xl text-white text-center block mx-auto" />
           </div>
@@ -750,7 +857,7 @@ const Page = ({ params }) => {
 
                   <div className="ml-4">
                     <h2 className="text-lg font-semibold text-white">
-                      {owner?.fullName}
+                      {owner?.firstName}
                     </h2>
                     <Tooltip title="Superhost">
                       <span className="text-[#FFFFFFCC] text-sm font-semibold">
@@ -790,7 +897,7 @@ const Page = ({ params }) => {
               <div className="w-full">
                 <div className="mb-4">
                   <h3 className="text-[20px] font-medium text-white">
-                    {owner?.fullName} a {owner?.role?.map(i, idx => <span key={idx} className="pr-1">{i}</span>)}
+                    {owner?.fullName}  {owner?.role?.map(i, idx => <span key={idx} className="pr-1">{i}</span>)}
                   </h3>
                   <p className="text-sm text-[#FFFFFFCC] opacity-70 py-4">
                     Superhosts are experienced, highly rated hosts who are
@@ -810,7 +917,7 @@ const Page = ({ params }) => {
                     </div>
                     <div>
                       <p className="text-[20px] font-[300] opacity-70 text-[#FFFFFFCC]">
-                        {owner?.fullName}
+                        {owner?.firstName}
                       </p>
                     </div>
                   </div>

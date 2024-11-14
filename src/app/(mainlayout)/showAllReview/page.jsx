@@ -352,7 +352,7 @@ import { MdOutlineWorkOutline } from "react-icons/md";
 import userimg from "/public/images/user.png";
 import profileimg from "/public/images/about.png";
 import Link from "next/link";
-import { useGetAllReviewByPropertyIdQuery } from "@/redux/features/Propertyapi/page";
+import { useGetAllReviewByPropertyIdQuery, useGetRoomsByIdQuery } from "@/redux/features/Propertyapi/page";
 import { useRouter, useSearchParams } from "next/navigation";
 import { UserOutlined } from "@ant-design/icons";
 
@@ -376,8 +376,8 @@ const PageContent = ({ params }) => {
 
 
 const {data,isLoading}=useGetAllReviewByPropertyIdQuery(id)
-
-if(isLoading){
+const { isLoading:roomsdataLoading, data:roomsalldata, error } = useGetRoomsByIdQuery(id);
+if(isLoading || roomsdataLoading){
   return <h1>Loading...</h1>
 }
 
@@ -415,15 +415,16 @@ console.log('all reviews',reviews)
       setCurrentPage(currentPage + 1);
     }
   };
+
+
+
+  const { images, location, maxGuests, owner, roomCount, startDate, endDate, roomId, totalRatings } = roomsalldata?.room
+
+  console.log(owner)
   return (
     <div>
-         <div className="container mx-auto   my-12 p-4">
-        <h3 className="text-[24px]  font-bold text-[#FFFFFF] py-6">
-          Meet your host
-        </h3>
-        <div className=" text-white  flex  items-center">
-        
-           <Card
+               <div className=" text-white  flex  items-center container mx-auto my-12">
+          <Card
             className="w-full bg-transparent lg:p-8"
             bordered={false}
             bodyStyle={{ padding: 0 }}
@@ -433,44 +434,50 @@ console.log('all reviews',reviews)
               <div className="bg-[#242424] h-fit rounded-lg p-6 w-full max-w-md ">
                 <div className="flex items-center pb-4">
                   {/* Avatar and Name */}
-                  <Avatar size={80} className="bg-gray-400">
-                    <Image src={userimg} alt="Avatar" />
-                  </Avatar>
+
+
+                  {
+                    owner?.image ? <Avatar size={80} className="bg-gray-400">
+                      <Image height={96}
+                        width={100} src={imageUrl + owner?.image} alt="Avatar" />
+                    </Avatar> : <div className="h-[44px] w-[44px] flex items-center justify-center rounded-full bg-gray-400 "> <UserOutlined className="text-xl " /></div>
+                  }
+
                   <div className="ml-4">
                     <h2 className="text-lg font-semibold text-white">
-                      Jenifer Lopez
+                      {owner?.firstName}
                     </h2>
                     <Tooltip title="Superhost">
                       <span className="text-[#FFFFFFCC] text-sm font-semibold">
-                        Superhost
+                        {owner?.role?.map(i, idx => <span key={idx} className="pr-1"> {i}</span>)}
                       </span>
                     </Tooltip>
                   </div>
                 </div>
                 <div className="flex items-center justify-around pb-4">
                   <div className="mt-2">
-                    <div className="text-sm text-gray-400 mt-2">
+                    <div className="text-sm text-gray-400 mt-2 text-center">
                       {" "}
                       <p className="text-[#FFFFFF] text-2xl pb-1 font-bold">
-                        939
+                        {reviews.length}
                       </p>{" "}
                       Reviews
                     </div>
                   </div>
                   <div className="flex items-center mt-1">
-                    <div className="text-sm text-gray-400 mt-2">
+                    <div className="text-sm text-gray-400 mt-2 text-center">
                       <p className="text-[#FFFFFF] text-2xl pb-1 font-bold">
-                        939 *
+                        {totalRatings}*
                       </p>{" "}
                       Ratings
                     </div>
                   </div>
-                  <div className="text-sm text-gray-400 mt-2">
+                  {/* <div className="text-sm text-gray-400 mt-2">
                     <p className="text-[#FFFFFF] text-2xl pb-1 font-bold">
                       7 years
                     </p>{" "}
                     Hosting
-                  </div>
+                  </div> */}
                 </div>
               </div>
 
@@ -478,7 +485,7 @@ console.log('all reviews',reviews)
               <div className="w-full">
                 <div className="mb-4">
                   <h3 className="text-[20px] font-medium text-white">
-                    Bua is a Superhost:
+                    {owner?.firstName} {owner?.role?.map(i, idx => <span key={idx} className="pr-1">{i}</span>)}
                   </h3>
                   <p className="text-sm text-[#FFFFFFCC] opacity-70 py-4">
                     Superhosts are experienced, highly rated hosts who are
@@ -486,44 +493,47 @@ console.log('all reviews',reviews)
                   </p>
                 </div>
                 <div className="mb-4">
-                  <h3 className="text-[20px] font-medium text-[#FFFFFFCC] pb-3">
-                    Co-Host:
-                  </h3>
+
                   <div className="flex items-center space-x-2">
                     <div>
-                      <Avatar size={30} className="bg-gray-400">
-                        <Image src={userimg} alt="Avatar" />
-                      </Avatar>
+                      {
+                        owner?.image ? <Avatar size={80} className="bg-gray-400">
+                          <Image height={96}
+                            width={100} src={imageUrl + owner?.image} alt="Avatar" />
+                        </Avatar> : <div className="h-[44px] w-[44px] flex items-center justify-center rounded-full bg-gray-400 "> <UserOutlined className="text-xl " /></div>
+                      }
                     </div>
                     <div>
                       <p className="text-[20px] font-[300] opacity-70 text-[#FFFFFFCC]">
-                        Riyad Hasan
+                        {owner?.fullName}
                       </p>
                     </div>
                   </div>
                 </div>
-                <div className="mb-4 flex items-center justify-between">
+                <div className="mb-4 flex items-center justify-between" >
                   <div>
                     <h3 className="text-[20px] font-medium text-[#FFFFFFCC] pb-3">
                       Host Details:
                     </h3>
 
                     <p className="text-[20px] font-[300] opacity-70 text-[#FFFFFFCC]">
-                      Response Rate: 87%
+                      Email: {owner?.email}
                     </p>
                     <p className="text-[20px] font-[300] opacity-70 text-[#FFFFFFCC]">
-                      Response within one hour
+                      Phone : {owner?.phone}
                     </p>
                   </div>
-                         {/* Message Button */}
-             {/* <Link href={"/message"}	> 
+                  {/* Message Button */}
+                  {/* <Link href={"/message"}	> 
              <Button
               style={{backgroundColor: "#EBCA7E",width: "240px",height: "44px", color: "#000000"}}
                 type="primary"
                 className=" border-none text-black font-bold"
               >
                 Message
-              </Button></Link> */}
+              </Button>
+              
+              </Link> */}
                 </div>
               </div>
             </div>
@@ -532,34 +542,19 @@ console.log('all reviews',reviews)
             <div className="mt-6 flex justify-between items-center">
               {/* Work and Languages */}
               <div className="text-sm space-y-2">
-                <p className="flex gap-3  text-[16px] text-white font-medium">
-                  {" "}
-                  <MdOutlineWorkOutline className="text-[24px]" /> My work:{" "}
-                  <span className="text-white opacity-70">F&B Business</span>
-                </p>
-                <p className="flex gap-3 text-[16px] text-white font-medium">
-                  {" "}
-                  <FaLanguage className="text-[24px]" /> Language:{" "}
-                  <span className="text-white opacity-70">
-                    English & Spanish
-                  </span>
-                </p>
-                <p className="flex gap-3  text-[16px] text-white font-medium">
-                  {" "}
-                  <FaLocationPinLock className="text-[24px]" />
-                  Lives in:{" "}
-                  <span className="text-white opacity-70">
-                    Times Square, USA
-                  </span>
-                </p>
+
+                <p className="flex gap-3 text-[16px] text-white font-medium"> <FaLanguage className="text-[24px]" /> Language: <span className="text-white opacity-70">English</span></p>
+                <p className="flex gap-3  text-[16px] text-white font-medium"> <FaLocationPinLock className="text-[24px]" />Lives in: <span className="text-white opacity-70">{owner?.address || 'address not found'}</span></p>
               </div>
+
             </div>
           </Card>
-
         </div>
-      </div>
-      <div className="container mx-auto border-t-2 border-[#424242] my-12 p-4">
-        <h3 className="text-[24px] font-bold text-[#FFFFFF] py-6">Meet your host</h3>
+
+
+
+      <div className="container mx-auto  my-12 p-4">
+
         <div className="text-white flex items-center">
           <Card className="w-full bg-transparent lg:p-8" bordered={false} bodyStyle={{ padding: 0 }}>
             {/* Host information and details */}
