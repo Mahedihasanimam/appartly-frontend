@@ -15,7 +15,10 @@ import { PiSprayBottleDuotone } from "react-icons/pi";
 import { IoKeySharp } from "react-icons/io5";
 import { BiMessageRoundedDetail } from "react-icons/bi";
 import { RiCircleLine } from "react-icons/ri";
+import { useSelector } from "react-redux";
 const Profile = () => {
+  
+
   const router = useRouter();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [ratings, setRatings] = useState({
@@ -164,10 +167,106 @@ const Profile = () => {
         My profile
       </h2>
 
-      {/* Profile Card */}
-      <div className="lg:flex flex-row space-x-6 mb-8">
-        {/* Card Content */}
+     
+     
+
+
+      <div className="lg:flex flex-row space-x-6 mb-8 ">
+        <Card className="bg-[#2C2C2E] w-full max-w-sm  w-full p-4 border-none h-fit">
+          <div className="text-white flex items-center w-fit mx-auto space-x-2 ">
+            <Image
+              src={imageone}
+              alt="User"
+              width={80}
+              height={80}
+              className="rounded-full mx-auto mb-4"
+            />
+            <div>
+              <h3 className="text-lg font-semibold">Jenifer Lopez</h3>
+              <p className="text-[#FFFFFF66]">Guest</p>
+            </div>
+          </div>
+          <p className="text-[#FFFFFFCC] font-medium text-center ">1</p>
+          <p className="text-[#FFFFFFCC] font-medium  mt-2 text-center">
+            {" "}
+            Month on Appartali
+          </p>
+        </Card>
+        <Card className="bg-transparent lg:w-2/3 w-full p-4 border-none h-fit text-[#FFFFFF]">
+          <h3 className="text-[28px] font-bold text-[#FFFFFF] mb-4">
+            About Jenifer Lopez
+          </h3>
+          <Button
+          onClick={() => router.push("/editprofile")}
+            style={{ backgroundColor: "transparent", color: "#EBCA7E" }}
+            className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-fit px-4 py-2 text-sm font-semibold text-secoundary font-bold  mb-4"
+          >
+            Edit Profile
+          </Button>
+          <div className="space-y-4 lg:flex flex-row items-center justify-between">
+            <div className="space-y-3">
+              <p className="flex gap-3  text-[16px] text-white font-medium">
+                {" "}
+                <MdOutlineWorkOutline className="text-[24px]" /> My work:{" "}
+                <span className="text-white opacity-70">F&B Business</span>
+              </p>
+              <p className="flex gap-3 text-[16px] text-white font-medium">
+                {" "}
+                <FaLanguage className="text-[24px]" /> Language:{" "}
+                <span className="text-white opacity-70">English & Spanish</span>
+              </p>
+            </div>
+            <div className="space-y-3">
+              <p className="flex gap-3  text-[16px] text-white font-medium">
+                {" "}
+                <MobileOutlined className="text-[24px]" /> Contact number:{" "}
+                <span className="text-white opacity-70"> +8801-5659545</span>
+              </p>
+              <p className="flex gap-3 text-[16px] text-white font-medium">
+                {" "}
+                <CiGlobe className="text-[24px]" /> Lives in:{" "}
+                <span className="text-white opacity-70">
+                  {" "}
+                  Times Square, USA
+                </span>
+              </p>
+            </div>
+          </div>
+        </Card>
       </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       {/* Booking List */}
       <div className="p-2 rounded-md">

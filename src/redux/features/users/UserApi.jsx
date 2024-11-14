@@ -73,11 +73,22 @@ const userApi=api.injectEndpoints({
       })
     }),
  
-    getUser: builder.query({
+    getLoginUserById: builder.query({
       query: (id) => `/users/get-one-user/${id}`,
     }),
+
+    getProfile: builder.query({
+      query: (token) => ({
+        url: '/users/profile',
+        headers: {
+          Authorization: `Bearer ${token}`,  
+        },
+      }),
+    }),
+    
+  
 
   }),
 });
 
-export const { useRegisterUserMutation,useRegisterOwnerMutation,useBecomeAnInvestorMutation, useLoginUserMutation,useSocialLoginMutation, useGetUserQuery,useLoginOwnerMutation,useVerifyEmailMutation,useOtpVerifyMutation,useResetPasswordMutation  } = userApi;
+export const { useRegisterUserMutation,useRegisterOwnerMutation,useBecomeAnInvestorMutation, useLoginUserMutation,useSocialLoginMutation,useLoginOwnerMutation,useVerifyEmailMutation,useOtpVerifyMutation,useResetPasswordMutation,useGetLoginUserByIdQuery,useLazyGetProfileQuery  } = userApi;

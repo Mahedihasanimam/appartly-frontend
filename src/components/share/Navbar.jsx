@@ -11,17 +11,40 @@ import Link from "next/link";
 import imageone from '/public/images/user.png'
 import { UserContext } from "@/app/lib/UserContext";
 import { useDispatch, useSelector } from "react-redux";
-import { clearUser } from "@/redux/features/users/userSlice";
+import { clearUser, setUser } from "@/redux/features/users/userSlice";
 import { useRouter } from "next/navigation";
+import { useGetLoginUserByIdQuery, useLazyGetProfileQuery } from "@/redux/features/users/UserApi";
 const Navbar = () => {
+const dispatch=useDispatch()
+  const [getProfile,{isLoading}]=useLazyGetProfileQuery()
+const addedToken=localStorage.getItem('token')
+
+const handlesetUser=async()=>{
+  const user=await getProfile(addedToken)
+  console.log('userrrrr',user?.data)
+  if(user?.data?.data){
+    dispatch(setUser(user?.data?.data))
+  }
+}
+
+useEffect(()=>{
+  if(addedToken){
+    handlesetUser()
+  }
+},[])
+
+
+
   const user = useSelector((state) => state.user.user);
+ 
+  
   const router=useRouter()
   const {logoutUser,token}=useContext(UserContext)
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [languageModalVisible, setLanguageModalVisible] = useState(false);
   const [isowner, setisowner] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
-  const dispatch=useDispatch()
+
   const showLanguageModal = () => {
     setLanguageModalVisible(true);
   };
