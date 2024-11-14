@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Card, Button, Table, Rate, Modal } from "antd";
+import { Card, Button, Table, Rate, Modal, Avatar } from "antd";
 import { MdOutlineChevronLeft, MdOutlineWorkOutline } from "react-icons/md";
 import { AiOutlineEdit, AiOutlinePhone, AiOutlineHome } from "react-icons/ai";
 import { CiGlobe } from "react-icons/ci";
@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FaLanguage } from "react-icons/fa";
 import { FaLocationPinLock } from "react-icons/fa6";
-import { MobileOutlined } from "@ant-design/icons";
+import { MobileOutlined, UserOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { PiSprayBottleDuotone } from "react-icons/pi";
 import { IoKeySharp } from "react-icons/io5";
@@ -17,7 +17,9 @@ import { BiMessageRoundedDetail } from "react-icons/bi";
 import { RiCircleLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
 const Profile = () => {
-  
+  const user = useSelector((state) => state.user.user);
+console.log(user)
+
 
   const router = useRouter();
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -103,7 +105,7 @@ const Profile = () => {
       roomId: "125658",
       checkIn: "24 Aug, 2024",
       checkOut: "---",
-      review: <a onClick={handleReviewClick}   className="text-[#EBCA7E]">Give review</a>,
+      review: <a onClick={handleReviewClick} className="text-[#EBCA7E]">Give review</a>,
     },
     {
       key: "49",
@@ -157,6 +159,17 @@ const Profile = () => {
     },
   ];
 
+
+
+
+
+
+
+
+
+
+
+
   return (
     <div className="p-4 container mx-auto text-white">
       {/* Header */}
@@ -167,23 +180,26 @@ const Profile = () => {
         My profile
       </h2>
 
-     
-     
+
+
 
 
       <div className="lg:flex flex-row space-x-6 mb-8 ">
         <Card className="bg-[#2C2C2E] w-full max-w-sm  w-full p-4 border-none h-fit">
           <div className="text-white flex items-center w-fit mx-auto space-x-2 ">
-            <Image
-              src={imageone}
-              alt="User"
-              width={80}
-              height={80}
-              className="rounded-full mx-auto mb-4"
-            />
+            {
+              user?.image ? <Avatar size={80} className="bg-gray-400">
+                <Image width={80}
+                  height={80} src={imageUrl + user?.image} alt="Avatar" />
+              </Avatar> : <div className="h-[44px] w-[44px] flex items-center justify-center rounded-full bg-gray-400 "> <UserOutlined className="text-xl " /></div>
+            }
+
             <div>
-              <h3 className="text-lg font-semibold">Jenifer Lopez</h3>
-              <p className="text-[#FFFFFF66]">Guest</p>
+              <h3 className="text-lg font-semibold">{user?.fullName || user?.firstName}</h3>
+              <p className="text-[#FFFFFF66]">
+           
+              {user?.role}
+              </p>
             </div>
           </div>
           <p className="text-[#FFFFFFCC] font-medium text-center ">1</p>
@@ -194,43 +210,32 @@ const Profile = () => {
         </Card>
         <Card className="bg-transparent lg:w-2/3 w-full p-4 border-none h-fit text-[#FFFFFF]">
           <h3 className="text-[28px] font-bold text-[#FFFFFF] mb-4">
-            About Jenifer Lopez
+            About {user?.fullName || user?.firstName}
           </h3>
           <Button
-          onClick={() => router.push("/editprofile")}
+            onClick={() => router.push("/editprofile")}
             style={{ backgroundColor: "transparent", color: "#EBCA7E" }}
             className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-fit px-4 py-2 text-sm font-semibold text-secoundary font-bold  mb-4"
           >
             Edit Profile
           </Button>
           <div className="space-y-4 lg:flex flex-row items-center justify-between">
-            <div className="space-y-3">
-              <p className="flex gap-3  text-[16px] text-white font-medium">
-                {" "}
-                <MdOutlineWorkOutline className="text-[24px]" /> My work:{" "}
-                <span className="text-white opacity-70">F&B Business</span>
-              </p>
-              <p className="flex gap-3 text-[16px] text-white font-medium">
-                {" "}
-                <FaLanguage className="text-[24px]" /> Language:{" "}
-                <span className="text-white opacity-70">English & Spanish</span>
-              </p>
-            </div>
-            <div className="space-y-3">
+          <div className="space-y-3">
               <p className="flex gap-3  text-[16px] text-white font-medium">
                 {" "}
                 <MobileOutlined className="text-[24px]" /> Contact number:{" "}
-                <span className="text-white opacity-70"> +8801-5659545</span>
+                <span className="text-white opacity-70"> {user?.phone}</span>
               </p>
               <p className="flex gap-3 text-[16px] text-white font-medium">
                 {" "}
                 <CiGlobe className="text-[24px]" /> Lives in:{" "}
                 <span className="text-white opacity-70">
-                  {" "}
-                  Times Square, USA
+                  {user?.location}
                 </span>
               </p>
             </div>
+
+          
           </div>
         </Card>
       </div>
@@ -293,26 +298,26 @@ const Profile = () => {
 
       {/* Review Modal */}
       <Modal
-      width={700}
-      className="custom-modal text-white"
-       
+        width={700}
+        className="custom-modal text-white"
+
         visible={isModalVisible}
         onCancel={handleModalCancel}
         footer={[
-          <Button className="hidden" key="cancel"  style={{ backgroundColor: "#ccc", color: "#000" }}>
+          <Button className="hidden" key="cancel" style={{ backgroundColor: "#ccc", color: "#000" }}>
             Cancel
           </Button>,
-        
-        <Button className="mt-6"  key="submit" onClick={handleModalOk} style={{ backgroundColor: "#EBCA7E",height:"44px",width:"100%", color: "#0F0F0F",fontWeight:700 }}>
-        Submit
-      </Button>,
+
+          <Button className="mt-6" key="submit" onClick={handleModalOk} style={{ backgroundColor: "#EBCA7E", height: "44px", width: "100%", color: "#0F0F0F", fontWeight: 700 }}>
+            Submit
+          </Button>,
         ]}
-      
-        
+
+
       >
         <div className="lg:flex md:flex flex-row items-center justify-between space-y-4 pt-6">
           <div className="space-y-2 pt-4 ">
-          <PiSprayBottleDuotone className="text-xl block mx-auto" />
+            <PiSprayBottleDuotone className="text-xl block mx-auto" />
 
 
             <p className="text-[16px] font-medium text-center">Cleanliness:</p>
@@ -322,7 +327,7 @@ const Profile = () => {
             />
           </div>
           <div className="space-y-2">
-          <IoKeySharp className="text-xl block mx-auto" />
+            <IoKeySharp className="text-xl block mx-auto" />
 
             <p className="text-[16px] font-medium text-center">Check in:</p>
             <Rate
@@ -331,7 +336,7 @@ const Profile = () => {
             />
           </div>
           <div className="space-y-2">
-          <BiMessageRoundedDetail className="text-xl block mx-auto" />
+            <BiMessageRoundedDetail className="text-xl block mx-auto" />
 
             <p className="text-[16px] font-medium text-center">Communication:</p>
             <Rate
@@ -340,7 +345,7 @@ const Profile = () => {
             />
           </div>
           <div className="space-y-2">
-          <RiCircleLine className="text-xl block mx-auto"  />
+            <RiCircleLine className="text-xl block mx-auto" />
             <p className="text-[16px] font-medium text-center">Value:</p>
             <Rate
               onChange={(value) => handleRatingChange("value", value)}

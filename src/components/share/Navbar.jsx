@@ -21,7 +21,7 @@ const addedToken=localStorage.getItem('token')
 
 const handlesetUser=async()=>{
   const user=await getProfile(addedToken)
-  console.log('userrrrr',user?.data)
+ 
   if(user?.data?.data){
     dispatch(setUser(user?.data?.data))
   }
@@ -36,7 +36,7 @@ useEffect(()=>{
 
 
   const user = useSelector((state) => state.user.user);
- 
+
   
   const router=useRouter()
   const {logoutUser,token}=useContext(UserContext)
