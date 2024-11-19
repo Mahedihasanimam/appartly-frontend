@@ -1,6 +1,6 @@
 const { api } = require("@/redux/api/ApiSlice");
 
-const userApi=api.injectEndpoints({
+const userApi = api.injectEndpoints({
   endpoints: (builder) => ({
     registerUser: builder.mutation({
       query: (user) => ({
@@ -29,6 +29,7 @@ const userApi=api.injectEndpoints({
         method: "POST",
         body: user,
       }),
+      providesTags: ['user'],
     }),
     loginOwner: builder.mutation({
       query: (user) => ({
@@ -36,6 +37,7 @@ const userApi=api.injectEndpoints({
         method: "POST",
         body: user,
       }),
+      providesTags: ['user'],
     }),
 
     socialLogin: builder.mutation({
@@ -43,14 +45,11 @@ const userApi=api.injectEndpoints({
         url: "/users/auth/login-social",
         method: "POST",
         body: user,
-        
       }),
-      
     }),
- 
+
     verifyEmail: builder.mutation({
       query: (email) => ({
-        
         url: "/users/auth/forgot-password",
         method: "POST",
         body: email,
@@ -58,37 +57,62 @@ const userApi=api.injectEndpoints({
     }),
     OtpVerify: builder.mutation({
       query: (otp) => ({
-        
         url: "/users/auth/verify-email",
         method: "POST",
         body: otp,
       }),
     }),
     resetPassword: builder.mutation({
-      query:(data)=>({
-         
+      query: (data) => ({
         url: "/users/auth/reset-password",
         method: "POST",
         body: data,
-      })
+      }),
     }),
- 
+
     getLoginUserById: builder.query({
       query: (id) => `/users/get-one-user/${id}`,
+      providesTags: ['user'],
     }),
 
     getProfile: builder.query({
       query: (token) => ({
         url: '/users/profile',
         headers: {
-          Authorization: `Bearer ${token}`,  
+          Authorization: `Bearer ${token}`,
         },
       }),
+      providesTags: ['user'],
     }),
-    
-  
+
+    updateProfile: builder.mutation({
+      query: (data) => ({
+        url: "/users/update-profile-by-user",
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ['user'], // Invalidate user to refetch
+    }),
+
+    getNotifiByUserId: builder.query({
+      query: (id) => `/users/notifications-by-user/${id}`,
+    }),
 
   }),
 });
 
-export const { useRegisterUserMutation,useRegisterOwnerMutation,useBecomeAnInvestorMutation, useLoginUserMutation,useSocialLoginMutation,useLoginOwnerMutation,useVerifyEmailMutation,useOtpVerifyMutation,useResetPasswordMutation,useGetLoginUserByIdQuery,useLazyGetProfileQuery  } = userApi;
+export const {
+  useRegisterUserMutation,
+  useRegisterOwnerMutation,
+  useBecomeAnInvestorMutation,
+  useLoginUserMutation,
+  useSocialLoginMutation,
+  useLoginOwnerMutation,
+  useVerifyEmailMutation,
+  useOtpVerifyMutation,
+  useResetPasswordMutation,
+  useGetLoginUserByIdQuery,
+  useLazyGetProfileQuery,
+  useUpdateProfileMutation,
+  useGetNotifiByUserIdQuery
+} = userApi;

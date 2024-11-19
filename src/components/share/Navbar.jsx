@@ -1,7 +1,7 @@
 "use client";
 import { useContext, useEffect, useState } from "react";
-import { Input, Button, Dropdown, Menu, Drawer, Modal, Select } from "antd";
-import { MenuOutlined, NotificationFilled } from "@ant-design/icons";
+import { Input, Button, Dropdown, Menu, Drawer, Modal, Select, Avatar } from "antd";
+import { MenuOutlined, NotificationFilled, UserOutlined } from "@ant-design/icons";
 import logo from "/public/images/logo.svg";
 import gloval from "/public/icons/gloval.svg";
 import user from "/public/icons/user.svg";
@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearUser, setUser } from "@/redux/features/users/userSlice";
 import { useRouter } from "next/navigation";
 import { useGetLoginUserByIdQuery, useLazyGetProfileQuery } from "@/redux/features/users/UserApi";
+import { imageUrl } from "@/redux/api/ApiSlice";
 const Navbar = () => {
 const dispatch=useDispatch()
   const [getProfile,{isLoading}]=useLazyGetProfileQuery()
@@ -199,7 +200,15 @@ const handleLogut = () => {
                 trigger={["hover"]}
               >
               {
-                user ? <div>{user?.email}</div> :   <svg width="40" height="41" viewBox="0 0 40 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+                user ? <div>
+                   {
+                user?.image ? <Avatar size={50} className="bg-gray-400">
+                  <Image width={50}
+                    height={50} src={imageUrl + user?.image} alt="Avatar" />
+                </Avatar> : <div className="h-[44px] w-[44px] flex items-center justify-center rounded-full bg-gray-400 "> <UserOutlined className="text-xl " /></div>
+              }
+                  
+                </div> :   <svg width="40" height="41" viewBox="0 0 40 41" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect y="0.0361328" width="40" height="40" rx="16" fill="url(#paint0_linear_99_1963)" />
                 <path d="M16 16.8361C16 14.627 17.7909 12.8361 20 12.8361C22.2091 12.8361 24 14.627 24 16.8361C24 19.0453 22.2091 20.8361 20 20.8361C17.7909 20.8361 16 19.0453 16 16.8361Z" fill="black" />
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M20 8.03613C13.3726 8.03613 8 13.4087 8 20.0361C8 26.6635 13.3726 32.0361 20 32.0361C26.6274 32.0361 32 26.6635 32 20.0361C32 13.4087 26.6274 8.03613 20 8.03613ZM9.6 20.0361C9.6 14.2924 14.2562 9.63613 20 9.63613C25.7438 9.63613 30.4 14.2924 30.4 20.0361C30.4 22.9954 29.164 25.6661 27.1801 27.5599C26.9385 24.6899 24.5324 22.4361 21.6 22.4361H18.4C15.4676 22.4361 13.0615 24.6899 12.8199 27.5599C10.836 25.6661 9.6 22.9954 9.6 20.0361Z" fill="black" />

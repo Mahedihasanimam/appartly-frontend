@@ -5,43 +5,28 @@ import { useRouter } from "next/navigation";
 import { MdOutlineChevronLeft } from "react-icons/md";
 import imageone from '/public/images/user.png'
 import Link from "next/link";
+import { useSelector } from "react-redux";
+import { useGetNotifiByUserIdQuery } from "@/redux/features/users/UserApi";
 const Notification = () => {
   const [isOpen, setIsOpen] = useState(true); // Manage the modal open state
   const router = useRouter();
+  const user = useSelector((state) => state.user.user);
+const {isLoading,data}=useGetNotifiByUserIdQuery(user?._id)
 
-  const notifications = [
-    {
-      image:imageone,
-      name: "Mehedi",
-      message: "You have received a new message.",
-      timestamp: "2 mins ago",
-    },
-    {
-      image:imageone,
-      name: "omuk",
-      message: "A new update is available for download.",
-      timestamp: "1 hour ago",
-    },
-    {
-      image:imageone,
-      name: "mehedi",
-      message: "You have received a new message.",
-      timestamp: "2 mins ago",
-    },
-    {
-      image:imageone,
-      name: "omuk",
-      message: "A new update is available for download.",
-      timestamp: "1 hour ago",
-    },
-  ];
+
+
+
+const notifications=data?.notifications
+
+
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
-
   if (!isOpen) return null;
-
+if(isLoading){
+  return <h1>loading...</h1>
+}
   return (
     <div className=" min-h-screen text-white bg-black p-4 z-50">
       <div className="modal-content w-full container mx-auto">
@@ -54,7 +39,7 @@ const Notification = () => {
           </h2>
           <p className="text-secondary border-b border-secondary">Read all</p>
         </div>
-        {notifications.length > 0 ? (
+        {notifications?.length > 0 ? (
           <ul className="space-y-4">
             {notifications.map((notification, index) => (
               <li
@@ -65,7 +50,7 @@ const Notification = () => {
                   className="rounded-full"
                   height={40}
                   width={40}
-                  src={notification.image}
+                  // src={notification.image}
                   alt="image"
                 />
                 <div>
