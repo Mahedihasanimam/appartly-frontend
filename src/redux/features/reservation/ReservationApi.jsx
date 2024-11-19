@@ -7,7 +7,9 @@ const ReservationApi=api.injectEndpoints({
         url: "/reservation/reserve-property",
         method: "POST",
         body: data,
+        
       }),
+      invalidatesTags:['bookingList']
       
     }),
 

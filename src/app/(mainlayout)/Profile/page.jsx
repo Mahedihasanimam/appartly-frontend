@@ -1,50 +1,36 @@
 "use client";
-import React, { useState } from "react";
-import { Card, Button, Table, Rate, Modal, Avatar } from "antd";
-import { MdOutlineChevronLeft, MdOutlineWorkOutline } from "react-icons/md";
-import { AiOutlineEdit, AiOutlinePhone, AiOutlineHome } from "react-icons/ai";
-import { CiGlobe } from "react-icons/ci";
+import { useAddRatingsMutation, useLogdinuserReservationQuery } from "@/redux/features/Propertyapi/page";
+import { Avatar, Button, Card, Modal, Rate, Table } from "antd";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { MdOutlineChevronLeft } from "react-icons/md";
+import { useSelector } from "react-redux";
 import imageone from "/public/images/user.png";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { FaLanguage } from "react-icons/fa";
-import { FaLocationPinLock } from "react-icons/fa6";
-import { MobileOutlined, UserOutlined } from "@ant-design/icons";
-import Link from "next/link";
+import { imageUrl } from "@/redux/api/ApiSlice";
 import { PiSprayBottleDuotone } from "react-icons/pi";
 import { IoKeySharp } from "react-icons/io5";
 import { BiMessageRoundedDetail } from "react-icons/bi";
 import { RiCircleLine } from "react-icons/ri";
-import { useSelector } from "react-redux";
-import { imageUrl } from "@/redux/api/ApiSlice";
-import { useLogdinuserReservationQuery } from "@/redux/features/Propertyapi/page";
+import { MobileOutlined, UserOutlined } from "@ant-design/icons";
+import { CiGlobe } from "react-icons/ci";
+import Swal from "sweetalert2";
+
+
 const Profile = () => {
   const user = useSelector((state) => state.user.user);
-  const {isLoading,data:logdinUserReservation}=useLogdinuserReservationQuery()
-console.log(user)
-console.log('loppp',logdinUserReservation)
-
+  const { isLoading, data: logdinUserReservation } = useLogdinuserReservationQuery();
+  const [addRatings, { isLoading: ratingLoading, isError, isSuccess }] = useAddRatingsMutation();
   const router = useRouter();
+
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedPropertyId, setSelectedPropertyId] = useState("");
   const [ratings, setRatings] = useState({
     cleanliness: 0,
-    checkIn: 0,
+    checkin: 0,
     communication: 0,
-    value: 0,
+    values: 0, // Changed from `values` for consistency
   });
-
-  const handleReviewClick = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleModalOk = () => {
-    console.log("Ratings:", ratings);
-    setIsModalVisible(false);
-  };
-
-  const handleModalCancel = () => {
-    setIsModalVisible(false);
-  };
 
   const handleRatingChange = (field, value) => {
     setRatings((prevRatings) => ({
@@ -53,93 +39,72 @@ console.log('loppp',logdinUserReservation)
     }));
   };
 
-  const data = [
-    {
-      key: "1",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "---",
-      review: <a onClick={handleReviewClick} className="text-[#EBCA7E]">Give review</a>,
-    },
-    {
-      key: "2",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "29 Aug, 2024",
-      review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={4} />,
-    },
-    {
-      key: "3",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "---",
-      review: <a onClick={handleReviewClick} className="text-[#EBCA7E]">Give review</a>,
-    },
-    {
-      key: "4",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "29 Aug, 2024",
-      review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={4} />,
-    },
-    {
-      key: "5",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "29 Aug, 2024",
-      review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={4} />,
-    },
-    {
-      key: "6",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "29 Aug, 2024",
-      review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={4} />,
-    },
-    {
-      key: "7",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "29 Aug, 2024",
-      review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={4} />,
-    },
-    {
-      key: "8",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "---",
-      review: <a onClick={handleReviewClick} className="text-[#EBCA7E]">Give review</a>,
-    },
-    {
-      key: "49",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "29 Aug, 2024",
-      review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={4} />,
-    },
-    {
-      key: "10",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "29 Aug, 2024",
-      review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={4} />,
-    },
-  ];
+  const handleReviewClick = (propertyId) => {
+    setRatings({
+      cleanliness: 0,
+      checkin: 0,
+      communication: 0,
+      values: 0,
+    });
+    setSelectedPropertyId(propertyId);
+    setIsModalVisible(true);
+  };
 
+  const handleModalOk = async () => {
+    const dataToSubmit = { ...ratings, propertyId: selectedPropertyId };
+
+    try {
+      const response = await addRatings(dataToSubmit).unwrap(); // API call with full data
+      if (response?.success) {
+        Swal.fire({
+          title: 'success!',
+          text: response?.message,
+          icon:'success'
+        })
+      }
+    } catch (error) {
+      Swal.fire({
+        title: 'oppps..!',
+        text: 'something went wrong',
+        icon:'error'
+      })
+    }
+
+    setIsModalVisible(false);
+  };
+
+  const handleModalCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const realData = logdinUserReservation?.rooms?.slice(-8).map((room, index) => ({
+    key: index + 1,
+    roomId: room?.property?.roomId,
+    checkin: room.checkInDate,
+    checkOut: room.checkOutDate || "---",
+    Imageurl: room?.property?.images[0],
+    review: room?.property?.totalRatings ? (
+      <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={room?.property?.totalRatings} />
+    ) : (
+      <a onClick={() => handleReviewClick(room?.property?._id)} className="text-[#EBCA7E]">
+        Give review
+      </a>
+    ),
+  })) || [];
 
   const columns = [
     {
       title: "Room Id",
       dataIndex: "roomId",
       key: "roomId",
-      render: (text) => (
+      render: (text, record) => (
         <div className="flex items-center space-x-2">
           <Image
-            src={imageone}
+            src={imageUrl + record?.Imageurl || "/fallback-image.png"}
             alt="Room"
-            width={40}
-            height={40}
-            className="rounded-full"
+            width={50}
+            height={50}
+            className="rounded-lg"
           />
           <span>{text}</span>
         </div>
@@ -147,13 +112,19 @@ console.log('loppp',logdinUserReservation)
     },
     {
       title: "Check in",
-      dataIndex: "checkIn",
-      key: "checkIn",
+      dataIndex: "checkin",
+      key: "checkin",
+      render: (_, record) => (
+        <span>{new Date(record.checkin).toLocaleDateString()}</span>
+      ),
     },
     {
       title: "Check out",
       dataIndex: "checkOut",
       key: "checkOut",
+      render: (_, record) => (
+        <span>{new Date(record.checkOut).toLocaleDateString()}</span>
+      ),
     },
     {
       title: "Review",
@@ -162,119 +133,82 @@ console.log('loppp',logdinUserReservation)
     },
   ];
 
-
-
-
-
-
-
-
-
-
-
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
 
   return (
     <div className="p-4 container mx-auto text-white">
-      {/* Header */}
-      <h2 className="text-xl flex space-x-2 items-center font-semibold mb-6">
-        <button onClick={() => router.back()} className="focus:outline-none">
-          <MdOutlineChevronLeft className="text-4xl cursor-pointer" />
-        </button>
-        My profile
-      </h2>
+      <div>
+        {/* Header */}
+        <h2 className="text-xl flex space-x-2 items-center font-semibold mb-6">
+          <button onClick={() => router.back()} className="focus:outline-none">
+            <MdOutlineChevronLeft className="text-4xl cursor-pointer" />
+          </button>
+          My profile
+        </h2>
 
 
 
 
 
-      <div className="lg:flex flex-row space-x-6 mb-8 ">
-        <Card className="bg-[#2C2C2E] w-full max-w-sm  p-4 border-none h-fit">
-          <div className="text-white flex items-center w-fit mx-auto space-x-2 ">
-            {
-              user?.image ? <Avatar size={80} className="bg-gray-400">
-                <Image width={80}
-                  height={80} src={imageUrl + user?.image} alt="Avatar" />
-              </Avatar> : <div className="h-[44px] w-[44px] flex items-center justify-center rounded-full bg-gray-400 "> <UserOutlined className="text-xl " /></div>
-            }
+        <div className="lg:flex flex-row space-x-6 mb-8 ">
+          <Card className="bg-[#2C2C2E] w-full max-w-sm  p-4 border-none h-fit">
+            <div className="text-white flex items-center w-fit mx-auto space-x-2 ">
+              {
+                user?.image ? <Avatar size={80} className="bg-gray-400">
+                  <Image width={80}
+                    height={80} src={imageUrl + user?.image} alt="Avatar" />
+                </Avatar> : <div className="h-[44px] w-[44px] flex items-center justify-center rounded-full bg-gray-400 "> <UserOutlined className="text-xl " /></div>
+              }
 
-            <div>
-              <h3 className="text-lg font-semibold">{user?.fullName || user?.firstName}</h3>
-              <p className="text-[#FFFFFF66]">
-           
-              {user?.role}
-              </p>
+              <div>
+                <h3 className="text-lg font-semibold">{user?.fullName || user?.firstName}</h3>
+                <p className="text-[#FFFFFF66]">
+
+                  {user?.role}
+                </p>
+              </div>
             </div>
-          </div>
-          <p className="text-[#FFFFFFCC] font-medium text-center ">1</p>
-          <p className="text-[#FFFFFFCC] font-medium  mt-2 text-center">
-            {" "}
-            Month on Appartali
-          </p>
-        </Card>
-        <Card className="bg-transparent lg:w-2/3 w-full p-4 border-none h-fit text-[#FFFFFF]">
-          <h3 className="text-[28px] font-bold text-[#FFFFFF] mb-4">
-            About {user?.fullName || user?.firstName}
-          </h3>
-          <Button
-            onClick={() => router.push("/editprofile")}
-            style={{ backgroundColor: "transparent", color: "#EBCA7E" }}
-            className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-fit px-4 py-2 text-sm font-semibold text-secoundary font-bold  mb-4"
-          >
-            Edit Profile
-          </Button>
-          <div className="space-y-4 lg:flex flex-row items-center justify-between">
-          <div className="space-y-3">
-              <p className="flex gap-3  text-[16px] text-white font-medium">
-                {" "}
-                <MobileOutlined className="text-[24px]" /> Contact number:{" "}
-                <span className="text-white opacity-70"> {user?.phone}</span>
-              </p>
-              <p className="flex gap-3 text-[16px] text-white font-medium">
-                {" "}
-                <CiGlobe className="text-[24px]" /> Lives in:{" "}
-                <span className="text-white opacity-70">
-                  {user?.location}
-                </span>
-              </p>
-            </div>
+            <p className="text-[#FFFFFFCC] font-medium text-center ">1</p>
+            <p className="text-[#FFFFFFCC] font-medium  mt-2 text-center">
+              {" "}
+              Month on Appartali
+            </p>
+          </Card>
+          <Card className="bg-transparent lg:w-2/3 w-full p-4 border-none h-fit text-[#FFFFFF]">
+            <h3 className="text-[28px] font-bold text-[#FFFFFF] mb-4">
+              About {user?.fullName || user?.firstName}
+            </h3>
+            <Button
+              onClick={() => router.push("/editprofile")}
+              style={{ backgroundColor: "transparent", color: "#EBCA7E" }}
+              className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-fit px-4 py-2 text-sm font-semibold text-secoundary font-bold  mb-4"
+            >
+              Edit Profile
+            </Button>
+            <div className="space-y-4 lg:flex flex-row items-center justify-between">
+              <div className="space-y-3">
+                <p className="flex gap-3  text-[16px] text-white font-medium">
+                  {" "}
+                  <MobileOutlined className="text-[24px]" /> Contact number:{" "}
+                  <span className="text-white opacity-70"> {user?.phone}</span>
+                </p>
+                <p className="flex gap-3 text-[16px] text-white font-medium">
+                  {" "}
+                  <CiGlobe className="text-[24px]" /> Lives in:{" "}
+                  <span className="text-white opacity-70">
+                    {user?.location}
+                  </span>
+                </p>
+              </div>
 
-          
-          </div>
-        </Card>
+
+            </div>
+          </Card>
+        </div>
+
       </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
       {/* Booking List */}
       <div className="p-2 rounded-md">
@@ -291,7 +225,7 @@ console.log('loppp',logdinUserReservation)
         <div className="overflow-x-auto">
           <Table
             columns={columns}
-            dataSource={data}
+            dataSource={realData}
             pagination={false}
             className="custom-table"
             scroll={{ x: "max-content" }}
@@ -299,61 +233,43 @@ console.log('loppp',logdinUserReservation)
         </div>
       </div>
 
+
       {/* Review Modal */}
       <Modal
         width={700}
         className="custom-modal text-white"
-
         visible={isModalVisible}
         onCancel={handleModalCancel}
         footer={[
-          <Button className="hidden" key="cancel" style={{ backgroundColor: "#ccc", color: "#000" }}>
-            Cancel
-          </Button>,
-
-          <Button className="mt-6" key="submit" onClick={handleModalOk} style={{ backgroundColor: "#EBCA7E", height: "44px", width: "100%", color: "#0F0F0F", fontWeight: 700 }}>
+          <Button
+            key="submit"
+            onClick={handleModalOk}
+            style={{ backgroundColor: "#EBCA7E", height: "44px", width: "100%", color: "#0F0F0F", fontWeight: 700 }}
+          >
             Submit
           </Button>,
         ]}
-
-
       >
         <div className="lg:flex md:flex flex-row items-center justify-between space-y-4 pt-6">
-          <div className="space-y-2 pt-4 ">
+          <div className="space-y-2 pt-4">
             <PiSprayBottleDuotone className="text-xl block mx-auto" />
-
-
             <p className="text-[16px] font-medium text-center">Cleanliness:</p>
-            <Rate
-              onChange={(value) => handleRatingChange("cleanliness", value)}
-              value={ratings.cleanliness}
-            />
+            <Rate onChange={(value) => handleRatingChange("cleanliness", value)} value={ratings.cleanliness} />
           </div>
           <div className="space-y-2">
             <IoKeySharp className="text-xl block mx-auto" />
-
             <p className="text-[16px] font-medium text-center">Check in:</p>
-            <Rate
-              onChange={(value) => handleRatingChange("checkIn", value)}
-              value={ratings.checkIn}
-            />
+            <Rate onChange={(value) => handleRatingChange("checkin", value)} value={ratings.checkin} />
           </div>
           <div className="space-y-2">
             <BiMessageRoundedDetail className="text-xl block mx-auto" />
-
             <p className="text-[16px] font-medium text-center">Communication:</p>
-            <Rate
-              onChange={(value) => handleRatingChange("communication", value)}
-              value={ratings.communication}
-            />
+            <Rate onChange={(value) => handleRatingChange("communication", value)} value={ratings.communication} />
           </div>
           <div className="space-y-2">
             <RiCircleLine className="text-xl block mx-auto" />
             <p className="text-[16px] font-medium text-center">Value:</p>
-            <Rate
-              onChange={(value) => handleRatingChange("value", value)}
-              value={ratings.value}
-            />
+            <Rate onChange={(value) => handleRatingChange("values", value)} value={ratings.values} />
           </div>
         </div>
       </Modal>

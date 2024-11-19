@@ -13,33 +13,26 @@ import { PiSprayBottleDuotone } from "react-icons/pi";
 import { IoKeySharp } from "react-icons/io5";
 import { BiMessageRoundedDetail } from "react-icons/bi";
 import { RiCircleLine } from "react-icons/ri";
+import { useAddRatingsMutation, useLogdinuserReservationQuery } from "@/redux/features/Propertyapi/page";
+import { useSelector } from "react-redux";
+import { imageUrl } from "@/redux/api/ApiSlice";
 
 const Page = () => {
-  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(10); // Set your desired page size here
-  const [selectedDate, setSelectedDate] = useState(dayjs());
-  const [showDatePicker, setShowDatePicker] = useState(false); 
+  const [pageSize] = useState(10);
+  const user = useSelector((state) => state.user.user);
+  const { isLoading, data: logdinUserReservation } = useLogdinuserReservationQuery();
+  const [addRatings, { isLoading: ratingLoading, isError, isSuccess }] = useAddRatingsMutation();
+  const router = useRouter();
+
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedPropertyId, setSelectedPropertyId] = useState("");
   const [ratings, setRatings] = useState({
     cleanliness: 0,
-    checkIn: 0,
+    checkin: 0,
     communication: 0,
-    value: 0,
+    values: 0, // Changed from `values` for consistency
   });
-
-  const handleReviewClick = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleModalOk = () => {
-    console.log("Ratings:", ratings);
-    setIsModalVisible(false);
-  };
-
-  const handleModalCancel = () => {
-    setIsModalVisible(false);
-  };
 
   const handleRatingChange = (field, value) => {
     setRatings((prevRatings) => ({
@@ -47,179 +40,73 @@ const Page = () => {
       [field]: value,
     }));
   };
-  // State for pagination
-  
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
+
+  const handleReviewClick = (propertyId) => {
+    setRatings({
+      cleanliness: 0,
+      checkin: 0,
+      communication: 0,
+      values: 0,
+    });
+    setSelectedPropertyId(propertyId);
+    setIsModalVisible(true);
   };
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
+  const handleModalOk = async () => {
+    const dataToSubmit = { ...ratings, propertyId: selectedPropertyId };
+
+    try {
+      const response = await addRatings(dataToSubmit).unwrap(); // API call with full data
+      if (response?.success) {
+        Swal.fire({
+          title: 'success!',
+          text: response?.message,
+          icon:'success'
+        })
+      }
+    } catch (error) {
+      Swal.fire({
+        title: 'oppps..!',
+        text: 'something went wrong',
+        icon:'error'
+      })
+    }
+
+    setIsModalVisible(false);
   };
 
-  const data = [
-    {
-      key: "1",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "---",
-      review: <a onClick={handleReviewClick} className="text-[#EBCA7E]">Give review</a>,
-    },
-    {
-      key: "2",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "29 Aug, 2024",
-      review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={4} />,
-    },
-    {
-      key: "3",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "---",
-      review: <a onClick={handleReviewClick} className="text-[#EBCA7E]">Give review</a>,
-    },
-    {
-      key: "4",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "29 Aug, 2024",
-      review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={4} />,
-    },
-    {
-      key: "5",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "29 Aug, 2024",
-      review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={4} />,
-    },
-    {
-      key: "6",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "29 Aug, 2024",
-      review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={4} />,
-    },
-    {
-      key: "7",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "29 Aug, 2024",
-      review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={4} />,
-    },
-    {
-      key: "8",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "---",
-      review: <a onClick={handleReviewClick} className="text-[#EBCA7E]">Give review</a>,
-    },
-    {
-      key: "49",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "29 Aug, 2024",
-      review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={4} />,
-    },
-    {
-      key: "10",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "29 Aug, 2024",
-      review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={4} />,
-    },
-    {
-      key: "11",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "---",
-      review: <a onClick={handleReviewClick} className="text-[#EBCA7E]">Give review</a>,
-    },
-    {
-      key: "12",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "29 Aug, 2024",
-      review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={4} />,
-    },
-    {
-      key: "13",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "---",
-      review: <a className="text-[#EBCA7E]">Give review</a>,
-    },
-    {
-      key: "14",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "29 Aug, 2024",
-      review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={4} />,
-    },
-    {
-      key: "15",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "29 Aug, 2024",
-      review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={4} />,
-    },
-    {
-      key: "16",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "29 Aug, 2024",
-      review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={4} />,
-    },
-    {
-      key: "17",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "29 Aug, 2024",
-      review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={4} />,
-    },
-    {
-      key: "18",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "---",
-      review: <a onClick={handleReviewClick} className="text-[#EBCA7E]">Give review</a>,
-    },
-    {
-      key: "19",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "29 Aug, 2024",
-      review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={4} />,
-    },
-    {
-      key: "20",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "29 Aug, 2024",
-      review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={4} />,
-    },
-    {
-      key: "21",
-      roomId: "125658",
-      checkIn: "24 Aug, 2024",
-      checkOut: "29 Aug, 2024",
-      review: <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={4} />,
-    },
-  ];
+  const handleModalCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const realData = logdinUserReservation?.rooms?.map((room, index) => ({
+    key: index + 1,
+    roomId: room?.property?.roomId,
+    checkin: room.checkInDate,
+    checkOut: room.checkOutDate || "---",
+    Imageurl: room?.property?.images[0],
+    review: room?.property?.totalRatings ? (
+      <Rate style={{ color: "#EBCA7E" }} disabled defaultValue={room?.property?.totalRatings} />
+    ) : (
+      <a onClick={() => handleReviewClick(room?.property?._id)} className="text-[#EBCA7E]">
+        Give review
+      </a>
+    ),
+  })) || [];
 
   const columns = [
     {
       title: "Room Id",
       dataIndex: "roomId",
       key: "roomId",
-      render: (text) => (
+      render: (text, record) => (
         <div className="flex items-center space-x-2">
           <Image
-            src={imageone}
+            src={imageUrl + record?.Imageurl || "/fallback-image.png"}
             alt="Room"
-            width={40}
-            height={40}
-            className="rounded-full"
+            width={50}
+            height={50}
+            className="rounded-lg"
           />
           <span>{text}</span>
         </div>
@@ -227,13 +114,19 @@ const Page = () => {
     },
     {
       title: "Check in",
-      dataIndex: "checkIn",
-      key: "checkIn",
+      dataIndex: "checkin",
+      key: "checkin",
+      render: (_, record) => (
+        <span>{new Date(record.checkin).toLocaleDateString()}</span>
+      ),
     },
     {
       title: "Check out",
       dataIndex: "checkOut",
       key: "checkOut",
+      render: (_, record) => (
+        <span>{new Date(record.checkOut).toLocaleDateString()}</span>
+      ),
     },
     {
       title: "Review",
@@ -241,9 +134,15 @@ const Page = () => {
       key: "review",
     },
   ];
-  // Calculate paginated data
-  const paginatedData = data.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
+  // Calculate paginated data
+  const paginatedData = realData.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+  const handlePageChange = (key) => {
+    setCurrentPage(1);
+  };
   return (
     <div className="container mx-auto my-12">
       <div className="flex items-center justify-between mb-2">
@@ -255,7 +154,7 @@ const Page = () => {
             My profile
           </h2>
         </div>
-        <div>
+        {/* <div>
           <DatePicker 
             onChange={handleDateChange} 
             format="DD MMM YYYY"
@@ -270,7 +169,7 @@ const Page = () => {
               fontSize: '16px', // Font size
             }} 
           />
-        </div>
+        </div> */}
       </div>
       <div className="overflow-x-auto">
         <Table
@@ -285,11 +184,11 @@ const Page = () => {
       <div className="flex justify-center items-center gap-4 mt-8 border-t-2 border-[#424242] p-6 w-full">
         <div className="flex justify-between items-center gap-4 w-full">
           <div className="text-center text-white mt-2">
-            Page {currentPage} of {Math.ceil(data.length / pageSize)}
+            Page {currentPage} of {Math.ceil(realData.length / pageSize)}
           </div>
           <Pagination
             current={currentPage}
-            total={data.length}
+            total={realData.length}
             pageSize={pageSize}
             onChange={handlePageChange}
             showSizeChanger={false}
@@ -300,67 +199,49 @@ const Page = () => {
           <Button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}>
             Previous
           </Button>
-          <Button onClick={() => setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(data.length / pageSize)))}>
+          <Button onClick={() => setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(realData.length / pageSize)))}>
             Next
           </Button>
         </div>
       </div>
       
 
-      <Modal
-      width={700}
-      className="custom-modal text-white"
-       
+         {/* Review Modal */}
+         <Modal
+        width={700}
+        className="custom-modal text-white"
         visible={isModalVisible}
         onCancel={handleModalCancel}
         footer={[
-          <Button className="hidden" key="cancel"  style={{ backgroundColor: "#ccc", color: "#000" }}>
-            Cancel
+          <Button
+            key="submit"
+            onClick={handleModalOk}
+            style={{ backgroundColor: "#EBCA7E", height: "44px", width: "100%", color: "#0F0F0F", fontWeight: 700 }}
+          >
+            Submit
           </Button>,
-        
-        <Button className="mt-6"  key="submit" onClick={handleModalOk} style={{ backgroundColor: "#EBCA7E",height:"44px",width:"100%", color: "#0F0F0F",fontWeight:700 }}>
-        Submit
-      </Button>,
         ]}
-      
-        
       >
         <div className="lg:flex md:flex flex-row items-center justify-between space-y-4 pt-6">
-          <div className="space-y-2 pt-4 ">
-          <PiSprayBottleDuotone className="text-xl block mx-auto" />
-
-
+          <div className="space-y-2 pt-4">
+            <PiSprayBottleDuotone className="text-xl block mx-auto" />
             <p className="text-[16px] font-medium text-center">Cleanliness:</p>
-            <Rate
-              onChange={(value) => handleRatingChange("cleanliness", value)}
-              value={ratings.cleanliness}
-            />
+            <Rate onChange={(value) => handleRatingChange("cleanliness", value)} value={ratings.cleanliness} />
           </div>
           <div className="space-y-2">
-          <IoKeySharp className="text-xl block mx-auto" />
-
+            <IoKeySharp className="text-xl block mx-auto" />
             <p className="text-[16px] font-medium text-center">Check in:</p>
-            <Rate
-              onChange={(value) => handleRatingChange("checkIn", value)}
-              value={ratings.checkIn}
-            />
+            <Rate onChange={(value) => handleRatingChange("checkin", value)} value={ratings.checkin} />
           </div>
           <div className="space-y-2">
-          <BiMessageRoundedDetail className="text-xl block mx-auto" />
-
+            <BiMessageRoundedDetail className="text-xl block mx-auto" />
             <p className="text-[16px] font-medium text-center">Communication:</p>
-            <Rate
-              onChange={(value) => handleRatingChange("communication", value)}
-              value={ratings.communication}
-            />
+            <Rate onChange={(value) => handleRatingChange("communication", value)} value={ratings.communication} />
           </div>
           <div className="space-y-2">
-          <RiCircleLine className="text-xl block mx-auto"  />
+            <RiCircleLine className="text-xl block mx-auto" />
             <p className="text-[16px] font-medium text-center">Value:</p>
-            <Rate
-              onChange={(value) => handleRatingChange("value", value)}
-              value={ratings.value}
-            />
+            <Rate onChange={(value) => handleRatingChange("values", value)} value={ratings.values} />
           </div>
         </div>
       </Modal>

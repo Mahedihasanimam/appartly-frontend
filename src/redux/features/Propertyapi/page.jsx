@@ -75,6 +75,7 @@ const AddPropertyApi=api.injectEndpoints({
         url: `/reservation/get-reservation-by-user`,
         method:'GET'
       }),
+      providesTags:['bookingList']
     }),
 
 
