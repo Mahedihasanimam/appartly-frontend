@@ -44,9 +44,11 @@ if(isLoading){
           <ul className="space-y-4">
             {notifications.map((notification, index) => (
               <li
-                className="flex items-center space-x-4 border-2 border-[#242424] rounded-lg cursor-pointer p-1"
+                className="flex items-center space-x-4 justify-between border-2 border-[#242424] rounded-lg cursor-pointer p-1"
                 key={index}
               >
+           
+                <div className="flex space-x-2">
                 <Image
                   className="rounded-full bg-white p-1"
                   height={40}
@@ -66,6 +68,17 @@ if(isLoading){
                     {notification?.updatedAt}
                   </p>
                 </div>
+                </div>
+
+              {
+                !notification?.isRead &&   <div>
+                <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="6" height="6" rx="3" fill="#F42829"/>
+</svg>
+
+                </div>
+              }
+        
               </li>
             ))}
           </ul>

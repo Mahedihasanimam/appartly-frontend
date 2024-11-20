@@ -78,7 +78,13 @@ const AddPropertyApi=api.injectEndpoints({
       providesTags:['bookingList']
     }),
 
-
+    deleteARoom: builder.mutation({
+      query: (roomId) => ({
+        url: `/property/delete-property-by-id/${roomId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags:['Properties']
+    }),
 
   
     
@@ -87,4 +93,4 @@ const AddPropertyApi=api.injectEndpoints({
   }),
 });
 
-export const {useAddAPropertyMutation,useGetRoomsQuery,useGetRoomsByIdQuery,useAddReviewRatingsMutation,useGetAllReviewByPropertyIdQuery,useAddRatingsMutation,useGetRatingsByPropertyIdQuery,useLogdinuserReservationQuery } = AddPropertyApi;
+export const {useAddAPropertyMutation,useGetRoomsQuery,useGetRoomsByIdQuery,useAddReviewRatingsMutation,useGetAllReviewByPropertyIdQuery,useAddRatingsMutation,useGetRatingsByPropertyIdQuery,useLogdinuserReservationQuery,useDeleteARoomMutation } = AddPropertyApi;

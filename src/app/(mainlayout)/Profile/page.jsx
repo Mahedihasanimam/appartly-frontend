@@ -166,7 +166,7 @@ const Profile = () => {
                 <h3 className="text-lg font-semibold">{user?.fullName || user?.firstName}</h3>
                 <p className="text-[#FFFFFF66]">
 
-                  {user?.role}
+                {user?.role?.map(i=><span className="pr-1">{i}</span>)}
                 </p>
               </div>
             </div>

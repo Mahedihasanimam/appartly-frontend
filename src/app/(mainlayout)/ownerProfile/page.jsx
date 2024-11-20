@@ -6,7 +6,7 @@ import userimg from "/public/images/user.png";
 import { MdOutlineChevronLeft, MdOutlineWorkOutline } from "react-icons/md";
 import { FaLanguage } from "react-icons/fa";
 import { CiGlobe } from "react-icons/ci";
-import { MobileOutlined } from "@ant-design/icons";
+import { MobileOutlined, UserOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import roomimage from "/public/images/myproperty.png";
 import ownerImage from "/public/images/user.png";
@@ -16,104 +16,21 @@ import UserCard from "@/components/ui/UserCard";
 import imageone from "/public/images/about.png";
 import imagetow from "/public/images/user.png";
 import Link from "next/link";
+import { useSelector } from "react-redux";
+import { imageUrl } from "@/redux/api/ApiSlice";
+
 
 const { TabPane } = Tabs;
 const Page = () => {
+  const { user } = useSelector((state) => state.user)
   const router = useRouter();
+  console.log('owner data', user)
 
+  console.log('chcking', user?.properties?.isDeleted)
 
-  // Sample data for rooms
-  const roomsData = [
-    {
-      "id": "1",
-      "location": "Clichy, France",
-      "host": "Stay with Sourav",
-      "price": "$560.00",
-      "rating": 4.74,
-      "roomId": "569845",
-      "date": "Feb 10 - Feb 15",
-      "category": "Apartment",
-      "image": roomimage
-    },
-    {
-      "id": "2",
-      "location": "Paris, France",
-      "host": "Stay with Marie",
-      "price": "$620.00",
-      "rating": 4.82,
-      "roomId": "678912",
-      "date": "Mar 5 - Mar 10",
-      "category": "Studio",
-      "image": roomimage
-    },
-    {
-      "id": "3",
-      "location": "Nice, France",
-      "host": "Stay with Pierre",
-      "price": "$480.00",
-      "rating": 4.68,
-      "roomId": "345678",
-      "date": "Apr 1 - Apr 6",
-      "category": "Villa",
-      "image": roomimage
-    },
-    {
-      "id": "4",
-      "location": "Lyon, France",
-      "host": "Stay with Lucas",
-      "price": "$530.00",
-      "rating": 4.71,
-      "roomId": "789012",
-      "date": "May 15 - May 20",
-      "category": "House",
-      "image": roomimage
-    },
-    {
-      "id": "5",
-      "location": "Marseille, France",
-      "host": "Stay with Chloe",
-      "price": "$600.00",
-      "rating": 4.80,
-      "roomId": "234567",
-      "date": "Jun 10 - Jun 15",
-      "category": "Apartment",
-      "image": roomimage
-    },
-    {
-      "id": "6",
-      "location": "Bordeaux, France",
-      "host": "Stay with Anne",
-      "price": "$550.00",
-      "rating": 4.76,
-      "roomId": "890123",
-      "date": "Jul 20 - Jul 25",
-      "category": "Cottage",
-      "image": roomimage
-    },
-    {
-      "id": "7",
-      "location": "Marseille, France",
-      "host": "Stay with Chloe",
-      "price": "$600.00",
-      "rating": 4.80,
-      "roomId": "234567",
-      "date": "Jun 10 - Jun 15",
-      "category": "Apartment",
-      "image": roomimage
-    },
-    {
-      "id": "8",
-      "location": "Bordeaux, France",
-      "host": "Stay with Anne",
-      "price": "$550.00",
-      "rating": 4.76,
-      "roomId": "890123",
-      "date": "Jul 20 - Jul 25",
-      "category": "Cottage",
-      "image": roomimage
-    }
-  ];
-
+  // if(isLoading){
+  //   return <h1>Loading...</h1>
+  // }
   return (
     <div className="container mx-auto p-4">
       {/* Header */}
@@ -127,19 +44,18 @@ const Page = () => {
         {/* Left Section: Host Info */}
         <div className="bg-[#242424] h-fit rounded-lg p-6 w-full max-w-md ">
           <div className="flex items-center pb-4">
-            {/* Avatar and Name */}
-            <Avatar size={80} className="bg-gray-400">
-              <Image src={userimg} alt="Avatar" />
-            </Avatar>
-            <div className="ml-4">
-              <h2 className="text-lg font-semibold text-white">
-                Jenifer Lopez
-              </h2>
-              <Tooltip title="Superhost">
-                <span className="text-[#FFFFFFCC] text-sm font-semibold">
-                  Superhost
-                </span>
-              </Tooltip>
+            {
+              user?.image ? <Avatar size={80} className="bg-gray-400">
+                <Image width={80}
+                  height={80} src={imageUrl + user?.image} alt="Avatar" />
+              </Avatar> : <div className="h-[44px] w-[44px] flex items-center justify-center rounded-full bg-gray-400 "> <UserOutlined className="text-xl " /></div>
+            }
+            <div className="pl-2">
+              <h3 className="text-lg font-semibold text-white">{user?.fullName || user?.firstName}</h3>
+              <p className="text-[#FFFFFF66]">
+
+                {user?.role?.map(i => <span className="pr-1">{i}</span>)}
+              </p>
             </div>
           </div>
           <div className="flex items-center justify-around pb-4">
@@ -168,22 +84,24 @@ const Page = () => {
         {/* Right Section: Host Details */}
         <Card className="bg-[#242424] lg:w-2/3 w-full p-4 border-none h-fit text-[#FFFFFF]">
           <h3 className="text-[28px] font-bold text-[#FFFFFF] mb-4">
-            Welcome, Jenifer Lopez!
+            Welcome, <span>{user?.fullName || user?.firstName}</span>
           </h3>
           <div className="space-y-4 lg:flex flex-row items-center justify-between">
             <div className="space-y-3">
               <p className="flex gap-3  text-[16px] text-white font-medium">
                 {" "}
-                <MdOutlineWorkOutline className="text-[24px]" /> My work:{" "}
-                <span className="text-white opacity-70">F&B Business</span>
+                <MobileOutlined className="text-[24px]" /> Contact number:{" "}
+                <span className="text-white opacity-70"> {user?.phone}</span>
               </p>
               <p className="flex gap-3 text-[16px] text-white font-medium">
                 {" "}
-                <FaLanguage className="text-[24px]" /> Language:{" "}
-                <span className="text-white opacity-70">English & Spanish</span>
+                <CiGlobe className="text-[24px]" /> Lives in:{" "}
+                <span className="text-white opacity-70">
+                  {user?.location}
+                </span>
               </p>
             </div>
-            <div className="space-y-3">
+            {/* <div className="space-y-3">
               <p className="flex gap-3  text-[16px] text-white font-medium">
                 {" "}
                 <MobileOutlined className="text-[24px]" /> Contact number:{" "}
@@ -197,7 +115,7 @@ const Page = () => {
                   Times Square, USA
                 </span>
               </p>
-            </div>
+            </div> */}
           </div>
         </Card>
       </div>
@@ -433,8 +351,8 @@ const Page = () => {
             </TabPane>
             <TabPane tab={<span className="text-white">Upcoming (1)</span>} key="3">
               {/* Content for Upcoming */}
-                 {/* Content for Checking in */}
-                 <div className="lg:flex flex-row lg:space-y-0 space-y-6 items-center">
+              {/* Content for Checking in */}
+              <div className="lg:flex flex-row lg:space-y-0 space-y-6 items-center">
                 <Image
                   src={imagetow}
                   alt="User"
@@ -502,10 +420,13 @@ const Page = () => {
         </div>
         {
           <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 gap-8">
-            {roomsData.map((item) => (
-              <Myproperty key={item.id} data={item} />
-            ))}
+            {user?.properties
+              ?.filter((property) => !property.isDeleted) // Exclude items where isDeleted is true
+              .map((property) => (
+                <Myproperty key={property._id} data={property} />
+              ))}
           </div>
+
         }
 
       </div>

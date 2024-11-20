@@ -46,18 +46,24 @@ useEffect(()=>{
   const [isowner, setisowner] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
 
-  const showLanguageModal = () => {
-    setLanguageModalVisible(true);
-  };
 
-  const handleLanguageModalCancel = () => {
-    setLanguageModalVisible(false);
-  };
+
+  // Retrieve the state from localStorage on initial render
+  useEffect(() => {
+    const storedIsOwner = localStorage.getItem("isOwner");
+    if (storedIsOwner) {
+      setisowner(JSON.parse(storedIsOwner));
+    }
+  }, []);
 
   const handleSwitch = () => {
-console.log(user?.role.includes('owner'))
-    user?.role.includes("owner")?  setisowner(!isowner) : router.push('/auth/becomeinvestor')
-    
+    if (user?.role.includes("owner")) {
+      const newIsOwner = !isowner;
+      setisowner(newIsOwner);
+      localStorage.setItem("isOwner", JSON.stringify(newIsOwner)); // Save to localStorage
+    } else {
+      router.push("/auth/becomeinvestor");
+    }
   };
 
 console.log("user",user?.role)
@@ -69,9 +75,16 @@ console.log(isowner)
 // const isownerr=userRole.map((role) => role === "owner")
 // const isguest=userRole.map((role) => role === "guest")
 // console.log('userRoleeeee',isownerr,isguest)
+const showLanguageModal = () => {
+  setLanguageModalVisible(true);
+};
 
+const handleLanguageModalCancel = () => {
+  setLanguageModalVisible(false);
+};
 const handleLogut = () => {
   logoutUser()
+  localStorage.removeItem('isOwner')
   dispatch(clearUser())
 }
   const profileMenu = (
