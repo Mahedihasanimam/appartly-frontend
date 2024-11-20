@@ -7,6 +7,7 @@ import imageone from '/public/images/user.png'
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { useGetNotifiByUserIdQuery } from "@/redux/features/users/UserApi";
+import { imageUrl } from "@/redux/api/ApiSlice";
 const Notification = () => {
   const [isOpen, setIsOpen] = useState(true); // Manage the modal open state
   const router = useRouter();
@@ -17,7 +18,7 @@ const {isLoading,data}=useGetNotifiByUserIdQuery(user?._id)
 
 
 const notifications=data?.notifications
-
+console.log(notifications)
 
 
   const toggleModal = () => {
@@ -47,22 +48,22 @@ if(isLoading){
                 key={index}
               >
                 <Image
-                  className="rounded-full"
+                  className="rounded-full bg-white p-1"
                   height={40}
                   width={40}
-                  // src={notification.image}
+                  src={imageUrl+notification?.applicant?.image}
                   alt="image"
                 />
                 <div>
                   <strong className="text-[18px] font-normal">
-                    {notification.name}
+                    {notification?.applicant?.fullName}
                   </strong>
                   :{" "}
                   <strong className="text-[#FFFFFFB2]">
-                    {notification.message}
+                    {notification?.message}
                   </strong>
                   <p className="timestamp text-[#FFFFFFB2]">
-                    {notification.timestamp}
+                    {notification?.updatedAt}
                   </p>
                 </div>
               </li>
