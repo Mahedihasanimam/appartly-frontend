@@ -20,7 +20,7 @@ const {data,isLoading}=useLogdinuserReservationQuery()
     setCurrentPage(page);
   };
 
-  const upcommingReservations = data?.rooms?.filter((reservation) => reservation.checkinCheckoutStatus === 'upcoming' || new Date(reservation.checkOutDate) > new Date());
+  const upcommingReservations = data?.rooms?.filter((reservation) => reservation.checkinCheckoutStatus === 'upcoming' );
   // Dummy data
 
 console.log(data)

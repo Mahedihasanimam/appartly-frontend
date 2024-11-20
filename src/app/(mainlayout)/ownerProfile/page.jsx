@@ -19,11 +19,14 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 import { imageUrl } from "@/redux/api/ApiSlice";
 import { useLogdinuserReservationQuery } from "@/redux/features/Propertyapi/page";
+import Swal from "sweetalert2";
+import { useChangeReservationRoleMutation } from "@/redux/features/reservation/ReservationApi";
 
 
 const { TabPane } = Tabs;
 const Page = () => {
-  const {data,isLoading}=useLogdinuserReservationQuery()
+  const [changeReservationRole]=useChangeReservationRoleMutation()
+  const { data, isLoading } = useLogdinuserReservationQuery()
   const { user } = useSelector((state) => state.user)
   const router = useRouter();
   const createdAtDate = new Date(user?.createdAt);
@@ -58,17 +61,91 @@ const Page = () => {
   // if(isLoading){
   //   return <h1>Loading...</h1>
   // }
- // Group data into categories (checking in and checking out)
-//  const upcommindatagReservations = data?.rooms?.filter((reservation) => reservation.checkinCheckoutStatus === 'upcoming' || new Date(reservation.checkOutDate) > new Date());
+  // Group data into categories (checking in and checking out)
+  //  const upcommindatagReservations = data?.rooms?.filter((reservation) => reservation.checkinCheckoutStatus === 'upcoming' || new Date(reservation.checkOutDate) > new Date());
 
 
- const upcommingReservations = data?.rooms?.filter((reservation) => reservation.checkinCheckoutStatus === 'upcoming' && new Date(reservation.checkOutDate) > new Date());
- const checkingInReservations = data?.rooms?.filter((reservation) => reservation.checkinCheckoutStatus === 'checkin');
- const checkOutReservations = data?.rooms?.filter((reservation) => reservation.checkinCheckoutStatus === 'checkout' && new Date(reservation.checkInDate) < new Date());
+  const upcommingReservations = data?.rooms?.filter((reservation) => reservation.checkinCheckoutStatus === 'upcoming' && new Date(reservation.checkOutDate) > new Date());
+  const checkingInReservations = data?.rooms?.filter((reservation) => reservation.checkinCheckoutStatus === 'checkin');
+  const checkOutReservations = data?.rooms?.filter((reservation) => reservation.checkinCheckoutStatus === 'checkout' && new Date(reservation.checkInDate) < new Date());
+
+  const handleCompleted = (id) => {
+    Swal.fire({
+      title: "it's alerady done",
+      text: "it's already in checkout",
+      icon: 'info'
+    })
+  }
+
+  const handleMakeitCheckOut = async (id) => {
+    const allinfo = {
+      reservationId: id,
+      checkinCheckoutStatus: 'checkout',
+    }
+
+    // const result=await changeReservationRole(allinfo)
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, confirm"
+    }).then(async(result) => {
+      if (result.isConfirmed) {
+
+        const result=await changeReservationRole(allinfo)
+          if(result?.data?.success){
+
+            Swal.fire({
+              title: "completed",
+              text: "check the checkout tab",
+              icon: "success"
+            });
+          }
+
+      }
+    });
 
 
+  }
+  const handleMakeitChekin = async (id) => {
+    const allinfo = {
+      reservationId: id,
+      checkinCheckoutStatus: 'checkin',
+    }
 
-  console.log('checkingInReservations',upcommingReservations)
+    // const result=await changeReservationRole(allinfo)
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, confirm"
+    }).then(async(result) => {
+      if (result.isConfirmed) {
+
+        const result=await changeReservationRole(allinfo)
+          if(result?.data?.success){
+
+            Swal.fire({
+              title: "completed",
+              text: "check the checkin tab",
+              icon: "success"
+            });
+          }
+
+      }
+    });
+
+
+  }
+
+
+  console.log('checkingInReservations', upcommingReservations)
   return (
     <div className="container mx-auto p-4">
       {/* Header */}
@@ -101,7 +178,7 @@ const Page = () => {
               <div className="text-sm text-gray-400 mt-2">
                 {" "}
                 <p className="text-[#FFFFFF] text-2xl pb-1 font-bold">
-                {user?.reviewsCount}
+                  {user?.reviewsCount}
                 </p>{" "}
                 Reviews
               </div>
@@ -268,146 +345,163 @@ const Page = () => {
       <div>
         <Card className="bg-[#242424] border-none text-white w-full rounded-lg shadow-lg  my-6">
           <Tabs defaultActiveKey="3" centered>
-          <TabPane
-            tab={<span className="text-yellow-500">Checking out ({checkOutReservations?.length})</span>}
-            key="1"
-          >
-            {checkOutReservations?.slice(0,1).map((reservation) => (
-              <div key={reservation?._id} className="lg:flex flex-row lg:space-y-0 space-y-6 items-center">
-                <Image
-                   height={200}
-                   width={200}
-                     src={imageUrl+reservation?.property?.images[0]}// Replace with actual image URL
-                  alt="User"
-                  className="w-[400px] h-[164px] rounded-lg object-cover"
-                />
-                <div className="ml-6 flex justify-around w-full items-center text-white">
-                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-                  <p>Name : {reservation?.user?.fullName}</p>
-                    <p>Email : {reservation?.user?.email}</p>
-                    <p>Contact : {reservation?.user?.phone}</p>
-                    <p>Location : {reservation?.user?.location}</p>
+            <TabPane
+              tab={<span className="text-yellow-500">Checking out ({checkOutReservations?.length})</span>}
+              key="1"
+            >
+              {checkOutReservations?.slice(0, 1).map((reservation) => (
+                <div key={reservation?._id}>
+                  <div  className="lg:flex flex-row lg:space-y-0 space-y-6 items-center">
+                    <Image
+                      height={200}
+                      width={200}
+                      src={imageUrl + reservation?.property?.images[0]}// Replace with actual image URL
+                      alt="User"
+                      className="w-[400px] h-[164px] rounded-lg object-cover"
+                    />
+                    <div className="ml-6 flex justify-around w-full items-center text-white">
+                      <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+                        <p>Name : {reservation?.user?.fullName}</p>
+                        <p>Email : {reservation?.user?.email}</p>
+                        <p>Contact : {reservation?.user?.phone}</p>
+                        <p>Location : {reservation?.user?.location}</p>
+                      </div>
+                      <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+                        <p>Check-in date: {new Date(reservation?.checkInDate).toLocaleDateString()}</p>
+                        <p>Stay for: {Math.floor((new Date(reservation?.checkOutDate) - new Date(reservation?.checkInDate)) / (1000 * 60 * 60 * 24))} days</p>
+                        <p>Guest: {reservation?.guests}</p>
+                        <p>Pay: {reservation?.totalPrice}</p>
+                      </div>
+                    </div>
+
+
+
                   </div>
-                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-                    <p>Check-in date: {new Date(reservation?.checkInDate).toLocaleDateString()}</p>
-                    <p>Stay for: {Math.floor((new Date(reservation?.checkOutDate) - new Date(reservation?.checkInDate)) / (1000 * 60 * 60 * 24))} days</p>
-                    <p>Guest: {reservation?.guests}</p>
-                    <p>Pay: {reservation?.totalPrice}</p>
+                  <div className="mt-4 flex justify-center gap-4 text-white">
+                    <Button
+                      onClick={() => router.push("/allChecOutResarvation")}
+                      style={{ backgroundColor: "transparent", color: "#EBCA7E" }}
+                      className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-[149px] h-[36px]t px-4 py-4 text-sm font-semibold text-secoundary"
+                    >
+                      See all
+                    </Button>
+                    <Button
+                      onClick={() => handleCompleted(reservation?._id)}
+                      style={{ backgroundColor: "#EBCA7E", color: "black" }}
+                      className="bg-secoundary border-[1px] font-bold w-[149px] h-[36px] border-secoundary rounded-[4px] px-4 py-2 text-sm text-secoundary"
+                    >
+                      Complete
+                    </Button>
                   </div>
                 </div>
-              </div>
-            ))}
-            <div className="mt-4 flex justify-center gap-4 text-white">
-              <Button
-                onClick={() => router.push("/allChecOutResarvation")}
-                style={{ backgroundColor: "transparent", color: "#EBCA7E" }}
-                className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-[149px] h-[36px]t px-4 py-4 text-sm font-semibold text-secoundary"
-              >
-                See all
-              </Button>
-              <Button
-                style={{ backgroundColor: "#EBCA7E", color: "black" }}
-                className="bg-secoundary border-[1px] font-bold w-[149px] h-[36px] border-secoundary rounded-[4px] px-4 py-2 text-sm text-secoundary"
-              >
-                Complete
-              </Button>
-            </div>
-          </TabPane>
+
+
+              ))}
+
+            </TabPane>
 
 
 
-<TabPane
-            tab={<span className="text-yellow-500">Checking in ({checkingInReservations?.length})</span>}
-            key="2"
-          >
-            {checkingInReservations?.slice(0,1)?.map((reservation) => (
-              <div key={reservation._id} className="lg:flex flex-row lg:space-y-0 space-y-6 items-center">
-                <Image
+            <TabPane
+              tab={<span className="text-yellow-500">Checking in ({checkingInReservations?.length})</span>}
+              key="2"
+            >
+              {checkingInReservations?.slice(0, 1)?.map((reservation) => (
+
+                <div key={reservation._id}>
+                  <div  className="lg:flex flex-row lg:space-y-0 space-y-6 items-center">
+                    <Image
+                      height={200}
+                      width={200}
+                      src={imageUrl + reservation?.property?.images} // Replace with actual image URL
+                      alt="User"
+                      className="w-[400px] h-[164px] rounded-lg object-cover"
+                    />
+                    <div className="ml-6 flex justify-around w-full items-center text-white">
+                      <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+                        <p>Name : {reservation?.user?.fullName}</p>
+                        <p>Email : {reservation?.user?.email}</p>
+                        <p>Contact : {reservation?.user?.phone}</p>
+                        <p>Location : {reservation?.user?.location}</p>
+                      </div>
+                      <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+                        <p>Check-in date: {new Date(reservation.checkInDate).toLocaleDateString()}</p>
+                        <p>Stay for: {Math.floor((new Date(reservation.checkOutDate) - new Date(reservation.checkInDate)) / (1000 * 60 * 60 * 24))} days</p>
+                        <p>Guest: {reservation?.guests}</p>
+                        <p>Pay: ${reservation?.totalPrice}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 flex justify-center gap-4 text-white">
+                    <Button
+                      onClick={() => router.push("/allCheckingInResarvation")}
+                      style={{ backgroundColor: "transparent", color: "#EBCA7E" }}
+                      className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-[149px] h-[36px]t px-4 py-4 text-sm font-semibold text-secoundary"
+                    >
+                      See all
+                    </Button>
+                    <Button
+                    onClick={()=>handleMakeitCheckOut(reservation?._id)}
+                      style={{ backgroundColor: "#EBCA7E", color: "black" }}
+                      className="bg-secoundary border-[1px] font-bold w-[149px] h-[36px] border-secoundary rounded-[4px] px-4 py-2 text-sm text-secoundary"
+                    >
+                      Complete
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </TabPane>
+
+
+            <TabPane
+              tab={<span className="text-yellow-500">Upcoming ({upcommingReservations?.length})</span>}
+              key="3"
+            >
+              {upcommingReservations?.slice(0, 1)?.map((reservation) => (
+                <div key={reservation?._id}>
+                <div key={reservation?._id} className="lg:flex flex-row lg:space-y-0 space-y-6 items-center">
+                  <Image
                     height={200}
                     width={200}
-                      src={imageUrl+reservation?.property?.images} // Replace with actual image URL
-                  alt="User"
-                  className="w-[400px] h-[164px] rounded-lg object-cover"
-                />
-                <div className="ml-6 flex justify-around w-full items-center text-white">
-                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-                  <p>Name : {reservation?.user?.fullName}</p>
-                    <p>Email : {reservation?.user?.email}</p>
-                    <p>Contact : {reservation?.user?.phone}</p>
-                    <p>Location : {reservation?.user?.location}</p>
-                  </div>
-                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-                    <p>Check-in date: {new Date(reservation.checkInDate).toLocaleDateString()}</p>
-                    <p>Stay for: {Math.floor((new Date(reservation.checkOutDate) - new Date(reservation.checkInDate)) / (1000 * 60 * 60 * 24))} days</p>
-                    <p>Guest: {reservation?.guests}</p>
-                    <p>Pay: ${reservation?.totalPrice}</p>
+                    src={imageUrl + reservation?.property?.images[0]} // Replace with actual image URL
+                    alt="User"
+                    className="w-[400px] h-[164px] rounded-lg object-cover"
+                  />
+                  <div className="ml-6 flex justify-around w-full items-center text-white">
+                    <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+                      <p>Name : {reservation?.user?.fullName}</p>
+                      <p>Email : {reservation?.user?.email}</p>
+                      <p>Contact : {reservation?.user?.phone}</p>
+                      <p>Location : {reservation?.user?.location}</p>
+                    </div>
+                    <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+                      <p>Check-in date: {new Date(reservation?.checkInDate).toLocaleDateString()}</p>
+                      <p>Stay for : {Math.floor((new Date(reservation?.checkOutDate) - new Date(reservation?.checkInDate)) / (1000 * 60 * 60 * 24))} days</p>
+                      <p>Guest : {reservation?.guests}</p>
+                      <p>Pay: ${reservation?.totalPrice}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-            <div className="mt-4 flex justify-center gap-4 text-white">
-              <Button
-                onClick={() => router.push("/allCheckingInResarvation")}
-                style={{ backgroundColor: "transparent", color: "#EBCA7E" }}
-                className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-[149px] h-[36px]t px-4 py-4 text-sm font-semibold text-secoundary"
-              >
-                See all
-              </Button>
-              <Button
-                style={{ backgroundColor: "#EBCA7E", color: "black" }}
-                className="bg-secoundary border-[1px] font-bold w-[149px] h-[36px] border-secoundary rounded-[4px] px-4 py-2 text-sm text-secoundary"
-              >
-                Complete
-              </Button>
-            </div>
-          </TabPane>
 
-            
-            <TabPane
-            tab={<span className="text-yellow-500">Upcoming ({upcommingReservations?.length})</span>}
-            key="3"
-          >
-            {upcommingReservations?.slice(0,1)?.map((reservation) => (
-              <div key={reservation?._id} className="lg:flex flex-row lg:space-y-0 space-y-6 items-center">
-                <Image
-                height={200}
-                width={200}
-                  src={imageUrl+reservation?.property?.images[0]} // Replace with actual image URL
-                  alt="User"
-                  className="w-[400px] h-[164px] rounded-lg object-cover"
-                />
-                <div className="ml-6 flex justify-around w-full items-center text-white">
-                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-                    <p>Name : {reservation?.user?.fullName}</p>
-                    <p>Email : {reservation?.user?.email}</p>
-                    <p>Contact : {reservation?.user?.phone}</p>
-                    <p>Location : {reservation?.user?.location}</p>
-                  </div>
-                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-                    <p>Check-in date: {new Date(reservation?.checkInDate).toLocaleDateString()}</p>
-                    <p>Stay for : {Math.floor((new Date(reservation?.checkOutDate) - new Date(reservation?.checkInDate)) / (1000 * 60 * 60 * 24))} days</p>
-                    <p>Guest : {reservation?.guests}</p>
-                    <p>Pay: ${reservation?.totalPrice}</p>
-                  </div>
-                </div>
+              <div className="mt-4 flex justify-center gap-4 text-white">
+                <Button
+                  onClick={() => router.push("/allupcomingresarvation")}
+                  style={{ backgroundColor: "transparent", color: "#EBCA7E" }}
+                  className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-[149px] h-[36px]t px-4 py-4 text-sm font-semibold text-secoundary"
+                >
+                  See all
+                </Button>
+                <Button onClick={()=>handleMakeitChekin(reservation._id)}
+                  style={{ backgroundColor: "#EBCA7E", color: "black" }}
+                  className="bg-secoundary border-[1px] font-bold w-[149px] h-[36px] border-secoundary rounded-[4px] px-4 py-2 text-sm text-secoundary"
+                >
+                  Complete
+                </Button>
               </div>
-            ))}
-            <div className="mt-4 flex justify-center gap-4 text-white">
-              <Button
-                onClick={() => router.push("/allupcomingresarvation")}
-                style={{ backgroundColor: "transparent", color: "#EBCA7E" }}
-                className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-[149px] h-[36px]t px-4 py-4 text-sm font-semibold text-secoundary"
-              >
-                See all
-              </Button>
-              <Button
-                style={{ backgroundColor: "#EBCA7E", color: "black" }}
-                className="bg-secoundary border-[1px] font-bold w-[149px] h-[36px] border-secoundary rounded-[4px] px-4 py-2 text-sm text-secoundary"
-              >
-                Complete
-              </Button>
-            </div>
-          </TabPane>
+                </div>
+              ))}
+            </TabPane>
 
 
 

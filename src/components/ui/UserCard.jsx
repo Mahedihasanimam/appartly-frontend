@@ -9,9 +9,11 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { MdClose } from "react-icons/md";
 import { imageUrl } from "@/redux/api/ApiSlice";
+import Swal from "sweetalert2";
+import { useChangeReservationRoleMutation } from "@/redux/features/reservation/ReservationApi";
 
 const UserCard = ({ user }) => {
-
+const [changeReservationRole]=useChangeReservationRoleMutation()
   const router = useRouter({ user });
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -20,9 +22,45 @@ const UserCard = ({ user }) => {
     setIsModalVisible(true);
   };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+  const handleMakeitChecking = async (id) => {
+    const allinfo = {
+      reservationId: id,
+      checkinCheckoutStatus: 'checkin',
+    }
+
+    // const result=await changeReservationRole(allinfo)
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, confirm"
+    }).then(async(result) => {
+      if (result.isConfirmed) {
+
+        const result=await changeReservationRole(allinfo)
+          if(result?.data?.success){
+
+            Swal.fire({
+              title: "completed",
+              text: "check the checkin tab",
+              icon: "success"
+            });
+          }
+
+      }
+    });
+
+    setIsModalVisible(false)
+
+
+  }
+
+  const handleCancel=()=>{
+    setIsModalVisible(false)
+  }
   return (
     <div>
       <Card
@@ -115,7 +153,7 @@ const UserCard = ({ user }) => {
          </div>
 
           <button
-            onClick={handleCancel}
+            onClick={()=>handleMakeitChecking(user?._id)}
             className="bg-secoundary text-black mt-4 w-full py-2 rounded-md font-semibold bg-[#EBCA7E]"
           >
             Complete
