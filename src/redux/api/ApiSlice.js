@@ -17,7 +17,8 @@ export const api = createApi({
 tagTypes: [
   'user',
   'Properties',
-  'bookingList'
+  'bookingList',
+  'reservation',
 ],
  
   endpoints: () => ({}),

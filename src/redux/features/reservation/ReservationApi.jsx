@@ -11,11 +11,33 @@ const ReservationApi=api.injectEndpoints({
       }),
       invalidatesTags:['bookingList']
       
+
+
+
     }),
 
+    getReservationByUser:builder.query({
+    
+        query: () => ({
+          url: `/reservation/get-reservation-by-user`,
+          method:'GET'
+        }),
+        providesTags:['bookingList']
+      
+    }),
+    changeReservationRole: builder.mutation({
+      query: (data) => ({
+        url: "/reservation/toggle-status",
+        method: "POST",
+        body: data,
+        
+      }),
+      invalidatesTags:['reservation']
+      
 
 
 
+    }),
   
     
 
@@ -23,4 +45,4 @@ const ReservationApi=api.injectEndpoints({
   }),
 });
 
-export const {useMakeAreservationMutation} = ReservationApi;
+export const {useMakeAreservationMutation,useChangeReservationRoleMutation} = ReservationApi;

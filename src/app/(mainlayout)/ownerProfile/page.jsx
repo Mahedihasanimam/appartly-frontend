@@ -18,17 +18,57 @@ import imagetow from "/public/images/user.png";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { imageUrl } from "@/redux/api/ApiSlice";
+import { useLogdinuserReservationQuery } from "@/redux/features/Propertyapi/page";
 
 
 const { TabPane } = Tabs;
 const Page = () => {
+  const {data,isLoading}=useLogdinuserReservationQuery()
   const { user } = useSelector((state) => state.user)
   const router = useRouter();
+  const createdAtDate = new Date(user?.createdAt);
 
+  // Get the current date
+  const currentDate = new Date();
+
+  // Calculate the difference in years, months, and days
+  let years = currentDate.getFullYear() - createdAtDate.getFullYear();
+  let months = currentDate.getMonth() - createdAtDate.getMonth();
+  let days = currentDate.getDate() - createdAtDate.getDate();
+
+  // Adjust months and years based on the date difference
+  if (months < 0) {
+    months += 12;
+  }
+  if (days < 0) {
+    const lastMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
+    days += lastMonth.getDate();
+  }
+
+  // Determine which unit to display
+  let timeAgo = '';
+  if (years > 0) {
+    timeAgo = `${years} year${years > 1 ? 's' : ''}`;
+  } else if (months > 0) {
+    timeAgo = `${months} month${months > 1 ? 's' : ''}`;
+  } else {
+    timeAgo = `${days} day${days > 1 ? 's' : ''}`;
+  }
 
   // if(isLoading){
   //   return <h1>Loading...</h1>
   // }
+ // Group data into categories (checking in and checking out)
+//  const upcommindatagReservations = data?.rooms?.filter((reservation) => reservation.checkinCheckoutStatus === 'upcoming' || new Date(reservation.checkOutDate) > new Date());
+
+
+ const upcommingReservations = data?.rooms?.filter((reservation) => reservation.checkinCheckoutStatus === 'upcoming' && new Date(reservation.checkOutDate) > new Date());
+ const checkingInReservations = data?.rooms?.filter((reservation) => reservation.checkinCheckoutStatus === 'checkin');
+ const checkOutReservations = data?.rooms?.filter((reservation) => reservation.checkinCheckoutStatus === 'checkout' && new Date(reservation.checkInDate) < new Date());
+
+
+
+  console.log('checkingInReservations',upcommingReservations)
   return (
     <div className="container mx-auto p-4">
       {/* Header */}
@@ -61,19 +101,19 @@ const Page = () => {
               <div className="text-sm text-gray-400 mt-2">
                 {" "}
                 <p className="text-[#FFFFFF] text-2xl pb-1 font-bold">
-                  939
+                {user?.reviewsCount}
                 </p>{" "}
                 Reviews
               </div>
             </div>
             <div className="flex items-center mt-1">
               <div className="text-sm text-gray-400 mt-2">
-                <p className="text-[#FFFFFF] text-2xl pb-1 font-bold">939 *</p>{" "}
+                <p className="text-[#FFFFFF] text-2xl pb-1 font-bold">{user?.ratingsCount} *</p>{" "}
                 Ratings
               </div>
             </div>
             <div className="text-sm text-gray-400 mt-2">
-              <p className="text-[#FFFFFF] text-2xl pb-1 font-bold">7 years</p>{" "}
+              <p className="text-[#FFFFFF] text-2xl pb-1 font-bold">{timeAgo}</p>{" "}
               Hosting
             </div>
           </div>
@@ -118,7 +158,7 @@ const Page = () => {
         </Card>
       </div>
 
-      <div className="my-8 lg:space-y-0 space-y-4 lg:flex gap-8 flex-row items-center justify-between">
+      {/* <div className="my-8 lg:space-y-0 space-y-4 lg:flex gap-8 flex-row items-center justify-between">
         <div className="flex items-center justify-between bg-[#242424] rounded-lg p-6 w-full ">
           <div>
             <h1 className="text-2xl font-bold text-white pb-4">
@@ -214,192 +254,170 @@ const Page = () => {
             </svg>
           </div>
         </div>
-      </div>
+      </div> */}
 
 
       {/* resarvation list----------------- */}
-      <div className="flex items-center justify-between  text-white mb-8" >
+      <div className="flex items-center justify-between  text-white my-8" >
 
         <h1 className="text-2xl font-bold ">Your Reservation</h1>
         <Link href={'/allreservation'}> <Button style={{ backgroundColor: "transparent", border: "none", color: "#EBCA7E" }} className=" text-sm   font-bold  underline ">Allreservation</Button></Link>
       </div>
+
+
       <div>
         <Card className="bg-[#242424] border-none text-white w-full rounded-lg shadow-lg  my-6">
-          <Tabs defaultActiveKey="1" centered>
+          <Tabs defaultActiveKey="3" centered>
+          <TabPane
+            tab={<span className="text-yellow-500">Checking out ({checkOutReservations?.length})</span>}
+            key="1"
+          >
+            {checkOutReservations?.slice(0,1).map((reservation) => (
+              <div key={reservation?._id} className="lg:flex flex-row lg:space-y-0 space-y-6 items-center">
+                <Image
+                   height={200}
+                   width={200}
+                     src={imageUrl+reservation?.property?.images[0]}// Replace with actual image URL
+                  alt="User"
+                  className="w-[400px] h-[164px] rounded-lg object-cover"
+                />
+                <div className="ml-6 flex justify-around w-full items-center text-white">
+                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+                  <p>Name : {reservation?.user?.fullName}</p>
+                    <p>Email : {reservation?.user?.email}</p>
+                    <p>Contact : {reservation?.user?.phone}</p>
+                    <p>Location : {reservation?.user?.location}</p>
+                  </div>
+                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+                    <p>Check-in date: {new Date(reservation?.checkInDate).toLocaleDateString()}</p>
+                    <p>Stay for: {Math.floor((new Date(reservation?.checkOutDate) - new Date(reservation?.checkInDate)) / (1000 * 60 * 60 * 24))} days</p>
+                    <p>Guest: {reservation?.guests}</p>
+                    <p>Pay: {reservation?.totalPrice}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+            <div className="mt-4 flex justify-center gap-4 text-white">
+              <Button
+                onClick={() => router.push("/allChecOutResarvation")}
+                style={{ backgroundColor: "transparent", color: "#EBCA7E" }}
+                className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-[149px] h-[36px]t px-4 py-4 text-sm font-semibold text-secoundary"
+              >
+                See all
+              </Button>
+              <Button
+                style={{ backgroundColor: "#EBCA7E", color: "black" }}
+                className="bg-secoundary border-[1px] font-bold w-[149px] h-[36px] border-secoundary rounded-[4px] px-4 py-2 text-sm text-secoundary"
+              >
+                Complete
+              </Button>
+            </div>
+          </TabPane>
+
+
+
+<TabPane
+            tab={<span className="text-yellow-500">Checking in ({checkingInReservations?.length})</span>}
+            key="2"
+          >
+            {checkingInReservations?.slice(0,1)?.map((reservation) => (
+              <div key={reservation._id} className="lg:flex flex-row lg:space-y-0 space-y-6 items-center">
+                <Image
+                    height={200}
+                    width={200}
+                      src={imageUrl+reservation?.property?.images} // Replace with actual image URL
+                  alt="User"
+                  className="w-[400px] h-[164px] rounded-lg object-cover"
+                />
+                <div className="ml-6 flex justify-around w-full items-center text-white">
+                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+                  <p>Name : {reservation?.user?.fullName}</p>
+                    <p>Email : {reservation?.user?.email}</p>
+                    <p>Contact : {reservation?.user?.phone}</p>
+                    <p>Location : {reservation?.user?.location}</p>
+                  </div>
+                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+                    <p>Check-in date: {new Date(reservation.checkInDate).toLocaleDateString()}</p>
+                    <p>Stay for: {Math.floor((new Date(reservation.checkOutDate) - new Date(reservation.checkInDate)) / (1000 * 60 * 60 * 24))} days</p>
+                    <p>Guest: {reservation?.guests}</p>
+                    <p>Pay: ${reservation?.totalPrice}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+            <div className="mt-4 flex justify-center gap-4 text-white">
+              <Button
+                onClick={() => router.push("/allCheckingInResarvation")}
+                style={{ backgroundColor: "transparent", color: "#EBCA7E" }}
+                className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-[149px] h-[36px]t px-4 py-4 text-sm font-semibold text-secoundary"
+              >
+                See all
+              </Button>
+              <Button
+                style={{ backgroundColor: "#EBCA7E", color: "black" }}
+                className="bg-secoundary border-[1px] font-bold w-[149px] h-[36px] border-secoundary rounded-[4px] px-4 py-2 text-sm text-secoundary"
+              >
+                Complete
+              </Button>
+            </div>
+          </TabPane>
+
+            
             <TabPane
-              tab={<span className="text-yellow-500">Checking out (10)</span>}
-              key="1"
-            >
-              <div className="lg:flex flex-row lg:space-y-0 space-y-6 items-center">
+            tab={<span className="text-yellow-500">Upcoming ({upcommingReservations?.length})</span>}
+            key="3"
+          >
+            {upcommingReservations?.slice(0,1)?.map((reservation) => (
+              <div key={reservation?._id} className="lg:flex flex-row lg:space-y-0 space-y-6 items-center">
                 <Image
-                  src={imageone}
+                height={200}
+                width={200}
+                  src={imageUrl+reservation?.property?.images[0]} // Replace with actual image URL
                   alt="User"
-                  className="w-[400px]  h-[164px] rounded-lg  object-cover"
+                  className="w-[400px] h-[164px] rounded-lg object-cover"
                 />
-                  <div className="ml-6 flex justify-around  w-full items-center text-white">
-            <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-              <p>Name:</p>
-              <p>Email:</p>
-              <p>Contact:</p>
-              <p>Location: </p>
+                <div className="ml-6 flex justify-around w-full items-center text-white">
+                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+                    <p>Name : {reservation?.user?.fullName}</p>
+                    <p>Email : {reservation?.user?.email}</p>
+                    <p>Contact : {reservation?.user?.phone}</p>
+                    <p>Location : {reservation?.user?.location}</p>
+                  </div>
+                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+                    <p>Check-in date: {new Date(reservation?.checkInDate).toLocaleDateString()}</p>
+                    <p>Stay for : {Math.floor((new Date(reservation?.checkOutDate) - new Date(reservation?.checkInDate)) / (1000 * 60 * 60 * 24))} days</p>
+                    <p>Guest : {reservation?.guests}</p>
+                    <p>Pay: ${reservation?.totalPrice}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+            <div className="mt-4 flex justify-center gap-4 text-white">
+              <Button
+                onClick={() => router.push("/allupcomingresarvation")}
+                style={{ backgroundColor: "transparent", color: "#EBCA7E" }}
+                className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-[149px] h-[36px]t px-4 py-4 text-sm font-semibold text-secoundary"
+              >
+                See all
+              </Button>
+              <Button
+                style={{ backgroundColor: "#EBCA7E", color: "black" }}
+                className="bg-secoundary border-[1px] font-bold w-[149px] h-[36px] border-secoundary rounded-[4px] px-4 py-2 text-sm text-secoundary"
+              >
+                Complete
+              </Button>
             </div>
-            <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-              {/* <p> {user.name}</p>
-              <p>{user.email}</p>
-              <p> {user.contact}</p>
-              <p>{user.location}</p> */}
-            </div>
-          </div>
-          <div className="ml-6 flex justify-around  w-full items-center text-white">
-            <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-              <p>Check in date: </p>
-              <p>Stay for:</p>
-              <p>Guest:</p>
-              <p>Pay:  </p>
-            </div>
-            <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-              {/* <p> {user.date}</p>
-              <p>{user.stayFor}</p>
-              <p>{user.guest}</p>
-              <p>{user.pay}</p> */}
-            </div>
-          </div>
+          </TabPane>
 
-              </div>
-              <div className="mt-4 flex justify-center gap-4 text-white ">
-                <Button
-                  onClick={() => router.push("/checkingoutallresarvation")}
-                  style={{ backgroundColor: "transparent", color: "#EBCA7E" }}
-                  className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-[149px] h-[36px]t px-4 py-4 text-sm font-semibold text-secoundary  "
-                >
-                  Sea all
-                </Button>
-                <Button
-                  //   onClick={() => router.push("/editprofile")}
-                  style={{ backgroundColor: "#EBCA7E", color: "black" }}
-                  className="bg-secoundary border-[1px] font-bold w-[149px] h-[36px] border-secoundary rounded-[4px]  px-4 py-2 text-sm  text-secoundary  "
-                >
-                  Complete
-                </Button>
-              </div>
-            </TabPane>
-            <TabPane
-              tab={<span className="text-white">Checking in (01)</span>}
-              key="2"
-            >
-              {/* Content for Checking in */}
-              <div className="lg:flex flex-row lg:space-y-0 space-y-6 items-center">
-                <Image
-                  src={imagetow}
-                  alt="User"
-                  className="w-[400px]  h-[164px] rounded-lg  object-cover"
-                />
-                   <div className="ml-6 flex justify-around  w-full items-center text-white">
-            <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-              <p>Name:</p>
-              <p>Email:</p>
-              <p>Contact:</p>
-              <p>Location: </p>
-            </div>
-            <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-              {/* <p> {user.name}</p>
-              <p>{user.email}</p>
-              <p> {user.contact}</p>
-              <p>{user.location}</p> */}
-            </div>
-          </div>
-          <div className="ml-6 flex justify-around  w-full items-center text-white">
-            <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-              <p>Check in date: </p>
-              <p>Stay for:</p>
-              <p>Guest:</p>
-              <p>Pay:  </p>
-            </div>
-            <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-              {/* <p> {user.date}</p>
-              <p>{user.stayFor}</p>
-              <p>{user.guest}</p>
-              <p>{user.pay}</p> */}
-            </div>
-          </div>
 
-              </div>
-              <div className="mt-4 flex justify-center gap-4 text-white ">
-                <Button
-                  onClick={() => router.push("/checkingoutallresarvation")}
-                  style={{ backgroundColor: "transparent", color: "#EBCA7E" }}
-                  className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-[149px] h-[36px]t px-4 py-4 text-sm  text-secoundary font-bold  "
-                >
-                  Sea all
-                </Button>
-                <Button
-                  //   onClick={() => router.push("/editprofile")}
-                  style={{ backgroundColor: "#EBCA7E", color: "black" }}
-                  className="bg-secoundary border-[1px] font-bold w-[149px] h-[36px] border-secoundary rounded-[4px]  px-4 py-2 text-sm  text-secoundary   "
-                >
-                  Arrived in
-                </Button>
-              </div>
-            </TabPane>
-            <TabPane tab={<span className="text-white">Upcoming (1)</span>} key="3">
-              {/* Content for Upcoming */}
-              {/* Content for Checking in */}
-              <div className="lg:flex flex-row lg:space-y-0 space-y-6 items-center">
-                <Image
-                  src={imagetow}
-                  alt="User"
-                  className="w-[400px]  h-[164px] rounded-lg  object-cover"
-                />
-                    <div className="ml-6 flex justify-around  w-full items-center text-white">
-            <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-              <p>Name:</p>
-              <p>Email:</p>
-              <p>Contact:</p>
-              <p>Location: </p>
-            </div>
-            <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-              {/* <p> {user.name}</p>
-              <p>{user.email}</p>
-              <p> {user.contact}</p>
-              <p>{user.location}</p> */}
-            </div>
-          </div>
-          <div className="ml-6 flex justify-around  w-full items-center text-white">
-            <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-              <p>Check in date: </p>
-              <p>Stay for:</p>
-              <p>Guest:</p>
-              <p>Pay:  </p>
-            </div>
-            <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-              {/* <p> {user.date}</p>
-              <p>{user.stayFor}</p>
-              <p>{user.guest}</p>
-              <p>{user.pay}</p> */}
-            </div>
-          </div>
 
-              </div>
-              <div className="mt-4 flex justify-center gap-4 text-white ">
-                <Button
-                  onClick={() => router.push("/checkingoutallresarvation")}
-                  style={{ backgroundColor: "transparent", color: "#EBCA7E" }}
-                  className="bg-transparent border-[1px] border-secoundary rounded-[4px] w-[149px] h-[36px]t px-4 py-4 text-sm  text-secoundary font-bold  "
-                >
-                  Sea all
-                </Button>
-                <Button
-                  //   onClick={() => router.push("/editprofile")}
-                  style={{ backgroundColor: "#EBCA7E", color: "black" }}
-                  className="bg-secoundary border-[1px] font-bold w-[149px] h-[36px] border-secoundary rounded-[4px]  px-4 py-2 text-sm  text-secoundary   "
-                >
-                  Arrived in
-                </Button>
-              </div>
-            </TabPane>
           </Tabs>
         </Card>
       </div>
+
+
+
+      {/* my added porperty ------------ */}
       <div className="bg-[#242424] p-4 rounded-lg">
         <div className="flex items-center justify-between mb-4">
 

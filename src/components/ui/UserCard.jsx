@@ -8,8 +8,10 @@ import imagetow from "/public/images/user.png";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { MdClose } from "react-icons/md";
+import { imageUrl } from "@/redux/api/ApiSlice";
 
 const UserCard = ({ user }) => {
+
   const router = useRouter({ user });
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -29,22 +31,24 @@ const UserCard = ({ user }) => {
       >
         <div className="lg:flex flex-row lg:space-y-0 space-y-6 items-center">
           <Image
-            src={user.image}
+          height={200}
+          width={200}
+            src={imageUrl+user?.property?.images[0]}
             alt="User"
             className="w-[400px]  h-[164px] rounded-lg  object-cover"
           />
           <div className="ml-6 flex justify-around  w-full items-center text-white">
             <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-              <p>Name:</p>
-              <p>Email:</p>
-              <p>Contact:</p>
-              <p>Location: </p>
+              <p>Name: </p>
+              <p>Email: </p>
+              <p>Contact: </p>
+              <p>Location:  </p>
             </div>
             <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-              <p> {user.name}</p>
-              <p>{user.email}</p>
-              <p> {user.contact}</p>
-              <p>{user.location}</p>
+              <p> {user?.user?.fullName}</p>
+              <p>{user?.user?.email}</p>
+              <p> {user?.user?.phone}</p>
+              <p>{user?.user?.location}</p>
             </div>
           </div>
           <div className="ml-6 flex justify-around  w-full items-center text-white">
@@ -55,10 +59,10 @@ const UserCard = ({ user }) => {
               <p>Pay:  </p>
             </div>
             <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-              <p> {user.date}</p>
-              <p>{user.stayFor}</p>
-              <p>{user.guest}</p>
-              <p>{user.pay}</p>
+              <p> {new Date(user?.checkInDate).toLocaleDateString()}</p>
+              <p>{Math.floor((new Date(user?.checkOutDate) - new Date(user?.checkInDate)) / (1000 * 60 * 60 * 24))}</p>
+              <p>{user?.guests}</p>
+              <p> $ {user?.totalPrice}</p>
             </div>
           </div>
         </div>
@@ -81,10 +85,12 @@ const UserCard = ({ user }) => {
         }}
       >
         <div className="text-white">
-          <Image
-            src={user.image}
-            alt={user.name}
-            className="w-[164px] h-[164px] rounded-lg mx-auto mb-4"
+        <Image
+          height={200}
+          width={200}
+            src={imageUrl+user?.property?.images[0]}
+            alt="User"
+            className="w-[400px]  h-[164px] rounded-lg  object-cover"
           />
           <h3 className="text-lg font-bold mb-2 text-center">{user.name}</h3>
          <div className="flex items-center justify-between py-6 space-x-4">
@@ -98,19 +104,19 @@ const UserCard = ({ user }) => {
             <p>Pay:</p>
           </div>
           <div className="text-sm space-y-2 text-[#FFFFFFB2]">
-            <p>{user.email}</p>
-            <p>{user.contact}</p>
-            <p>{user.location}</p>
-            <p>{user.checkInDate || 'noname'}</p>
-            <p>{user.stay || 'noname'}</p>
-            <p>{user.guests || 'noname'}</p>
-            <p>{user.pay || 'noname'}</p>
+          <p>{user?.user?.email}</p>
+          <p> {user?.user?.phone}</p>
+            <p>{user?.user?.location}</p>
+            <p>{user?.checkInDate}</p>
+            <p>{Math.floor((new Date(user?.checkOutDate) - new Date(user?.checkInDate)) / (1000 * 60 * 60 * 24))}</p>
+            <p>{user?.guests }</p>
+            <p>{user?.totalPrices}</p>
           </div>
          </div>
 
           <button
             onClick={handleCancel}
-            className="bg-secoundary text-black mt-4 w-full py-2 rounded-md font-semibold"
+            className="bg-secoundary text-black mt-4 w-full py-2 rounded-md font-semibold bg-[#EBCA7E]"
           >
             Complete
           </button>

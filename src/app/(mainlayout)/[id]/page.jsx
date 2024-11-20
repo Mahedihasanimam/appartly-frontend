@@ -294,7 +294,7 @@ const [endResarveDate,setEndResarveDate]=useState('')
     cleanliness = 0,  
     values = 0         
   } = ratingsData?.data?.[0] || {};
-  
+
 // console.log('asjdlasl',averageRating,checkin,communication,cleanliness)
   return (
     <div className="bg-[]">

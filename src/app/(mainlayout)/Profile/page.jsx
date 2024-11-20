@@ -133,6 +133,42 @@ const Profile = () => {
     },
   ];
 
+
+  const createdAtDate = new Date(user?.createdAt);
+
+  // Get the current date
+  const currentDate = new Date();
+
+  // Calculate the difference in years, months, and days
+  let years = currentDate.getFullYear() - createdAtDate.getFullYear();
+  let months = currentDate.getMonth() - createdAtDate.getMonth();
+  let days = currentDate.getDate() - createdAtDate.getDate();
+
+  // Adjust months and years based on the date difference
+  if (months < 0) {
+    months += 12;
+  }
+  if (days < 0) {
+    const lastMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
+    days += lastMonth.getDate();
+  }
+
+  // Determine which unit to display
+  let timeAgo = '';
+  if (years > 0) {
+    timeAgo = `${years} year${years > 1 ? 's' : ''}`;
+  } else if (months > 0) {
+    timeAgo = `${months} month${months > 1 ? 's' : ''}`;
+  } else {
+    timeAgo = `${days} day${days > 1 ? 's' : ''}`;
+  }
+
+
+
+
+
+
+
   if (isLoading) {
     return <h1>Loading...</h1>;
   }
@@ -170,10 +206,9 @@ const Profile = () => {
                 </p>
               </div>
             </div>
-            <p className="text-[#FFFFFFCC] font-medium text-center ">1</p>
+            
             <p className="text-[#FFFFFFCC] font-medium  mt-2 text-center">
-              {" "}
-              Month on Appartali
+              {timeAgo} on Appartali
             </p>
           </Card>
           <Card className="bg-transparent lg:w-2/3 w-full p-4 border-none h-fit text-[#FFFFFF]">

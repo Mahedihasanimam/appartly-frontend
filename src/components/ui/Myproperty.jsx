@@ -41,7 +41,7 @@ const Myproperty = ({ data }) => {
   
       }
     } catch (error) {
-      console.error('Failed to delete the room:', error);
+     
   
       // Show error alert
       Swal.fire({
@@ -57,7 +57,7 @@ const Myproperty = ({ data }) => {
     setSelectedId(null);
   };
 
-  console.log(isError,isSuccess)
+
   const menu = (
     <Menu>
       <Link href={`/proparty/editproperty`}>
