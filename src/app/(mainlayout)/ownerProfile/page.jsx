@@ -24,9 +24,7 @@ const { TabPane } = Tabs;
 const Page = () => {
   const { user } = useSelector((state) => state.user)
   const router = useRouter();
-  console.log('owner data', user)
 
-  console.log('chcking', user?.properties?.isDeleted)
 
   // if(isLoading){
   //   return <h1>Loading...</h1>
@@ -238,37 +236,34 @@ const Page = () => {
                   alt="User"
                   className="w-[400px]  h-[164px] rounded-lg  object-cover"
                 />
-                <div className="ml-6 flex justify-around  w-full items-center text-white">
-                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-                    <p>Name:</p>
-                    <p>Email:</p>
-                    <p>Contact:</p>
-                    <p>Location: </p>
-                  </div>
-                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-                    <p> Md. Riyazul Hasan</p>
-                    <p>riyazu012@gmail.com</p>
-                    <p> +880-2154522525</p>
-                    <p> Melbourne, Australia</p>
-                  </div>
-                </div>
-                <div className="ml-6 flex justify-around  w-full items-center text-white">
-                  <div className="text-sm space-y-2 text-[#FFFFFFB2] ">
-                    <strong>Email:</strong>
-
-                    <p>Check-in date:</p>
-                    <p>Stay for:</p>
-                    <p>Guests:</p>
-                    <p>Pay:</p>
-                  </div>
-                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-
-                    <p>20 aug 2024 </p>
-                    <p>4 night</p>
-                    <p>2</p>
-                    <p>$ 12500</p>
-                  </div>
-                </div>
+                  <div className="ml-6 flex justify-around  w-full items-center text-white">
+            <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+              <p>Name:</p>
+              <p>Email:</p>
+              <p>Contact:</p>
+              <p>Location: </p>
+            </div>
+            <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+              {/* <p> {user.name}</p>
+              <p>{user.email}</p>
+              <p> {user.contact}</p>
+              <p>{user.location}</p> */}
+            </div>
+          </div>
+          <div className="ml-6 flex justify-around  w-full items-center text-white">
+            <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+              <p>Check in date: </p>
+              <p>Stay for:</p>
+              <p>Guest:</p>
+              <p>Pay:  </p>
+            </div>
+            <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+              {/* <p> {user.date}</p>
+              <p>{user.stayFor}</p>
+              <p>{user.guest}</p>
+              <p>{user.pay}</p> */}
+            </div>
+          </div>
 
               </div>
               <div className="mt-4 flex justify-center gap-4 text-white ">
@@ -299,37 +294,34 @@ const Page = () => {
                   alt="User"
                   className="w-[400px]  h-[164px] rounded-lg  object-cover"
                 />
-                <div className="ml-6 flex justify-around  w-full items-center text-white">
-                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-                    <p>Name:</p>
-                    <p>Email:</p>
-                    <p>Contact:</p>
-                    <p>Location: </p>
-                  </div>
-                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-                    <p> Md. Riyazul Hasan</p>
-                    <p>riyazu012@gmail.com</p>
-                    <p> +880-2154522525</p>
-                    <p> Melbourne, Australia</p>
-                  </div>
-                </div>
-                <div className="ml-6 flex justify-around  w-full items-center text-white">
-                  <div className="text-sm space-y-2 text-[#FFFFFFB2] ">
-                    <strong>Email:</strong>
-
-                    <p>Check-in date:</p>
-                    <p>Stay for:</p>
-                    <p>Guests:</p>
-                    <p>Pay:</p>
-                  </div>
-                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-
-                    <p>20 aug 2024 </p>
-                    <p>4 night</p>
-                    <p>2</p>
-                    <p>$ 12500</p>
-                  </div>
-                </div>
+                   <div className="ml-6 flex justify-around  w-full items-center text-white">
+            <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+              <p>Name:</p>
+              <p>Email:</p>
+              <p>Contact:</p>
+              <p>Location: </p>
+            </div>
+            <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+              {/* <p> {user.name}</p>
+              <p>{user.email}</p>
+              <p> {user.contact}</p>
+              <p>{user.location}</p> */}
+            </div>
+          </div>
+          <div className="ml-6 flex justify-around  w-full items-center text-white">
+            <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+              <p>Check in date: </p>
+              <p>Stay for:</p>
+              <p>Guest:</p>
+              <p>Pay:  </p>
+            </div>
+            <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+              {/* <p> {user.date}</p>
+              <p>{user.stayFor}</p>
+              <p>{user.guest}</p>
+              <p>{user.pay}</p> */}
+            </div>
+          </div>
 
               </div>
               <div className="mt-4 flex justify-center gap-4 text-white ">
@@ -358,37 +350,34 @@ const Page = () => {
                   alt="User"
                   className="w-[400px]  h-[164px] rounded-lg  object-cover"
                 />
-                <div className="ml-6 flex justify-around  w-full items-center text-white">
-                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-                    <p>Name:</p>
-                    <p>Email:</p>
-                    <p>Contact:</p>
-                    <p>Location: </p>
-                  </div>
-                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-                    <p> Md. Riyazul Hasan</p>
-                    <p>riyazu012@gmail.com</p>
-                    <p> +880-2154522525</p>
-                    <p> Melbourne, Australia</p>
-                  </div>
-                </div>
-                <div className="ml-6 flex justify-around  w-full items-center text-white">
-                  <div className="text-sm space-y-2 text-[#FFFFFFB2] ">
-                    <strong>Email:</strong>
-
-                    <p>Check-in date:</p>
-                    <p>Stay for:</p>
-                    <p>Guests:</p>
-                    <p>Pay:</p>
-                  </div>
-                  <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
-
-                    <p>20 aug 2024 </p>
-                    <p>4 night</p>
-                    <p>2</p>
-                    <p>$ 12500</p>
-                  </div>
-                </div>
+                    <div className="ml-6 flex justify-around  w-full items-center text-white">
+            <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+              <p>Name:</p>
+              <p>Email:</p>
+              <p>Contact:</p>
+              <p>Location: </p>
+            </div>
+            <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+              {/* <p> {user.name}</p>
+              <p>{user.email}</p>
+              <p> {user.contact}</p>
+              <p>{user.location}</p> */}
+            </div>
+          </div>
+          <div className="ml-6 flex justify-around  w-full items-center text-white">
+            <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+              <p>Check in date: </p>
+              <p>Stay for:</p>
+              <p>Guest:</p>
+              <p>Pay:  </p>
+            </div>
+            <div className="space-y-2 text-[16px] text-[#FFFFFFB2]">
+              {/* <p> {user.date}</p>
+              <p>{user.stayFor}</p>
+              <p>{user.guest}</p>
+              <p>{user.pay}</p> */}
+            </div>
+          </div>
 
               </div>
               <div className="mt-4 flex justify-center gap-4 text-white ">
