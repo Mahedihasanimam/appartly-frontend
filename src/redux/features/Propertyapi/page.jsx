@@ -85,6 +85,15 @@ const AddPropertyApi=api.injectEndpoints({
       }),
       invalidatesTags:['Properties']
     }),
+    updateARoom: builder.mutation({
+      query: ({ roomId, roomData }) => ({
+        url: `/property/update-property-by-id/${roomId}`,
+        method: 'PUT',
+        body: roomData, // Include the updated room data here
+      }),
+      invalidatesTags: ['Properties'], // Invalidate the 'Properties' tag to refresh relevant cached data
+    }),
+    
 
   
     
@@ -93,4 +102,4 @@ const AddPropertyApi=api.injectEndpoints({
   }),
 });
 
-export const {useAddAPropertyMutation,useGetRoomsQuery,useGetRoomsByIdQuery,useAddReviewRatingsMutation,useGetAllReviewByPropertyIdQuery,useAddRatingsMutation,useGetRatingsByPropertyIdQuery,useLogdinuserReservationQuery,useDeleteARoomMutation } = AddPropertyApi;
+export const {useAddAPropertyMutation,useGetRoomsQuery,useGetRoomsByIdQuery,useAddReviewRatingsMutation,useGetAllReviewByPropertyIdQuery,useAddRatingsMutation,useGetRatingsByPropertyIdQuery,useLogdinuserReservationQuery,useDeleteARoomMutation,useUpdateARoomMutation} = AddPropertyApi;

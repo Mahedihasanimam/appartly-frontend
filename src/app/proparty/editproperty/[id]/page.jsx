@@ -9,9 +9,13 @@ import imagetow from "/public/icons/stand.png";
 import imagthree from "/public/icons/car.png";
 import { MdOutlineChevronLeft } from 'react-icons/md';
 import logo from "/public/images/logo.svg";
-import { useGetRoomsByIdQuery } from '@/redux/features/Propertyapi/page';
+import { useGetRoomsByIdQuery, useUpdateARoomMutation } from '@/redux/features/Propertyapi/page';
+import Swal from 'sweetalert2';
+import { useRouter } from 'next/navigation';
 
 const Page = ({ params }) => {
+  const router=useRouter()
+  const [updateARoom] = useUpdateARoomMutation();
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { data, isLoading } = useGetRoomsByIdQuery(params?.id);
@@ -78,10 +82,32 @@ const Page = ({ params }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit =async(e) => {
     e.preventDefault();
     // Log the form data to the console
     console.log(formData);
+    const roomId=params?.id
+    try {
+      const response = await updateARoom({ roomId, formData }).unwrap();
+      console.log('Room updated successfully:', response);
+      if(response?.success){
+        Swal.fire({
+          title:'successfully updated',
+          text:response?.message,
+          icon:'success'
+        }).then(
+          router.push('/ownerProfile')
+        )
+      }
+    } catch (error) {
+      Swal.fire({
+        title:'opps',
+        text:error?.message,
+        icon:'error'
+      })
+
+    }
+
   };
 
   const handleFileUpload = (e) => {
@@ -134,6 +160,10 @@ const Page = ({ params }) => {
   }, [data, allservices]);
   
   
+
+  if(isLoading ){
+    return <h1>Loading....</h1>
+  }
  
 
   return (
