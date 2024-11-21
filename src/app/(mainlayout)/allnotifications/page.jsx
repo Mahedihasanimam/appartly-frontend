@@ -6,9 +6,11 @@ import { MdOutlineChevronLeft } from "react-icons/md";
 import imageone from '/public/images/user.png'
 import Link from "next/link";
 import { useSelector } from "react-redux";
-import { useGetNotifiByUserIdQuery } from "@/redux/features/users/UserApi";
+import { useGetNotifiByUserIdQuery, useReadNotificationByIdMutation } from "@/redux/features/users/UserApi";
 import { imageUrl } from "@/redux/api/ApiSlice";
 const Notification = () => {
+
+const [readNotificationById]=useReadNotificationByIdMutation()
   const [isOpen, setIsOpen] = useState(true); // Manage the modal open state
   const router = useRouter();
   const user = useSelector((state) => state.user.user);
@@ -20,6 +22,18 @@ const {isLoading,data}=useGetNotifiByUserIdQuery(user?._id)
 const notifications=data?.notifications
 console.log(notifications)
 
+
+
+const handleRedNotifications=async(id)=>{
+
+ 
+  try {
+    const response = await readNotificationById(id).unwrap();
+    console.log("Notification marked as read:", response);
+  } catch (error) {
+    console.error("Error marking notification as read:", error);
+  }
+}
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
@@ -43,7 +57,7 @@ if(isLoading){
         {notifications?.length > 0 ? (
           <ul className="space-y-4">
             {notifications.map((notification, index) => (
-              <li
+              <li onClick={()=>handleRedNotifications(notification?._id)}
                 className="flex items-center space-x-4 justify-between border-2 border-[#242424] rounded-lg cursor-pointer p-1"
                 key={index}
               >

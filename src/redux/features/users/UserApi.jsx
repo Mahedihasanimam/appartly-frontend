@@ -96,6 +96,17 @@ const userApi = api.injectEndpoints({
 
     getNotifiByUserId: builder.query({
       query: (id) => `/users/notifications-by-user/${id}`,
+      providesTags:['notifications']
+    }),
+
+
+    readNotificationById: builder.mutation({
+      query: (id) =>({
+        url:  `/users/notification-read/${id}`,
+        method: "PATCH",
+      }),
+
+      invalidatesTags:['notifications']
     }),
 
   }),
@@ -114,5 +125,6 @@ export const {
   useGetLoginUserByIdQuery,
   useLazyGetProfileQuery,
   useUpdateProfileMutation,
-  useGetNotifiByUserIdQuery
+  useGetNotifiByUserIdQuery,
+  useReadNotificationByIdMutation
 } = userApi;
