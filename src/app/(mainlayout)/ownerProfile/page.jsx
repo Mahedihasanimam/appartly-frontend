@@ -446,7 +446,7 @@ const Page = () => {
                       style={{ backgroundColor: "#EBCA7E", color: "black" }}
                       className="bg-secoundary border-[1px] font-bold w-[149px] h-[36px] border-secoundary rounded-[4px] px-4 py-2 text-sm text-secoundary"
                     >
-                      Complete
+                      Arrived in
                     </Button>
                   </div>
                 </div>
@@ -496,7 +496,7 @@ const Page = () => {
                   style={{ backgroundColor: "#EBCA7E", color: "black" }}
                   className="bg-secoundary border-[1px] font-bold w-[149px] h-[36px] border-secoundary rounded-[4px] px-4 py-2 text-sm text-secoundary"
                 >
-                  Complete
+                  Next
                 </Button>
               </div>
                 </div>

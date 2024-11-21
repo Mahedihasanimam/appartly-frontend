@@ -56,7 +56,7 @@ if(isLoading){
         </div>
         {notifications?.length > 0 ? (
           <ul className="space-y-4">
-            {notifications.map((notification, index) => (
+            {notifications?.slice(-10)?.map((notification, index) => (
               <li onClick={()=>handleRedNotifications(notification?._id)}
                 className="flex items-center space-x-4 justify-between border-2 border-[#242424] rounded-lg cursor-pointer p-1"
                 key={index}

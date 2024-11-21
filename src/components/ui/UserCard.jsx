@@ -6,7 +6,7 @@ import imageone from "/public/images/about.png";
 import imagetow from "/public/images/user.png";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { MdClose } from "react-icons/md";
 import { imageUrl } from "@/redux/api/ApiSlice";
 import Swal from "sweetalert2";
@@ -14,19 +14,35 @@ import { useChangeReservationRoleMutation } from "@/redux/features/reservation/R
 
 const UserCard = ({ user }) => {
 const [changeReservationRole]=useChangeReservationRoleMutation()
-  const router = useRouter({ user });
-
+  const router = useRouter();
+  const pathname=usePathname()
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
     setIsModalVisible(true);
   };
 
+  console.log('path nameeee',pathname)
   const handleMakeitChecking = async (id) => {
-    const allinfo = {
-      reservationId: id,
-      checkinCheckoutStatus: 'checkin',
-    }
+  if (!pathname) {
+    console.error("Router pathname is not defined.");
+    return;
+  }
+  let checkinCheckoutStatus = "";
+
+  // Dynamically set the status based on the route's pathname
+  if (pathname.includes("/allupcomingresarvation")) {
+    checkinCheckoutStatus = "checkin";
+  } else if (pathname.includes("/allCheckingInResarvation")) {
+    checkinCheckoutStatus = "checkout";
+  }else if (pathname.includes("/allChecOutResarvation")) {
+    checkinCheckoutStatus = "checkout";
+  }
+  const allinfo = {
+    reservationId: id,
+    checkinCheckoutStatus, // Use the dynamic status here
+  };
+   
 
     // const result=await changeReservationRole(allinfo)
     Swal.fire({
