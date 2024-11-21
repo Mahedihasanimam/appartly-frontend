@@ -8,6 +8,7 @@ const userApi = api.injectEndpoints({
         method: "POST",
         body: user,
       }),
+      invalidatesTags:['user']
     }),
     registerOwner: builder.mutation({
       query: (user) => ({
@@ -15,6 +16,7 @@ const userApi = api.injectEndpoints({
         method: "POST",
         body: user,
       }),
+      invalidatesTags:['user']
     }),
     BecomeAnInvestor: builder.mutation({
       query: (user) => ({
@@ -29,7 +31,7 @@ const userApi = api.injectEndpoints({
         method: "POST",
         body: user,
       }),
-      providesTags: ['user'],
+      invalidatesTags: ['user'],
     }),
     loginOwner: builder.mutation({
       query: (user) => ({
@@ -37,7 +39,7 @@ const userApi = api.injectEndpoints({
         method: "POST",
         body: user,
       }),
-      providesTags: ['user'],
+      invalidatesTags: ['user'],
     }),
 
     socialLogin: builder.mutation({
@@ -46,6 +48,7 @@ const userApi = api.injectEndpoints({
         method: "POST",
         body: user,
       }),
+      invalidatesTags:['user']
     }),
 
     verifyEmail: builder.mutation({

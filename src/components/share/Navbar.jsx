@@ -43,10 +43,10 @@ useEffect(()=>{
   const {logoutUser,token}=useContext(UserContext)
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [languageModalVisible, setLanguageModalVisible] = useState(false);
-  const [isowner, setisowner] = useState(true);
+  const [isowner, setisowner] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-
+  localStorage.setItem("isOwner", false)
 
   // Retrieve the state from localStorage on initial render
   useEffect(() => {
@@ -83,8 +83,8 @@ const handleLanguageModalCancel = () => {
   setLanguageModalVisible(false);
 };
 const handleLogut = () => {
-  logoutUser()
   localStorage.removeItem('isOwner')
+  logoutUser()
   dispatch(clearUser())
 }
   const profileMenu = (
@@ -109,20 +109,20 @@ const handleLogut = () => {
       </Menu.Item>
       <Menu.Item key="5" style={{ color: "#ffffff" }}>
         {isowner ? (
-          <Link href="/Profile">My Profile</Link>
-        ) : (
           <Link href="/ownerProfile">Owner profile</Link>
+         
+        ) : (
+          <Link href="/Profile">My Profile</Link>
         )}
       </Menu.Item>
-      {
-        token && <Menu.Item key="4" style={{ color: "#EBCA7E" }}>
+       <Menu.Item key="4" style={{ color: "#EBCA7E" }}>
         <button onClick={handleLogut}>
 
         <a className="text-red-500" >Logout</a>
         </button>
 
       </Menu.Item>
-      }
+      
     </Menu>
   );
 

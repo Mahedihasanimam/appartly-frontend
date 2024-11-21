@@ -1,7 +1,7 @@
 "use client";
 import { Avatar, Button, Card, Tooltip, Tabs } from "antd";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import userimg from "/public/images/user.png";
 import { MdOutlineChevronLeft, MdOutlineWorkOutline } from "react-icons/md";
 import { FaLanguage } from "react-icons/fa";
@@ -25,11 +25,39 @@ import { useChangeReservationRoleMutation } from "@/redux/features/reservation/R
 
 const { TabPane } = Tabs;
 const Page = () => {
+
+
+
+
+
+
+
   const [changeReservationRole]=useChangeReservationRoleMutation()
   const { data, isLoading } = useLogdinuserReservationQuery()
   const { user } = useSelector((state) => state.user)
   const router = useRouter();
   const createdAtDate = new Date(user?.createdAt);
+
+  useEffect(() => {
+    if(!user){
+      router.push('/auth/OwnerLogin')
+    }
+    if (!user?.role.includes("owner") || localStorage.getItem('isOwner' == false) ) {
+      router.replace("/Profile");
+    }
+
+  }, [user]);
+
+  if (!user || !user?.role.includes("owner")) {
+    return <p>Redirecting...</p>;
+  }
+
+
+
+
+
+
+
 
   // Get the current date
   const currentDate = new Date();

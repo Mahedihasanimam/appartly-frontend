@@ -2,7 +2,7 @@
 import { useAddRatingsMutation, useLogdinuserReservationQuery } from "@/redux/features/Propertyapi/page";
 import { Avatar, Button, Card, Modal, Rate, Table } from "antd";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdOutlineChevronLeft } from "react-icons/md";
 import { useSelector } from "react-redux";
 import imageone from "/public/images/user.png";
@@ -15,10 +15,12 @@ import { RiCircleLine } from "react-icons/ri";
 import { MobileOutlined, UserOutlined } from "@ant-design/icons";
 import { CiGlobe } from "react-icons/ci";
 import Swal from "sweetalert2";
+import ProfileProtect from "@/components/profileProtect";
 
 
 const Profile = () => {
   const user = useSelector((state) => state.user.user);
+  console.log(' main user',user)
   const { isLoading, data: logdinUserReservation } = useLogdinuserReservationQuery();
   const [addRatings, { isLoading: ratingLoading, isError, isSuccess }] = useAddRatingsMutation();
   const router = useRouter();
@@ -31,6 +33,12 @@ const Profile = () => {
     communication: 0,
     values: 0, // Changed from `values` for consistency
   });
+
+
+
+
+
+
 
   const handleRatingChange = (field, value) => {
     setRatings((prevRatings) => ({
@@ -174,6 +182,9 @@ const Profile = () => {
   }
 
   return (
+
+    <ProfileProtect>
+
     <div className="p-4 container mx-auto text-white">
       <div>
         {/* Header */}
@@ -309,6 +320,7 @@ const Profile = () => {
         </div>
       </Modal>
     </div>
+    </ProfileProtect>
   );
 };
 
