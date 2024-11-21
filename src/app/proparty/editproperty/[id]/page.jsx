@@ -1,7 +1,7 @@
 
 
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import imageone from "/public/icons/home.png";
@@ -15,6 +15,7 @@ const Page = ({ params }) => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { data, isLoading } = useGetRoomsByIdQuery(params?.id);
+  const [allservices, setallservices] = useState([]);
   const [formData, setFormData] = useState({
     propertyType: '',
     location: '',
@@ -24,13 +25,38 @@ const Page = ({ params }) => {
     images: [],
     pernightCost: '',
     nightforstay: '',
-    maxguest: '',
-    startDate: "",
-    endDate: "",
+    maxGuests: '',
+    startDate: '',
+    endDate: '',
     services: [],
   });
 
- 
+  useEffect(() => {
+    if (data?.room?.services[0]) {
+      const servicesArray = data.room.services[0].split(',').map(service => service.trim());
+      console.log('----------', servicesArray);
+      setallservices(servicesArray);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (data) {
+      setFormData((prev) => ({
+        ...prev,
+        images: data.room?.images || [],
+        services: allservices,
+      }));
+    }
+  }, [data, allservices]);
+
+  const handleServiceChange = (service) => {
+    setFormData((prev) => ({
+      ...prev,
+      services: prev.services?.includes(service)
+        ? prev.services.filter((item) => item !== service)
+        : [...(prev.services || []), service],
+    }));
+  };
 
  
  
@@ -59,11 +85,14 @@ const Page = ({ params }) => {
   };
 
   const handleFileUpload = (e) => {
+    const selectedFiles = Array.from(e.target.files); // Convert FileList to Array
     setFormData((prev) => ({
       ...prev,
-      images: [...prev.images, ...e.target.files]
+      images: [...prev.images, ...selectedFiles], // Append new files to existing images
     }));
   };
+  
+
 
   
   const [showDropdown, setShowDropdown] = useState(false);
@@ -83,14 +112,6 @@ const Page = ({ params }) => {
 
  
 
-  const handleServiceChange = (service) => {
-    setFormData({
-      ...formData,
-      services: formData?.services?.includes(service)
-        ? formData.services.filter((item) => item !== service)
-        : [...formData?.services, service],
-    });
-  };
 
   const toggleDropdown = () => {
     setShowDropdown((prev) => !prev);
@@ -102,6 +123,18 @@ const Page = ({ params }) => {
       image: e.target.files[0],
     });
   };
+  useEffect(() => {
+    if (data) {
+      setFormData((prev) => ({
+        ...prev,
+        images: data.room?.images || [],
+        services: allservices,
+      }));
+    }
+  }, [data, allservices]);
+  
+  
+ 
 
   return (
     <div>
@@ -128,9 +161,10 @@ const Page = ({ params }) => {
                 What kind of property do you have?
               </label>
               <select
+
                 name="propertyType"
                 onChange={handleInputChange}
-                value={formData.propertyType}
+               defaultValue={data?.room?.category}
                 className="w-full p-4 bg-[#242424] text-white rounded-lg"
               >
                 <option value="rooms">Rooms</option>
@@ -145,7 +179,7 @@ const Page = ({ params }) => {
               <input
                 type="text"
                 name="location"
-                value={formData.location}
+                defaultValue={data?.room?.location}
                 onChange={handleInputChange}
                 className="w-full p-4 bg-[#242424] text-[#FFFFFF99] rounded-lg"
                 placeholder="Enter your property location"
@@ -157,30 +191,30 @@ const Page = ({ params }) => {
               <input
                 type="number"
                 name="numOfRooms"
-                value={formData.numOfRooms}
+                defaultValue={data?.room?.roomCount}
                 onChange={handleInputChange}
                 className="w-full p-4 bg-[#242424] text-[#FFFFFF99] rounded-lg"
                 placeholder="Enter the total number of rooms"
               />
             </div>
 
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <label className="text-[#FFFFFF] text-[16px] font-medium pb-1">Guests</label>
               <input
                 type="number"
                 name="guests"
-                value={formData.guests}
+                defaultValue={data?.room?.maxGuests}
                 onChange={handleInputChange}
                 className="w-full p-4 bg-[#242424] text-[#FFFFFF99] rounded-lg"
                 placeholder="Enter how many guests can stay"
               />
-            </div>
+            </div> */}
 
             <div className="mb-4">
               <label className="text-[#FFFFFF] text-[16px] font-medium pb-1">Description</label>
               <textarea
                 name="description"
-                value={formData.description}
+                defaultValue={data?.room?.description}
                 onChange={handleInputChange}
                 className="w-full p-4 bg-[#242424] text-[#FFFFFF99] rounded-lg"
                 placeholder="Describe your property"
@@ -205,6 +239,7 @@ const Page = ({ params }) => {
                 Upload Images
               </label>
               <input
+              
                 type="file"
                 multiple
                 onChange={handleFileUpload}
@@ -231,6 +266,17 @@ const Page = ({ params }) => {
                  </div>
                 </label>
               </div>
+
+              {/* <div>
+                  ----------------------------------------------------------------------------------------   
+              </div> */}
+
+              <div>
+                
+                 {formData.images.map((image, index) => (
+          <li key={index}>{typeof image === "string" ? image : image.name}</li>
+        ))}
+              </div>
             </div>
 
             <div className="mb-4">
@@ -253,7 +299,7 @@ const Page = ({ params }) => {
               <input
                 type="number"
                 name="pernightCost"
-                value={formData.pernightCost}
+                defaultValue={data?.room?.pricePerNight}
                 onChange={handleInputChange}
                 className="w-full p-4 bg-[#242424] text-[#FFFFFF99] rounded-lg"
                 placeholder="Enter per night cost"
@@ -276,8 +322,8 @@ const Page = ({ params }) => {
               <label className="text-[#FFFFFF] text-[16px] font-medium pb-1">Max Guests</label>
               <input
                 type="number"
-                name="maxguest"
-                value={formData.maxguest}
+                name="maxGuests"
+                defaultValue={data?.room?.maxGuests}
                 onChange={handleInputChange}
                 className="w-full p-4 bg-[#242424] text-[#FFFFFF99] rounded-lg"
                 placeholder="Enter max number of guests"
@@ -293,7 +339,9 @@ const Page = ({ params }) => {
               <input
                 type="date"
                 name="startDate"
-                value={formData.startDate}
+                defaultValue={data?.room?.endDate
+                  ? new Date(data.room.startDate).toISOString().split("T")[0]
+                  : ""}
                 onChange={handleInputChange}
                 className="w-full p-4 bg-[#242424] text-[#FFFFFF99] rounded-lg"
               />
@@ -304,7 +352,9 @@ const Page = ({ params }) => {
               <input
                 type="date"
                 name="endDate"
-                value={formData.endDate}
+                defaultValue={data?.room?.endDate
+                  ? new Date(data.room.endDate).toISOString().split("T")[0]
+                  : ""}
                 onChange={handleInputChange}
                 className="w-full p-4 bg-[#242424] text-[#FFFFFF99] rounded-lg"
               />
@@ -334,8 +384,8 @@ const Page = ({ params }) => {
                     <label key={service} className="flex items-center text-white py-1">
                       <input
                         type="checkbox"
-                        value={service}
-                        checked={formData?.services?.includes(service)}
+                        defaultValue={service}
+                         defaultChecked={allservices?.map(i=>i.includes(service))}
                         onChange={() => handleServiceChange(service)}
                         className="mr-2"
                       />
