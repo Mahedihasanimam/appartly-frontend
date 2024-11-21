@@ -60,7 +60,7 @@ const Myproperty = ({ data }) => {
 
   const menu = (
     <Menu>
-      <Link href={`/proparty/editproperty`}>
+      <Link href={`/proparty/editproperty/${data._id}`}>
         <Menu.Item>
           <EditOutlined className="text-[16px] pr-2" /> Edit
         </Menu.Item>

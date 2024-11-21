@@ -101,6 +101,8 @@ const Page = () => {
         services: [...newSelectedOptions],  // Ensure it's always an array of strings
       });
     }
+
+    toggleDropdown()
   };
   
   
