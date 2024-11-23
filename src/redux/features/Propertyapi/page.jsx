@@ -93,6 +93,21 @@ const AddPropertyApi=api.injectEndpoints({
       }),
       invalidatesTags: ['Properties'], // Invalidate the 'Properties' tag to refresh relevant cached data
     }),
+
+    getAllSearchProperty: builder.query({
+      query: ({ location, maxGuests, startDate, endDate }) => {
+        // Build query parameters dynamically
+        const params = new URLSearchParams();
+        if (location) params.append('location', location);
+        if (maxGuests) params.append('maxGuests', maxGuests);
+        if (startDate) params.append('startDate', startDate);
+        if (endDate) params.append('endDate', endDate);
+    
+        return `/property/get-all-properties?${params.toString()}`;
+      },
+    }),
+    
+
     
 
   
@@ -102,4 +117,4 @@ const AddPropertyApi=api.injectEndpoints({
   }),
 });
 
-export const {useAddAPropertyMutation,useGetRoomsQuery,useGetRoomsByIdQuery,useAddReviewRatingsMutation,useGetAllReviewByPropertyIdQuery,useAddRatingsMutation,useGetRatingsByPropertyIdQuery,useLogdinuserReservationQuery,useDeleteARoomMutation,useUpdateARoomMutation} = AddPropertyApi;
+export const {useAddAPropertyMutation,useGetRoomsQuery,useGetRoomsByIdQuery,useAddReviewRatingsMutation,useGetAllReviewByPropertyIdQuery,useAddRatingsMutation,useGetRatingsByPropertyIdQuery,useLogdinuserReservationQuery,useDeleteARoomMutation,useUpdateARoomMutation,useGetAllSearchPropertyQuery} = AddPropertyApi;

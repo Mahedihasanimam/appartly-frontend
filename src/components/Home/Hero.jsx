@@ -1,31 +1,63 @@
 'use client'; // Ensure this component uses client-side rendering
-import { Button, DatePicker, Image, Input } from "antd";
+import { Button, Card, DatePicker, Image, Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { Carousel } from 'antd';
 import { useState } from "react";
 import dayjs from 'dayjs';
 import heroimg1 from "/public/images/heroimg.png";
+import { useGetAllSearchPropertyQuery } from "@/redux/features/Propertyapi/page";
+import Swal from "sweetalert2";
+import PropartyCard from "../ui/PropartyCard";
+import RoomsCard from "../ui/RoomsCard";
 
 
 const Hero = ({title, description}) => {
-  const [destination, setDestination] = useState('');
-  const [checkInDate, setCheckInDate] = useState(null);
-  const [checkOutDate, setCheckOutDate] = useState(null);
-  const [guestCount, setGuestCount] = useState('');
+  const [location, setLocation] = useState('');
+  const [startDate, setstartDate] = useState(null);
+  const [endDate, setendDate] = useState(null);
+  const [maxGuests, setmaxGuests] = useState();
   const [isCheckInVisible, setIsCheckInVisible] = useState(false);
   const [isCheckOutVisible, setIsCheckOutVisible] = useState(false);
+  const [searchParams, setSearchParams] = useState(null);
+  const { data, error, isLoading } =useGetAllSearchPropertyQuery(searchParams, {
+    skip: !searchParams, // Prevent API call until searchParams is set
+  });
 
   const handleSearch = () => {
-    console.log({
-      destination,
-      checkInDate: checkInDate ? dayjs(checkInDate).format('YYYY-MM-DD') : '',
-      checkOutDate: checkOutDate ? dayjs(checkOutDate).format('YYYY-MM-DD') : '',
-      guestCount,
+    if (!location || !maxGuests || !startDate || !endDate) {
+      // Show an alert or error message if no fields are filled
+     Swal.fire({
+      title:'proprty not found',
+      text:'Please fill at least one search field before searching.'
+     })
+      return;
+    }
+    setSearchParams({
+      location: location || '', // Allow empty values
+      maxGuests: maxGuests ? parseInt(maxGuests) : 0,
+      startDate: startDate ? dayjs(startDate).format('YYYY-MM-DD') : '',
+      endDate: endDate ? dayjs(endDate).format('YYYY-MM-DD') : '',
     });
+    console.log(' search',searchParams)
   };
 
+
+  console.log(data)
+
+ if(data?.properties?.length<=0){
+  Swal.fire({
+    title:'search not match',
+    text:'No properties matched your search criteria. Please try again with different filters'
+  })
+ }
+
+
+
+
+
   return (
-    <div className="relative w-full min-h-[407px]  ">
+  <div>
+      <div className="relative w-full min-h-[407px]  ">
       {/* Hero section with carousel background */}
       <Carousel autoplay className="container mx-auto  w-full h-full z-0">
         <div className="w-full">
@@ -55,9 +87,9 @@ const Hero = ({title, description}) => {
           <div className="flex-1 hover:bg-white rounded-lg p-2 transition-all duration-300 ease-in-out">
             <p className="text-[16px] text-[#000000] pl-2">Where</p>
             <Input
-              placeholder="Add destination"
-              value={destination}
-              onChange={(e) => setDestination(e.target.value)}
+              placeholder="Add location"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
               bordered={false}
               className="text-sm text-gray-700"
             />
@@ -74,12 +106,12 @@ const Hero = ({title, description}) => {
                 className="w-full"
                 open={isCheckInVisible}
                 onOpenChange={(open) => setIsCheckInVisible(open)}
-                onChange={(date) => setCheckInDate(date)}
+                onChange={(date) => setstartDate(date)}
               />
             ) : (
               <Input
                 placeholder="Add Dates"
-                value={checkInDate ? dayjs(checkInDate).format('YYYY-MM-DD') : ''}
+                value={startDate ? dayjs(startDate).format('YYYY-MM-DD') : ''}
                 bordered={false}
                 className="text-sm text-gray-700"
                 readOnly
@@ -98,12 +130,12 @@ const Hero = ({title, description}) => {
                 className="w-full"
                 open={isCheckOutVisible}
                 onOpenChange={(open) => setIsCheckOutVisible(open)}
-                onChange={(date) => setCheckOutDate(date)}
+                onChange={(date) => setendDate(date)}
               />
             ) : (
               <Input
                 placeholder="Add Dates"
-                value={checkOutDate ? dayjs(checkOutDate).format('YYYY-MM-DD') : ''}
+                value={endDate ? dayjs(endDate).format('YYYY-MM-DD') : ''}
                 bordered={false}
                 className="text-sm text-gray-700"
                 readOnly
@@ -114,9 +146,10 @@ const Hero = ({title, description}) => {
           <div className="flex-1 hover:bg-white rounded-lg p-2 transition-all duration-300 ease-in-out">
             <p className="text-[16px] text-[#000000] pl-4">Who</p>
             <Input
+            type="number"
               placeholder="Add Guest"
-              value={guestCount}
-              onChange={(e) => setGuestCount(e.target.value)}
+              value={maxGuests}
+              onChange={(e) => setmaxGuests(e.target.value)}
               bordered={false}
               className="text-sm text-gray-700"
             />
@@ -130,8 +163,26 @@ const Hero = ({title, description}) => {
         </div>
       </div>
 
-      
     </div>
+      
+        {data?.properties?.length > 0 && 
+     <div className="container mx-auto relative w-full h-full bg-black ">
+     <div className="search-results  absolute z-50  bg-black pb-12 rounded-lg p-6 w-full ">
+        {isLoading && <p>Loading...</p>}
+        {error && <p>Error: {error.message}</p>}
+
+
+          <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4">
+            {data?.properties?.map((item) => (
+             <RoomsCard key={item?._id} data={item}/>
+            ))}
+          </div>
+      </div>
+
+     </div>
+        }
+
+  </div>
   );
 };
 

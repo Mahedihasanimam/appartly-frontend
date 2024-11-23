@@ -21,12 +21,10 @@ const Rooms = ({title}) => {
     return <div>Error loading rooms data</div>;
   }
 
-  // Log the data structure to verify its contents
-  console.log("property data: ",data?.properties);
+
 
   // Extract properties from the data for easier handling
   const roomsData = data?.properties || [];
-  console.log(roomsData);
 
   // Create a unique list of categories with "All Category" at the beginning
   const uniqueCategories = Array.from(new Set(roomsData.map((room) => room.category)));

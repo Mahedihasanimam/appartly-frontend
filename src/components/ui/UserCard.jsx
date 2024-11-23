@@ -61,7 +61,7 @@ const [changeReservationRole]=useChangeReservationRoleMutation()
 
             Swal.fire({
               title: "completed",
-              text: "check the checkin tab",
+              text: `check the ${checkinCheckoutStatus} tab`,
               icon: "success"
             });
           }
