@@ -13,7 +13,7 @@ const ProfileProtect = ({ children }) => {
       const storedIsOwner = localStorage.getItem("isOwner"); // Get role from localStorage
       console.log("Stored isOwner value from localStorage:", storedIsOwner); // Debugging
       if(!localStorage.getItem('token')){
-        router.push('/auth/OwnerLogin')
+        router.push('/auth/OwnarLogin')
       }
       if (storedIsOwner === "true") {
         // Redirect to owner profile if isOwner is true

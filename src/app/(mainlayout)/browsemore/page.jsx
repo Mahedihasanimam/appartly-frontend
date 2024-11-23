@@ -6,7 +6,8 @@ import dayjs from "dayjs";
 import { SearchOutlined } from "@ant-design/icons";
 import RoomsCard from "@/components/ui/RoomsCard";
 import roomimage from "/public/images/roomimage.png";
-import { useGetRoomsQuery } from "@/redux/features/Propertyapi/page";
+import { useGetAllSearchPropertyQuery, useGetRoomsQuery } from "@/redux/features/Propertyapi/page";
+import Swal from "sweetalert2";
 
 
 const Page = () => {
@@ -14,36 +15,62 @@ const Page = () => {
     refetchOnFocus: true
   });
 
-
-  const [destination, setDestination] = useState("");
-  const [checkInDate, setCheckInDate] = useState(null);
-  const [checkOutDate, setCheckOutDate] = useState(null);
-  const [guestCount, setGuestCount] = useState("");
   const [activeKey, setActiveKey] = useState("1");
+const [location, setLocation] = useState('');
+  const [startDate, setstartDate] = useState(null);
+  const [endDate, setendDate] = useState(null);
+  const [maxGuests, setmaxGuests] = useState();
   const [isCheckInVisible, setIsCheckInVisible] = useState(false);
   const [isCheckOutVisible, setIsCheckOutVisible] = useState(false);
+  const [searchParams, setSearchParams] = useState(null);
+  const { data:searchDATa, error, isLoading:searchLoading } =useGetAllSearchPropertyQuery(searchParams, {
+    skip: !searchParams, // Prevent API call until searchParams is set
+  });
+
+  const handleSearch = () => {
+    if (!location && !maxGuests || !startDate || !endDate) {
+      // Show an alert or error message if no fields are filled
+     Swal.fire({
+      title:'proprty not found',
+      text:'Please fill all fild search field before searching.'
+     })
+      return;
+    }
+    setSearchParams({
+      location: location || '', // Allow empty values
+      maxGuests: maxGuests ? parseInt(maxGuests) : 0,
+      startDate: startDate ? dayjs(startDate).format('YYYY-MM-DD') : '',
+      endDate: endDate ? dayjs(endDate).format('YYYY-MM-DD') : '',
+    });
+
+  };
+
+
+
+
+ if(searchDATa?.properties?.length<=0){
+  Swal.fire({
+    title:'search not match',
+    text:'No properties matched your search criteria. Please try again with different filters'
+  })
+ }
+
+
+
+  
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 12; // Adjust page size as needed
 
-  if (isLoading) {
+  if (isLoading || searchLoading) {
     return <div>Loading...</div>;
   }
 
   if (isError) {
     return <div>Error loading rooms data</div>;
   }
-  const handleSearch = () => {
-    console.log({
-      destination,
-      checkInDate: checkInDate ? dayjs(checkInDate).format("YYYY-MM-DD") : "",
-      checkOutDate: checkOutDate
-        ? dayjs(checkOutDate).format("YYYY-MM-DD")
-        : "",
-      guestCount,
-    });
-  };
-  // Log the data structure to verify its contents
-  console.log("property data: ", data?.properties);
+  
+
+
 
   // Extract properties from the data for easier handling
   const roomsData = data?.properties || [];
@@ -76,93 +103,112 @@ const Page = () => {
 
   return (
     <div>
-      {/* Search input section */}
-      <div className="flex items-center bg-[#FFFFFF99] rounded-xl shadow-lg px-6 space-x-4 max-w-4xl mx-auto my-6">
-        <div className="flex-1 hover:bg-white rounded-lg p-2 transition-all duration-300 ease-in-out my-2">
-          <p className="text-[16px] text-[#000000] pl-2">Where</p>
-          <Input
-            placeholder="Add destination"
-            value={destination}
-            onChange={(e) => setDestination(e.target.value)}
-            bordered={false}
-            className="text-sm text-gray-700"
-          />
-        </div>
-        <div className="h-12 border-r border-gray-500"></div>
-        <div
-          className="flex-1 hover:bg-white rounded-lg p-2 transition-all duration-300 ease-in-out"
-          onMouseEnter={() => setIsCheckInVisible(true)}
-          onMouseLeave={() => setIsCheckInVisible(false)}
-        >
-          <p className="text-[16px] text-[#000000] pl-2">Check In</p>
-          {isCheckInVisible ? (
-            <DatePicker
-              className="w-full"
-              open={isCheckInVisible}
-              onOpenChange={(open) => setIsCheckInVisible(open)}
-              onChange={(date) => setCheckInDate(date)}
-            />
-          ) : (
+      {/* Search input */}
+      <div className="lg:flex md:flex sm:flex hidden items-center bg-[#FFFFFF99] rounded-xl shadow-lg px-4 sm:px-6 lg:px-8 py-4 space-y-4 sm:space-y-0 sm:space-x-4 lg:max-w-4xl w-full mx-auto my-6 lg:mt-20 mt-8">
+          <div className="flex-1 hover:bg-white rounded-lg p-2 transition-all duration-300 ease-in-out">
+            <p className="text-[16px] text-[#000000] pl-2">Where</p>
             <Input
-              placeholder="Add Dates"
-              value={checkInDate ? dayjs(checkInDate).format("YYYY-MM-DD") : ""}
+              placeholder="Add location"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
               bordered={false}
               className="text-sm text-gray-700"
-              readOnly
             />
-          )}
-        </div>
-        <div className="h-12 border-r border-gray-400"></div>
-        <div
-          className="flex-1 hover:bg-white rounded-lg p-2 transition-all duration-300 ease-in-out"
-          onMouseEnter={() => setIsCheckOutVisible(true)}
-          onMouseLeave={() => setIsCheckOutVisible(false)}
-        >
-          <p className="text-[16px] text-[#000000] pl-2">Check Out</p>
-          {isCheckOutVisible ? (
-            <DatePicker
-              className="w-full"
-              open={isCheckOutVisible}
-              onOpenChange={(open) => setIsCheckOutVisible(open)}
-              onChange={(date) => setCheckOutDate(date)}
-            />
-          ) : (
+          </div>
+          <div className="h-12 border-r border-gray-500"></div>
+          <div
+            className="flex-1 hover:bg-white rounded-lg p-2 transition-all duration-300 ease-in-out"
+            onMouseEnter={() => setIsCheckInVisible(true)}
+            onMouseLeave={() => setIsCheckInVisible(false)}
+          >
+            <p className="text-[16px] text-[#000000] pl-2">Check In</p>
+            {isCheckInVisible ? (
+              <DatePicker
+                className="w-full"
+                open={isCheckInVisible}
+                onOpenChange={(open) => setIsCheckInVisible(open)}
+                onChange={(date) => setstartDate(date)}
+              />
+            ) : (
+              <Input
+                placeholder="Add Dates"
+                value={startDate ? dayjs(startDate).format('YYYY-MM-DD') : ''}
+                bordered={false}
+                className="text-sm text-gray-700"
+                readOnly
+              />
+            )}
+          </div>
+          <div className="h-12 border-r border-gray-400"></div>
+          <div
+            className="flex-1 hover:bg-white rounded-lg p-2 transition-all duration-300 ease-in-out"
+            onMouseEnter={() => setIsCheckOutVisible(true)}
+            onMouseLeave={() => setIsCheckOutVisible(false)}
+          >
+            <p className="text-[16px] text-[#000000] pl-2">Check Out</p>
+            {isCheckOutVisible ? (
+              <DatePicker
+                className="w-full"
+                open={isCheckOutVisible}
+                onOpenChange={(open) => setIsCheckOutVisible(open)}
+                onChange={(date) => setendDate(date)}
+              />
+            ) : (
+              <Input
+                placeholder="Add Dates"
+                value={endDate ? dayjs(endDate).format('YYYY-MM-DD') : ''}
+                bordered={false}
+                className="text-sm text-gray-700"
+                readOnly
+              />
+            )}
+          </div>
+          <div className="h-12 border-r border-gray-400"></div>
+          <div className="flex-1 hover:bg-white rounded-lg p-2 transition-all duration-300 ease-in-out">
+            <p className="text-[16px] text-[#000000] pl-4">Who</p>
             <Input
-              placeholder="Add Dates"
-              value={checkOutDate ? dayjs(checkOutDate).format("YYYY-MM-DD") : ""}
+            type="number"
+              placeholder="Add Guest"
+              value={maxGuests}
+              onChange={(e) => setmaxGuests(e.target.value)}
               bordered={false}
               className="text-sm text-gray-700"
-              readOnly
             />
-          )}
+          </div>
+          <button
+            className="bg-[#EBCA7E] h-[48px] w-[48px] rounded-[40px] text-white flex items-center justify-center"
+            onClick={handleSearch}
+          >
+            <SearchOutlined className="text-lg text-black" />
+          </button>
         </div>
-        <div className="h-12 border-r border-gray-400"></div>
-        <div className="flex-1 hover:bg-white rounded-lg p-2 transition-all duration-300 ease-in-out">
-          <p className="text-[16px] text-[#000000] pl-4">Who</p>
-          <Input
-            placeholder="Add Guest"
-            value={guestCount}
-            onChange={(e) => setGuestCount(e.target.value)}
-            bordered={false}
-            className="text-sm text-gray-700"
-          />
-        </div>
-        <button
-          className="bg-yellow-400 h-[48px] w-[48px] rounded-lg text-white"
-          onClick={handleSearch}
-        >
-          <SearchOutlined className="text-lg" />
-        </button>
+
+
+
+        {searchDATa?.properties?.length > 0 && 
+     <div className="container mx-auto  w-full h-full bg-black ">
+     <div className="search-results   bg-black pb-12 rounded-lg p-6 w-full ">
+        {isLoading && <p>Loading...</p>}
+        {error && <p>Error: {error.message}</p>}
+
+
+          <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4">
+            {data?.properties?.map((item) => (
+             <RoomsCard key={item?._id} data={item}/>
+            ))}
+          </div>
       </div>
 
-      <div className="container mx-auto py-16 px-4">
+     </div>
+        }
+      <div className="container mx-auto py-16 px-4 h-full ">
         <h1 className="xl:text-[56px] lg:text-[56px] font-black leading-none text-2xl text-white font-Merriweather text-center pb-12">
           Explore Amazing Rooms
         </h1>
 
         {/* Tabs for categories */}
         <Tabs activeKey={activeKey} onChange={handleTabChange} tabBarStyle={{ borderBottom: "none" }}>
-          {categories.map((category, index) => (
+          {categories?.map((category, index) => (
             <Tabs.TabPane
               tab={
                 <button
@@ -209,7 +255,11 @@ const Page = () => {
             </Button>
           </div>
         </div>
+
+        
       </div>
+
+   
     </div>
   );
 };

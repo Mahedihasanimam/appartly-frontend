@@ -4,10 +4,7 @@ import { NextResponse } from 'next/server';
 export function middleware(req) {
 
 
-  if (!isAuthenticated()) {
-    // Redirect to the login page if the token is not present
-    return NextResponse.redirect(new URL('/auth/OwnarLogin', req.url));
-  }
+
 
   // Continue to the requested page if authenticated
   return NextResponse.next();

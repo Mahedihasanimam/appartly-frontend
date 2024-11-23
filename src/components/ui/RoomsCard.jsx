@@ -13,7 +13,7 @@ const RoomsCard = ({ data }) => {
 
   return (
     <div>
-      <Link href={`/${data._id}`}>
+      <Link href={`/propertyDetails/${data._id}`}>
 
       <Card
         hoverable
