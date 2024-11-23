@@ -46,7 +46,7 @@ useEffect(()=>{
   const [isowner, setisowner] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  localStorage.setItem("isOwner", false)
+  
 
   // Retrieve the state from localStorage on initial render
   useEffect(() => {
@@ -60,7 +60,7 @@ useEffect(()=>{
     if (user?.role.includes("owner")) {
       const newIsOwner = !isowner;
       setisowner(newIsOwner);
-      localStorage.setItem("isOwner", JSON.stringify(newIsOwner)); // Save to localStorage
+      localStorage.setItem("isOwner", newIsOwner); 
     } else {
       router.push("/auth/becomeinvestor");
     }
