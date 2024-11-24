@@ -70,7 +70,7 @@ const Rooms = ({ title }) => {
                 {category}
               </button>
             }
-            className="pt-8"
+            className="pt-8" 
             key={index + 1}
           >
             {/* Room cards for each category */}

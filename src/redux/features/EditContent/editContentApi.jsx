@@ -29,6 +29,13 @@ const editContentApi=api.injectEndpoints({
     providesTags:["terms&conditions"]
     }),
 
+    getAllFAQ:builder.query({
+      query: () => ({
+        url: "/faq/get-all-faqs",
+      }),
+    providesTags:["FAQ"]
+    }),
+
 
 
 
@@ -39,4 +46,4 @@ const editContentApi=api.injectEndpoints({
   }),
 });
 
-export const {useGetAboutContentQuery,useGetHomeContentQuery,useGetTermsAndServiceQuery} = editContentApi;
+export const {useGetAboutContentQuery,useGetHomeContentQuery,useGetTermsAndServiceQuery,useGetAllFAQQuery} = editContentApi;
