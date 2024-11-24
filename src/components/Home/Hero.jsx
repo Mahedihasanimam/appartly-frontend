@@ -24,7 +24,7 @@ const Hero = ({title, description}) => {
   });
 
   const handleSearch = () => {
-    if (!location || !maxGuests || !startDate || !endDate) {
+    if (!location && !maxGuests && !startDate && !endDate) {
       // Show an alert or error message if no fields are filled
      Swal.fire({
       title:'proprty not found',
@@ -166,8 +166,8 @@ const Hero = ({title, description}) => {
     </div>
       
         {data?.properties?.length > 0 && 
-     <div className="container mx-auto relative w-full h-full bg-black ">
-     <div className="search-results  absolute z-50  bg-black pb-12 rounded-lg p-6 w-full ">
+     <div className="container mx-auto  w-full h-full bg-black ">
+     <div className="search-results    bg-black pb-12 rounded-lg p-6 w-full ">
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error.message}</p>}
 

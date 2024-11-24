@@ -355,6 +355,7 @@ import Link from "next/link";
 import { useGetAllReviewByPropertyIdQuery, useGetRoomsByIdQuery } from "@/redux/features/Propertyapi/page";
 import { useRouter, useSearchParams } from "next/navigation";
 import { UserOutlined } from "@ant-design/icons";
+import { imageUrl } from "@/redux/api/ApiSlice";
 
 // Main Page component wrapped in Suspense
 const Page = ({ params }) => {

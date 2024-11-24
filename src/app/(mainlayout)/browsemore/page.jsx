@@ -28,7 +28,7 @@ const [location, setLocation] = useState('');
   });
 
   const handleSearch = () => {
-    if (!location && !maxGuests || !startDate || !endDate) {
+    if (!location && !maxGuests && !startDate && !endDate) {
       // Show an alert or error message if no fields are filled
      Swal.fire({
       title:'proprty not found',
@@ -193,7 +193,7 @@ const [location, setLocation] = useState('');
 
 
           <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4">
-            {data?.properties?.map((item) => (
+            {searchDATa?.properties?.map((item) => (
              <RoomsCard key={item?._id} data={item}/>
             ))}
           </div>

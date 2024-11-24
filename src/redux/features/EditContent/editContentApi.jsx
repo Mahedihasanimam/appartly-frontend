@@ -22,6 +22,16 @@ const editContentApi=api.injectEndpoints({
 
 
 
+    getTermsAndService:builder.query({
+      query: () => ({
+        url: "/terms-of-service/get-terms-of-service",
+      }),
+    providesTags:["terms&conditions"]
+    }),
+
+
+
+
   
     
 
@@ -29,4 +39,4 @@ const editContentApi=api.injectEndpoints({
   }),
 });
 
-export const {useGetAboutContentQuery,useGetHomeContentQuery} = editContentApi;
+export const {useGetAboutContentQuery,useGetHomeContentQuery,useGetTermsAndServiceQuery} = editContentApi;
