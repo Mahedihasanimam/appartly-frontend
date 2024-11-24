@@ -42,7 +42,6 @@ const Hero = ({title, description}) => {
   };
 
 
-  console.log(data)
 
  if(data?.properties?.length<=0){
   Swal.fire({
@@ -50,9 +49,6 @@ const Hero = ({title, description}) => {
     text:'No properties matched your search criteria. Please try again with different filters'
   })
  }
-
-
-
 
 
   return (

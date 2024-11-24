@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { imageUrl } from "@/redux/api/ApiSlice";
 const RoomsCard = ({ data }) => {
+
   function formatDate(dateString) {
     const date = new Date(dateString);
     const options = { month: 'short', day: 'numeric' };
@@ -12,7 +13,7 @@ const RoomsCard = ({ data }) => {
   }
 
   return (
-    <div>
+    <div >
       <Link href={`/propertyDetails/${data._id}`}>
 
       <Card

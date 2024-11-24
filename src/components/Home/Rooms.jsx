@@ -6,9 +6,9 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useGetRoomsQuery } from '@/redux/features/Propertyapi/page';
 
-const Rooms = ({title}) => {
+const Rooms = ({ title }) => {
   const router = useRouter();
-  const { data, isError, isLoading,refetch } = useGetRoomsQuery({}, {
+  const { data, isError, isLoading, refetch } = useGetRoomsQuery({}, {
     refetchOnFocus: true
   });
   const [activeKey, setActiveKey] = useState("1");
@@ -21,7 +21,7 @@ const Rooms = ({title}) => {
     return <div>Error loading rooms data</div>;
   }
 
-
+  console.log('_________________', data)
 
   // Extract properties from the data for easier handling
   const roomsData = data?.properties || [];
@@ -43,14 +43,14 @@ const Rooms = ({title}) => {
     return roomsData.filter((room) => room.category.toLowerCase() === category.toLowerCase());
   };
 
-  
+
   return (
     <div className="container mx-auto py-16 px-4">
       <h1 className="xl:text-[56px] lg:text-[56px] font-black leading-none text-2xl text-white font-Merriweather text-center pb-12 max-w-2xl mx-auto">
-       {title}
+        {title}
       </h1>
 
-   
+
 
       {/* Tabs for categories */}
       <Tabs
@@ -75,10 +75,15 @@ const Rooms = ({title}) => {
           >
             {/* Room cards for each category */}
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 gap-8">
-              {filterRoomsByCategory(category).slice(-8).map((item, itemIndex) => (
-                <RoomsCard key={item._id} data={item} />
-              )).slice(-8, category === 'All Category' ? undefined : 7)}
+              {filterRoomsByCategory(category)
+                .filter(item => !item?.isDeleted) // Exclude items with isDeleted: true
+                .slice(-8)
+                .map((item, itemIndex) => (
+                  <RoomsCard key={item._id} data={item} />
+                ))
+                .slice(-8, category === 'All Category' ? undefined : 7)}
             </div>
+
           </Tabs.TabPane>
         ))}
       </Tabs>
