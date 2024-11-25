@@ -20,29 +20,8 @@ const FAQ = () => {
   console.log(data)
 
 
-
-  // const faqData = [
-  //   {
-  //     question: "What is Appartali?",
-  //     answer: "Appartali is a platform where you can connect with like-minded individuals and share ideas and experiences.",
-  //   },
-  //   {
-  //     question: "How can I join Appartali?",
-  //     answer: "You can join Appartali by signing up with your email and creating a profile to connect with others.",
-  //   },
-  //   {
-  //     question: "Is there a membership fee?",
-  //     answer: "No, joining Appartali is free. You can access all basic features without any charge.",
-  //   },
-  //   {
-  //     question: "How can I contact support?",
-  //     answer: "You can contact support through our help center or by emailing support@appartali.com.",
-  //   },
-  //   {
-  //     question: "Can I delete my account?",
-  //     answer: "Yes, you can delete your account by going to settings and clicking 'Delete Account'.",
-  //   },
-  // ];
+  
+  
   return (
     <div className="bg-[#060000] min-h-screen text-white py-16">
       <div className="container mx-auto px-4">

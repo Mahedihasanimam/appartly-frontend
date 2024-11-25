@@ -35,6 +35,12 @@ const editContentApi=api.injectEndpoints({
       }),
     providesTags:["FAQ"]
     }),
+    roomBookingHelp:builder.query({
+      query: () => ({
+        url: "/help/get-all-helps",
+      }),
+    providesTags:["roomBooking"]
+    }),
 
 
 
@@ -46,4 +52,4 @@ const editContentApi=api.injectEndpoints({
   }),
 });
 
-export const {useGetAboutContentQuery,useGetHomeContentQuery,useGetTermsAndServiceQuery,useGetAllFAQQuery} = editContentApi;
+export const {useGetAboutContentQuery,useGetHomeContentQuery,useGetTermsAndServiceQuery,useGetAllFAQQuery,useRoomBookingHelpQuery} = editContentApi;
