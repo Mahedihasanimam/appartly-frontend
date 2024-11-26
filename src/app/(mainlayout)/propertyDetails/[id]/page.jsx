@@ -177,18 +177,18 @@ const [endResarveDate,setEndResarveDate]=useState('')
         router.push('/payment')
       } else {
         Swal.fire({
-          title: 'Something went wrong',
+          title: respons?.error?.data?.message,
           text: 'Please try again...',
           icon: 'error',
         });
       }
-      const response = await createReservation(allresarveData).unwrap();
-      console.log('guesty-added:', response);
+      // const response = await createReservation(allresarveData).unwrap();
+      // console.log('guesty-added:', response);
 
       
       
     } catch (error) {
-      console.log(error)
+      console.log(' sdjajaj',error)
     }
    
 
@@ -359,7 +359,7 @@ const [endResarveDate,setEndResarveDate]=useState('')
           </p>
           <p className="text-sm">Room id: {roomId}</p>
         </div>
-
+ 
         {/* Booking Form */}
         <div className="lg:w-1/3 lg:ml-8 mt-8 lg:mt-0 bg-[#1B1B1B] h-fit pb-20 rounded-lg space-y-8 p-6">
           <h2 className="text-2xl  font-semibold">
