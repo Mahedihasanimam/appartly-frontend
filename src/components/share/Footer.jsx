@@ -66,27 +66,27 @@ const Footer = () => {
                   <ul className="space-y-[12px] text-[#000000CC] font-medium text-sm">
                     <li>
                       <Link rel="noopener noreferrer" href="/browsemore">
-                      Book your  Home
+                        Book your  Home
                       </Link>
                     </li>
                     <li>
                       <Link rel="noopener noreferrer" href="/browsemore">
-                      Estimate  your  Property
+                        Estimate  your  Property
                       </Link>
                     </li>
                     <li>
                       <Link rel="noopener noreferrer" href="/auth/GuestLogin">
-                      Guest  Login
+                        Guest  Login
                       </Link>
                     </li>
                     <li>
                       <Link rel="noopener noreferrer" href="/auth/OwnarLogin">
-                      Owner  Login
+                        Owner  Login
                       </Link>
                     </li>
 
                   </ul>
- 
+
                 </div>
               </div>
               {/* MENU ITEM TWO  */}
@@ -105,7 +105,7 @@ const Footer = () => {
                       Contact Us
                     </Link>
                   </li>
-             
+
                   <li>
                     <Link rel="noopener noreferrer" href="/TermsAndConditions ">
                       Terms & Conditions
@@ -113,7 +113,7 @@ const Footer = () => {
                   </li>
                   <li>
                     <Link rel="noopener noreferrer" href="/RoomBookingHelp">
-                    Room booking help
+                      Room booking help
                     </Link>
                   </li>
                 </ul>
@@ -124,23 +124,29 @@ const Footer = () => {
                   Social Media
                 </h3>
                 <div className="flex space-x-6">
-                 <Image height={24} width={24} src={fb} alt="facebook" />
-                 <Image height={24} width={24} src={google} alt="google" />
-                 <Image height={24} width={24} src={youtube} alt="youtube" />
-                  
+                  <Link href="https://facebook.com" target="_blank" >
+
+                    <Image height={24} width={24} src={fb} alt="facebook" />
+
+                  </Link>
+                  <Link href={'https://google.com'} target="_blank"><Image height={24} width={24} src={google} alt="google" /></Link>
+                  <Link href={'https://youtube.com'} target="_blank">
+                    <Image height={24} width={24} src={youtube} alt="youtube" />
+                  </Link>
+
                 </div>
-                <GoogleTranslate/>
+                <GoogleTranslate />
               </div>
             </div>
           </div>
           {/* copyright  */}
           <div className="flex justify-center  border-t-2 border-[#475467] py-4">
             <p className="text-sm text-[#000000CC]">
-            © appartali  2024 | All Rights Reserved
+              © appartali  2024 | All Rights Reserved
             </p>
           </div>
         </div>
-      </footer> 
+      </footer>
     </div>
   );
 };

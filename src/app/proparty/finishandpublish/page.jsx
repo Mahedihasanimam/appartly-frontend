@@ -230,7 +230,7 @@ const Page = () => {
           </div>
         </div>
 
-        <div className="flex gap-2 mt-4">
+        <div className="flex flex-wrap gap-2 mt-4">
           {selectedOptions.map((option, index) => (
             <span
               key={index}
