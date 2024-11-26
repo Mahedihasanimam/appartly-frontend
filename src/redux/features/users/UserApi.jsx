@@ -112,6 +112,15 @@ const userApi = api.injectEndpoints({
       invalidatesTags:['notifications']
     }),
 
+
+    contactUs: builder.mutation({
+      query: (data) => ({
+        url: "/help/send-mail-to-support",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
   }),
 });
 
@@ -129,5 +138,6 @@ export const {
   useLazyGetProfileQuery,
   useUpdateProfileMutation,
   useGetNotifiByUserIdQuery,
-  useReadNotificationByIdMutation
+  useReadNotificationByIdMutation,
+  useContactUsMutation
 } = userApi;

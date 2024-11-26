@@ -50,6 +50,7 @@ import { useAddReviewRatingsMutation, useGetRatingsByPropertyIdQuery, useGetRoom
 import { imageUrl } from "@/redux/api/ApiSlice";
 import { useMakeAreservationMutation } from "@/redux/features/reservation/ReservationApi";
 import Swal from "sweetalert2";
+import { useCreateGuestyReservationMutation } from "@/redux/features/guesty/guestyApi";
 
 const Page = ({ params }) => {
   const router = useRouter();
@@ -74,6 +75,9 @@ const [endResarveDate,setEndResarveDate]=useState('')
   const { isLoading, data: roomsalldata, error } = useGetRoomsByIdQuery(params?.id);
   const [addReviewRatings, { isLoading: reviewLoading, error:reviewError }] = useAddReviewRatingsMutation({}, { refetchOnFocus: true })
   const[MakeAreservation,{isLoading:reservationLoading,}]=useMakeAreservationMutation()
+  const [createReservation] = useCreateGuestyReservationMutation();
+
+
 
   const {isLoading:getratingLoading , data:ratingsData}=useGetRatingsByPropertyIdQuery(params?.id)
   if (isLoading || reviewLoading || getratingLoading) {
@@ -178,6 +182,9 @@ const [endResarveDate,setEndResarveDate]=useState('')
           icon: 'error',
         });
       }
+      const response = await createReservation(allresarveData).unwrap();
+      console.log('guesty-added:', response);
+
       
       
     } catch (error) {

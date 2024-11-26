@@ -117,9 +117,11 @@ const [location, setLocation] = useState('');
           </div>
           <div className="h-12 border-r border-gray-500"></div>
           <div
+    
             className="flex-1 hover:bg-white rounded-lg p-2 transition-all duration-300 ease-in-out"
             onMouseEnter={() => setIsCheckInVisible(true)}
             onMouseLeave={() => setIsCheckInVisible(false)}
+            clas
           >
             <p className="text-[16px] text-[#000000] pl-2">Check In</p>
             {isCheckInVisible ? (

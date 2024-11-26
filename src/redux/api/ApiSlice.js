@@ -20,7 +20,6 @@ tagTypes: [
   'bookingList',
   'reservation',
 ],
- 
   endpoints: () => ({}),
 });
 

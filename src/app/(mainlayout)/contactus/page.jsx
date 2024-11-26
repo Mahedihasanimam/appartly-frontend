@@ -1,10 +1,12 @@
 'use client';
 
+import { useContactUsMutation } from "@/redux/features/users/UserApi";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 
 const Contact = () => {
+  const [contactUs]=useContactUsMutation()
     const router=useRouter()
   const [formData, setFormData] = useState({
     name: "",
@@ -18,12 +20,24 @@ const Contact = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     // Here you would typically send the form data to your server
-    console.log("Form submitted:", formData);
-    setSubmitted(true);
-    setFormData({ name: "", email: "", message: "" }); // Clear form
+
+    try {
+      const respons=await contactUs(formData).unwrap()
+    console.log(respons)
+    if(respons?.success){
+      console.log("Form submitted:", formData);
+      setSubmitted(true);
+      setFormData({ name: "", email: "", message: "" });
+    }
+    } catch (error) {
+      alert(error?.message)
+    }
+
+
+    
  
   };
 
