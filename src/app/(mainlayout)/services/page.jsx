@@ -155,7 +155,7 @@ const Page = () => {
      </div>
         }
           <Rooms />
-          <Proparty />
+          <Proparty title={'Transform your property into a lucrative experience for travelers'} />
         </div>
     );
 };

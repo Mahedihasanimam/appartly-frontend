@@ -96,7 +96,7 @@ const Page = () => {
         My profile
       </h2>
 
-      <div className="lg:flex flex-row lg:space-y-0 space-y-12 justify-between space-x-4">
+      <div className="lg:flex flex-row lg:space-y-0 space-y-12 justify-between px-4">
         <div className="max-w-xl w-full">
           <div className="flex items-center space-x-4">
             <div className="relative w-fit">
@@ -134,10 +134,10 @@ const Page = () => {
           </div>
         </div>
 
-        <div className="w-full">
+        <div className="w-full ">
           <h1 className="text-[28px] font-bold pb-12">About You</h1>
-          <div className="space-y-4 w-full">
-            <div className="lg:flex flex-row items-center space-x-4">
+          <div className="space-y-4 w-full ">
+            <div className="lg:flex flex-row items-center lg:space-x-4 space-y-4">
               <Input
                 size="large"
                 style={{ backgroundColor: "#242424" }}
@@ -155,10 +155,10 @@ const Page = () => {
                 className="bg-[#242424] text-[#FFFFFFCC] opacity-70 text-[16px]"
               />
             </div>
-            <div className="lg:flex flex-row items-center space-x-4">
+            <div className="lg:flex flex-row items-center lg:space-x-4 space-y-4">
               <Input
                 style={{ backgroundColor: "#242424" }}
-                prefix={<MobileFilled className="text-[#FFFFFFCC] pr-2 text-2xl" />}
+                prefix={<MobileFilled className="text-[#FFFFFFCC]  text-2xl" />}
                 size="large"
                 placeholder="Enter your contact number"
                 value={contactNumber}
@@ -167,7 +167,7 @@ const Page = () => {
               />
               <Input
                 style={{ backgroundColor: "#242424" }}
-                prefix={<CiGlobe className="text-[#FFFFFFCC] pr-2 text-3xl" />}
+                prefix={<CiGlobe className="text-[#FFFFFFCC]  text-3xl" />}
                 size="large"
                 placeholder="Enter your address"
                 value={address}

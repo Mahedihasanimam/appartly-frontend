@@ -182,8 +182,8 @@ const [endResarveDate,setEndResarveDate]=useState('')
           icon: 'error',
         });
       }
-      // const response = await createReservation(allresarveData).unwrap();
-      // console.log('guesty-added:', response);
+      const response = await createReservation(allresarveData).unwrap();
+      console.log('guesty-added:', response);
 
       
       
@@ -262,8 +262,6 @@ const [endResarveDate,setEndResarveDate]=useState('')
     console.log('servicesArray:', servicesArray);
   }
 
-
-
   const renderServiceIcon = (service) => {
     switch (service) {
       case 'Lock on bedroom door':
@@ -313,7 +311,7 @@ const [endResarveDate,setEndResarveDate]=useState('')
 
       </div>
 
-      <div className="flex flex-col lg:flex-row text-white lg:p-2 md:p-2 p-8  container mx-auto">
+      <div className="flex flex-col lg:flex-row text-white lg:p-2 md:p-2 p-4 container mx-auto">
         {/* Image Carousel */}
         <div className="lg:w-2/3">
           {/* Image Carousel */}

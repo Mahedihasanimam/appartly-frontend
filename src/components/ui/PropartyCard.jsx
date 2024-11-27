@@ -6,48 +6,60 @@ import guest from "/public/icons/guest.svg";
 import revinue from "/public/icons/revinueicon.svg";
 import userimg from "/public/images/user.png";
 import Link from "next/link";
-const PropartyCard = ({ item }) => {
-  
+import { imageUrl } from "@/redux/api/ApiSlice";
+const PropartyCard = ({ data }) => {
+
+  console.log(data);
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const options = { month: 'short', day: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+  }
+
+
+  console.log(data?.satisfiedGuests)
   return (
 
-    <Card
-      key={item.id}
-      hoverable
-      className="rounded-lg overflow-hidden shadow-lg"
-      cover={
-        <Image
-          alt={item.name}
-          src={item.propertyImage}
-          className="h-48 w-full object-cover"
-        />
-      }
-    //   bodyStyle={{ padding: "16px", backgroundColor: "#3B3B3B", color: "white" }}
-    >
-      <div className="flex justify-between items-center mb-2">
-        <div>
+ <Link href={`/propertyDetails/${data._id}`}>
+   <Card
+        hoverable
+        className="rounded-lg bg-gray-800  overflow-hidden shadow-lg border-none "	
+        cover={
+          <Image
+            width={300}
+            height={200}
+            alt={data?.owner?.fullName}
+            src={ imageUrl+ data?.images?.[0]}
+            className=" w-full object-cover max-h-[200px] min-h-[200px] "
+          />
+        }
+        bodyStyle={{ padding: "16px", backgroundColor: "#FFFFFE", color: "#000000",height:'250px' }}
+      >
+         <div className="flex justify-between items-center mb-2">
+        <div className="w-full"> 
           <div className="flex items-center justify-between space-x-1 mb-2">
             <div className="flex items-center space-x-2 py-4">
               <Image
-                alt={item.ownerName}
-                src={item.image}
+              height={100}
+              width={100}
+                alt={data?.owner?.fullName}
+                src={imageUrl+ data?.owner?.image}
                 className="h-8 w-8 object-cover rounded-full"
               />
-              <h2 className="text-lg font-medium">{item.name}</h2>
+              <h2 className="text-lg font-medium">{data?.owner?.fullName}</h2>
             </div>
-            <div>
-              <div className="flex items-center space-x-1">
-                <Rate
-                  disabled
-                  count={1}
-                  value={item.rating}
-                  className="text-[#FDB022] text-lg"
-                />
-                <span className="text-xl font-medium">{item.rating}</span>
-              </div>
+            <div className="">
+              <Rate
+                disabled
+                count={1}
+                value={data?.totalRatings }
+                className="text-[#FDB022] text-lg"
+              />
+              <span className="text-[#000000] text-xl font-medium">{data?.totalRatings }</span>
             </div>
           </div>
           <p className="text-[16px] font-medium text-[#000000] pl-6">
-            {item.review}
+            {data?.description?.slice(0,100)}
           </p>
           <div className="text-lg mt-4 font-medium flex items-center justify-between">
             <div className='flex items-center space-x-4 '>
@@ -60,9 +72,9 @@ const PropartyCard = ({ item }) => {
 
               <span className="text-[16px] text-[#000000CC]"> Satisfied Guests:</span>
             </div>
-            {item.satisfiedGuest}
+           <span className="text-black"> { data?.satisfiedGuests >0 && data?.satisfiedGuests}</span>
           </div>
-          <div className="text-lg font-medium mb-2 flex items-center justify-between">
+          {/* <div className="text-lg font-medium mb-2 flex items-center justify-between">
             <div className="flex items-center space-x-4 mb-2">
               {" "}
               <Image
@@ -72,11 +84,15 @@ const PropartyCard = ({ item }) => {
               />{" "}
               <span className="text-[16px] text-[#000000CC]">Revenue</span>
             </div>{" "}
-            {item.revenue}
-          </div>
+            {data.revenue}
+          </div> */}
         </div>
-      </div>
-    </Card>
+        </div>
+      
+
+     
+      </Card>
+ </Link>
 
   );
 };

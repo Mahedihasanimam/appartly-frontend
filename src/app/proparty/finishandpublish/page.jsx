@@ -119,7 +119,7 @@ const Page = () => {
   console.log(allFormData)
 
   return (
-    <div className="container mx-auto text-white">
+    <div className="container mx-auto text-white p-2">
       <h2 className="text-[28px] flex space-x-2 items-center font-bold mt-12">
         <button onClick={() => router.back()} className="focus:outline-none">
           <MdOutlineChevronLeft className="text-4xl cursor-pointer" />
