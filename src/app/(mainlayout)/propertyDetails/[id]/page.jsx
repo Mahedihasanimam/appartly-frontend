@@ -190,7 +190,6 @@ const [endResarveDate,setEndResarveDate]=useState('')
     } catch (error) {
       console.log(' sdjajaj',error)
     }
-   
 
 
     
@@ -302,6 +301,8 @@ const [endResarveDate,setEndResarveDate]=useState('')
 
 // console.log('asjdlasl',averageRating,checkin,communication,cleanliness)
   return (
+
+    // .container>div*{ssdflk}+div>p*4{items}
     <div className="bg-[]">
       <div className="container mx-auto mt-8 text-white flex items-center justify-between p-4  ">
         <Link className="text-lg font-medium" href="/">
