@@ -1,90 +1,109 @@
 import { api } from "@/redux/api/ApiSlice";
 
-const clientId = '0oale3a4k6TiTPKZB5d7';
-const clientSecret = 'edKGYEaKDh6viG0Z-TRKoQ6XH1A8J-9aYexH0_SDayZNeNKeVqalTmVPORbvKIR6';
+const clientId = '0oalpu0v1hU6mOKEh5d7';
+const clientSecret = '1FEi6to_WlqJ9-ly3IEmbjtQ866XP5HpvVAC0Etwmd8bKRUB5wk-t05_a0HKV-VB';
+
+async function fetchAccessToken() {
+  const response = await fetch('https://booking.guesty.com/oauth2/token', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: new URLSearchParams({
+      client_id: clientId,
+      client_secret: clientSecret,
+      grant_type: 'client_credentials',
+    }).toString(),
+  });
+
+  if (!response.ok) {
+    const errorDetails = await response.json();
+    console.error('Token Fetch Error:', errorDetails);
+    throw new Error(`Failed to fetch access token: ${errorDetails.error_description || response.statusText}`);
+  }
+
+  const data = await response.json();
+
+  // Store the access token and expiration time in localStorage
+  if (data.access_token) {
+    localStorage.setItem('guesty_access_token', data.access_token);
+    localStorage.setItem('guesty_token_expiry', Date.now() + data.expires_in * 1000); // Store expiry time
+  }
+
+  return data.access_token;
+}
+
+async function getValidToken() {
+  const token = localStorage.getItem('guesty_access_token');
+  const expiryTime = localStorage.getItem('guesty_token_expiry');
+
+  // Check if token is missing or expired
+  if (!token || (expiryTime && Date.now() > expiryTime)) {
+    // Fetch a new token
+    return await fetchAccessToken();
+  }
+
+  return token;
+}
 
 export const guestyApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    // Endpoint to get access token
-    getAccessToken: builder.query({
-      query: async () => {
-        // Fetch token using clientId and clientSecret
-        const response = await fetch('https://open-api.guesty.com/oauth2/token', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            client_id: clientId,  // Ensure the correct key is used
-            client_secret: clientSecret,
-            grant_type: 'client_credentials',
-          }),
-        });
-
-        const data = await response.json();
-
-        // Store the access token and expiration time in localStorage
-        if (data.access_token) {
-          localStorage.setItem('guesty_access_token', data.access_token);
-          localStorage.setItem('guesty_token_expiry', Date.now() + data.expires_in * 1000); // Store expiry time
-        }
-
-        return data;
-      },
-      providesTags: ['user'], // Tag for revalidation
-    }),
-
     // Endpoint to get guesty properties
     getGuestyProperties: builder.query({
-      query: () => {
-        const token = localStorage.getItem('guesty_access_token');
-        const expiryTime = localStorage.getItem('guesty_token_expiry');
+      queryFn: async () => {
+        try {
+          const token = await getValidToken();
+          const response = await fetch('https://booking.guesty.com/api/listings', {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
 
-        // Check if the token has expired
-        if (expiryTime && Date.now() > expiryTime) {
-          // Token expired, trigger a refresh
-          return { type: 'getAccessToken' };
+          if (!response.ok) {
+            return { error: { status: response.status, data: await response.text() } };
+          }
+
+          const data = await response.json();
+          return { data };
+        } catch (error) {
+          return { error: { status: 500, message: error.message } };
         }
-
-        return {
-          url: 'https://open-api.guesty.com/v1/listings',
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`, // Use token from localStorage
-          },
-        };
       },
-      providesTags: ['Properties'], // Cache invalidation
+      providesTags: ['Properties'],
     }),
 
     // Endpoint to create a reservation
     createGuestyReservation: builder.mutation({
-      query: (reservationData) => {
-        const token = localStorage.getItem('guesty_access_token');
-        const expiryTime = localStorage.getItem('guesty_token_expiry');
+      queryFn: async (reservationData) => {
+        try {
+          const token = await getValidToken();
+          const response = await fetch('https://booking.guesty.com/api/reservations', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(reservationData),
+          });
 
-        // Check if the token has expired
-        if (expiryTime && Date.now() > expiryTime) {
-          // Token expired, trigger a refresh
-          return { type: 'getAccessToken' };
+          if (!response.ok) {
+            return { error: { status: response.status, data: await response.text() } };
+          }
+
+          const data = await response.json();
+          return { data };
+        } catch (error) {
+          return { error: { status: 500, message: error.message } };
         }
-
-        return {
-          url: 'https://open-api.guesty.com/v1/reservations',
-          method: 'POST',
-          body: reservationData,
-          headers: {
-            'Authorization': `Bearer ${token}`, // Use token from localStorage
-          },
-        };
       },
-      invalidatesTags: ['reservation'], // Cache invalidation
+      invalidatesTags: ['reservation'],
     }),
   }),
 });
 
 export const {
-  useGetAccessTokenQuery,
   useGetGuestyPropertiesQuery,
   useCreateGuestyReservationMutation,
 } = guestyApi;

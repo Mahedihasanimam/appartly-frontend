@@ -174,7 +174,13 @@ const [endResarveDate,setEndResarveDate]=useState('')
           icon: 'success',
         });
 
+        const response = await createReservation(allresarveData).unwrap();
+        console.log('guesty-added:', response);
         router.push('/payment')
+
+
+
+
       } else {
         Swal.fire({
           title: respons?.error?.data?.message,
@@ -182,8 +188,7 @@ const [endResarveDate,setEndResarveDate]=useState('')
           icon: 'error',
         });
       }
-      const response = await createReservation(allresarveData).unwrap();
-      console.log('guesty-added:', response);
+
 
       
       
